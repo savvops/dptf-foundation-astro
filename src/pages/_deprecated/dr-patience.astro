@@ -1,0 +1,371 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Button from '../components/ui/Button.astro';
+
+const title = "In Memory of Dr. Patience | Dr. Patience Tsavnande Foundation";
+const description = "Honoring the life, legacy, and profound humanity of Dr. Patience Selumun Tsavnande (1991-2019). Her dream of service to humanity lives on through the Foundation.";
+
+// Timeline of Dr. Patience's life
+const lifeTimeline = [
+  {
+    year: "1991",
+    title: "Born",
+    description: "Dr. Patience Selumun Tsavnande was born into the Tsavnande family, beginning a life that would touch countless others.",
+    highlight: false
+  },
+  {
+    year: "2015",
+    title: "Medical Degree",
+    description: "Completed her MBBS (Bachelor of Medicine and Bachelor of Surgery) in Ukraine, fulfilling her dream of becoming a medical doctor.",
+    highlight: false
+  },
+  {
+    year: "2017",
+    title: "Specialization",
+    description: "Completed postgraduate program in Gastroenterology, demonstrating her commitment to specialized medical care.",
+    highlight: false
+  },
+  {
+    year: "2019",
+    title: "Return to Nigeria",
+    description: "Returned home and passed the MDCN qualifying exam, then began her medical career at Benue State University Teaching Hospital.",
+    highlight: false
+  },
+  {
+    year: "September 15, 2019",
+    title: "Called to Glory",
+    description: "Her life was tragically cut short in a road accident. Though her time with us was brief, her impact was profound and lasting.",
+    highlight: true
+  }
+];
+
+// Her virtues and qualities
+const virtues = [
+  {
+    title: "Compassion",
+    description: "She approached every patient with genuine empathy, treating not just the illness but the whole person.",
+    icon: "heart"
+  },
+  {
+    title: "Selfless Service",
+    description: "Regularly visited orphanages and provided medicines for patients who couldn't afford them.",
+    icon: "hand-heart"
+  },
+  {
+    title: "Excellence",
+    description: "Pursued advanced specialization in Gastroenterology to provide the best care possible.",
+    icon: "award"
+  },
+  {
+    title: "Dream for the Poor",
+    description: "Her ultimate dream was to assist the poor and improve their living conditions.",
+    icon: "sparkles"
+  }
+];
+
+// Memories and tributes
+const tributes = [
+  {
+    quote: "Service to Humanity; Let's help with the little we can...",
+    author: "Dr. Patience Selumun Tsavnande",
+    context: "Her guiding motto"
+  },
+  {
+    quote: "She lived a short but profoundly impactful life, demonstrating profound humanity through her visits to orphanages and her care for patients.",
+    author: "Foundation Tribute",
+    context: "About her legacy"
+  }
+];
+
+// Person schema for SEO
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dr. Patience Selumun Tsavnande",
+  "alternateName": "Dr. Patience Tsavnande",
+  "birthDate": "1991",
+  "deathDate": "2019-09-15",
+  "nationality": "Nigerian",
+  "jobTitle": "Medical Doctor",
+  "description": "Medical doctor and humanitarian whose legacy inspired the Dr. Patience Tsavnande Foundation",
+  "alumniOf": [
+    {
+      "@type": "EducationalOrganization",
+      "name": "Ukrainian Medical University"
+    }
+  ],
+  "worksFor": {
+    "@type": "Hospital",
+    "name": "Benue State University Teaching Hospital"
+  },
+  "knowsAbout": ["Medicine", "Gastroenterology", "Healthcare", "Humanitarian Work"]
+};
+---
+
+<Layout title={title} description={description} additionalSchema={personSchema}>
+  <Navbar />
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      <!-- Background Image -->
+      <div class="absolute inset-0">
+        <img 
+          src="/images/dr-patience-1.jpg" 
+          alt="Dr. Patience Tsavnande"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/80"></div>
+      </div>
+      
+      <!-- Content -->
+      <div class="relative z-10 container mx-auto px-4 text-center text-white">
+        <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
+          In Loving Memory
+        </span>
+        <h1 class="font-display text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">
+          Dr. Patience Selumun Tsavnande
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 mb-2">1991 – 2019</p>
+        <p class="text-lg md:text-xl opacity-80 max-w-2xl mx-auto italic">
+          "Service to Humanity; Let's help with the little we can..."
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button href="#legacy" variant="white" size="lg">
+            Explore Her Legacy
+          </Button>
+          <Button href="/about" variant="outline-white" size="lg">
+            About the Foundation
+          </Button>
+        </div>
+      </div>
+      
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+              A Life of Profound Humanity
+            </h2>
+            <div class="w-24 h-1 bg-accent mx-auto"></div>
+          </div>
+          
+          <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            <p class="text-xl text-center italic text-gray-600 mb-8">
+              "She lived a short but impactful life, demonstrating profound humanity through her visits to orphanages and her care for patients."
+            </p>
+            
+            <p>
+              Dr. Patience Selumun Tsavnande was more than a medical doctor—she was a beacon of hope for the vulnerable and a testament to the power of compassion. Born in 1991, she dedicated her life to serving others, pursuing excellence in medicine while never losing sight of the human connection at the heart of healthcare.
+            </p>
+            
+            <p>
+              After completing her MBBS in Ukraine in 2015 and a postgraduate program in Gastroenterology in 2017, she returned to Nigeria with a vision: to make quality healthcare accessible to all, especially the poor and underserved. She passed the MDCN qualifying exam and began her practice at Benue State University Teaching Hospital in 2019.
+            </p>
+            
+            <p>
+              Beyond her professional achievements, Dr. Patience was known for her extraordinary kindness. She regularly visited orphanages, providing not just medical care but comfort and companionship to children in need. She would often pay for medications out of her own pocket for patients who couldn't afford them. Her ultimate dream was to establish programs that would assist the poor and improve their living conditions.
+            </p>
+            
+            <p class="text-primary font-medium text-center text-lg mt-8">
+              Though her life was tragically cut short on September 15, 2019, her values, her dreams, and her spirit continue to guide the Foundation that bears her name.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section class="py-20 bg-secondary">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+            In Photos
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Glimpses of a life dedicated to service and compassion
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img 
+              src="/images/dr-patience-1.jpg" 
+              alt="Dr. Patience Tsavnande"
+              class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img 
+              src="/images/dr-patience-2.jpg" 
+              alt="Dr. Patience Tsavnande"
+              class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div class="group relative overflow-hidden rounded-xl shadow-lg">
+            <img 
+              src="/images/dr-patience-3.jpg" 
+              alt="Dr. Patience Tsavnande"
+              class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-20 bg-white" id="legacy">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+            Journey Through Her Life
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Key milestones in the life of a remarkable woman
+          </p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto">
+          {lifeTimeline.map((item, index) => (
+            <div class={`relative flex gap-8 mb-12 ${index === lifeTimeline.length - 1 ? '' : ''}`}>
+              <!-- Timeline Line -->
+              {index !== lifeTimeline.length - 1 && (
+                <div class="absolute left-8 top-16 w-0.5 h-full bg-gray-200"></div>
+              )}
+              
+              <!-- Year Circle -->
+              <div class={`flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center font-display font-bold text-sm ${item.highlight ? 'bg-accent text-white' : 'bg-primary text-white'}`}>
+                {item.year.includes('September') ? '2019' : item.year}
+              </div>
+              
+              <!-- Content -->
+              <div class={`flex-1 pb-8 ${item.highlight ? 'bg-accent/5 p-6 rounded-xl -mt-2' : ''}`}>
+                <span class={`text-sm font-medium ${item.highlight ? 'text-accent' : 'text-primary'}`}>
+                  {item.year}
+                </span>
+                <h3 class="font-display text-xl font-bold text-gray-900 mt-1 mb-2">
+                  {item.title}
+                </h3>
+                <p class="text-gray-600 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Virtues Section -->
+    <section class="py-20 bg-primary text-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">
+            Her Enduring Virtues
+          </h2>
+          <p class="text-white/80 max-w-2xl mx-auto">
+            The qualities that defined her life and continue to inspire our work
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {virtues.map((virtue) => (
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center hover:bg-white/20 transition-colors">
+              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {virtue.icon === 'heart' && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />}
+                  {virtue.icon === 'hand-heart' && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />}
+                  {virtue.icon === 'award' && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />}
+                  {virtue.icon === 'sparkles' && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />}
+                </svg>
+              </div>
+              <h3 class="font-display text-xl font-bold mb-2">{virtue.title}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{virtue.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Tributes Section -->
+    <section class="py-20 bg-secondary">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+            Words That Capture Her Spirit
+          </h2>
+        </div>
+        
+        <div class="max-w-4xl mx-auto space-y-8">
+          {tributes.map((tribute) => (
+            <blockquote class="bg-white rounded-xl p-8 shadow-sm border-l-4 border-accent">
+              <svg class="h-8 w-8 text-accent/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p class="text-xl text-gray-700 italic mb-4">"{tribute.quote}"</p>
+              <footer class="text-sm">
+                <span class="font-semibold text-gray-900">{tribute.author}</span>
+                <span class="text-gray-500"> — {tribute.context}</span>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Continuing Legacy Section -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-6">
+            Her Dream Lives On
+          </h2>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+            The Dr. Patience Selumun Tsavnande Foundation was established by her parents, friends, and colleagues in August 2020 to ensure that her dreams do not die with her. Through medical outreaches, educational support, and welfare programs, we continue the work she began.
+          </p>
+          <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+            Every patient we treat, every student we support, every family we feed—we do it in her name, guided by her example, inspired by her spirit.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button href="/our-work" variant="primary" size="lg">
+              See Our Programs
+            </Button>
+            <Button href="/get-involved" variant="outline" size="lg">
+              Support Her Legacy
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Memorial Event CTA -->
+    <section class="py-16 bg-accent text-white">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="font-display text-2xl md:text-3xl font-bold mb-4">
+          Annual Memorial Thanksgiving Mass
+        </h2>
+        <p class="text-white/90 mb-2">
+          Join us every September 15th at Holy Family Catholic Church, Barnawa, Kaduna
+        </p>
+        <p class="text-sm text-white/70">
+          To celebrate her life and pray for the repose of her soul
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

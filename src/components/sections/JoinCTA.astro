@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '../ui/Button.astro';
+
+const homepageContent = await getCollection('homepage');
+const ctaContent = homepageContent.find(item => item.data.section === 'joinCta');
+---
+
+{ctaContent && (
+  <section id="join-us" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 text-center max-w-3xl">
+      <h2 class="font-display text-3xl md:text-4xl font-bold">
+        {ctaContent.data.title}
+      </h2>
+      <p class="mt-4 text-lg text-gray-600">
+        {ctaContent.data.description}
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+        {ctaContent.data.buttonText && ctaContent.data.buttonHref && (
+          <Button href={ctaContent.data.buttonHref} variant="primary" size="lg">
+            {ctaContent.data.buttonText}
+          </Button>
+        )}
+        <Button href="/transparency" variant="outline" size="lg">
+          View Our Reports
+        </Button>
+      </div>
+      <p class="mt-6 text-sm text-gray-500">
+        <a href="/transparency" class="text-primary hover:underline">100% transparency</a> — See how every naira is used
+      </p>
+    </div>
+  </section>
+)}

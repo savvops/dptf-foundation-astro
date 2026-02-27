@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const title = "Page Not Found - Dr. Patience Tsavnande Foundation";
+const description = "Sorry, the page you are looking for could not be found. Explore our website to learn more about DPTF and our mission.";
+---
+
+<Layout title={title} description={description}>
+  <main id="main-content" class="min-h-screen flex items-center justify-center bg-[#faf9f7] py-20">
+    <div class="container mx-auto px-4 text-center">
+      <!-- 404 Icon -->
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-4">
+          <Icon name="search-x" class="w-12 h-12 text-primary" />
+        </div>
+      </div>
+      
+      <!-- Error Code -->
+      <h1 class="font-display text-8xl md:text-9xl font-bold text-primary mb-4">
+        404
+      </h1>
+      
+      <!-- Title -->
+      <h2 class="font-display text-2xl md:text-3xl font-bold text-dark mb-4">
+        Page Not Found
+      </h2>
+      
+      <!-- Description -->
+      <p class="text-gray-600 text-lg max-w-md mx-auto mb-8">
+        Sorry, the page you are looking for doesn't exist or has been moved. 
+        Let's get you back on track.
+      </p>
+      
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Button href="/" variant="primary" size="lg">
+          <Icon name="home" class="w-5 h-5 mr-2" />
+          Back to Home
+        </Button>
+        <Button href="/contact" variant="outline" size="lg">
+          <Icon name="mail" class="w-5 h-5 mr-2" />
+          Contact Us
+        </Button>
+      </div>
+      
+      <!-- Helpful Links -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <p class="text-gray-500 mb-4">Looking for something specific?</p>
+        <div class="flex flex-wrap items-center justify-center gap-4 text-sm">
+          <a href="/about" class="text-primary hover:text-primary-dark hover:underline transition-colors">
+            About Us
+          </a>
+          <span class="text-gray-300">•</span>
+          <a href="/our-work" class="text-primary hover:text-primary-dark hover:underline transition-colors">
+            Our Work
+          </a>
+          <span class="text-gray-300">•</span>
+          <a href="/gallery" class="text-primary hover:text-primary-dark hover:underline transition-colors">
+            Gallery
+          </a>
+          <span class="text-gray-300">•</span>
+          <a href="/get-involved" class="text-primary hover:text-primary-dark hover:underline transition-colors">
+            Get Involved
+          </a>
+          <span class="text-gray-300">•</span>
+          <a href="/transparency" class="text-primary hover:text-primary-dark hover:underline transition-colors">
+            Transparency
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,9 @@
+{
+  "id": "dr-ochuka",
+  "name": "Dr. Blessing Ochuka",
+  "role": "Adviser",
+  "description": "Medical professional and generous supporter of Foundation activities.",
+  "image": "/images/dr-patience-2.jpg",
+  "category": "advisory",
+  "order": 2
+}

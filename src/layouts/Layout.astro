@@ -1,0 +1,273 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  additionalSchema?: object;
+  preloadImage?: string;
+}
+
+const { 
+  title, 
+  description = "Continuing a Legacy of Profound Humanity. Service to Humanity; Let's help with the little we can...",
+  additionalSchema,
+  preloadImage
+} = Astro.props;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  "name": "Dr. Patience Tsavnande Foundation",
+  "alternateName": "DPTF",
+  "description": "A nonprofit foundation dedicated to advancing healthcare, education, welfare, and empowerment for the most vulnerable in society.",
+  "url": "https://dptf-foundation.pages.dev",
+  "logo": "https://dptf-foundation.pages.dev/images/dptf-logo.png",
+  "image": "https://dptf-foundation.pages.dev/images/hero-image.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "No. 13 Tunisia Crescent, Barnawa Phase 1",
+    "addressLocality": "Kaduna",
+    "addressCountry": "NG"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "nelson@drtsavnandefoundation.com",
+    "telephone": "+234-703-498-0459",
+    "contactType": "General Inquiries"
+  },
+  "sameAs": [
+    "https://facebook.com/dptfoundation",
+    "https://www.instagram.com/drpst_foundation?igsh=ZDNlNWI3OGM5b3lr"
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#1e4d8c">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dptf-foundation.pages.dev">
+  <meta property="og:image" content="https://dptf-foundation.pages.dev/images/hero-image.jpg">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content="https://dptf-foundation.pages.dev/images/hero-image.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" href="/images/dptf-logo.png">
+  
+  <!-- Preload LCP image if provided (e.g. hero image on homepage) -->
+  {preloadImage && (
+    <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+  )}
+  
+  <!-- Google Fonts: preconnect first, then non-render-blocking stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
+  
+  <!-- JSON-LD Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  {additionalSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(additionalSchema)} />
+  )}
+  
+  <title>{title}</title>
+  
+  <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script is:inline>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+  
+  <!-- Cloudflare Web Analytics - Configure in Cloudflare Dashboard -->
+  <!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CF_ANALYTICS_TOKEN"}'></script> -->
+</head>
+<body class="min-h-screen bg-[#faf9f7]">
+  <!-- Skip to Content Link for Accessibility -->
+  <a 
+    href="#main-content" 
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:font-medium focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all"
+  >
+    Skip to main content
+  </a>
+  <slot />
+  
+  <!-- Back to Top Button -->
+  <button 
+    id="backToTop"
+    class="fixed bottom-8 right-8 p-3 bg-primary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-dark hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary z-40"
+    aria-label="Back to top"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+  
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    navToggle?.addEventListener('click', () => {
+      navMenu?.classList.toggle('hidden');
+      navMenu?.classList.toggle('flex');
+    });
+    
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu?.classList.add('hidden');
+        navMenu?.classList.remove('flex');
+      });
+    });
+    
+    // Navbar scroll effect (passive listener for bfcache compatibility)
+    const navbar = document.getElementById('navbar');
+    const navLogo = document.getElementById('navLogo');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar?.classList.add('shadow-md', 'bg-white/95');
+        navbar?.classList.remove('bg-transparent');
+      } else {
+        navbar?.classList.remove('shadow-md', 'bg-white/95');
+        navbar?.classList.add('bg-transparent');
+      }
+    }, { passive: true });
+    
+    // Stats counter animation
+    const statsSection = document.querySelector('.stats-section');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let statsAnimated = false;
+    
+    function animateStats() {
+      statNumbers.forEach(stat => {
+        const target = parseFloat(stat.getAttribute('data-count') || '0');
+        const suffix = stat.getAttribute('data-suffix') || '';
+        const prefix = stat.getAttribute('data-prefix') || '';
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const updateCount = () => {
+          current += step;
+          if (current < target) {
+            stat.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
+            requestAnimationFrame(updateCount);
+          } else {
+            stat.textContent = prefix + target.toLocaleString() + suffix;
+          }
+        };
+        
+        updateCount();
+      });
+    }
+    
+    if (statsSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !statsAnimated) {
+            animateStats();
+            statsAnimated = true;
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      observer.observe(statsSection);
+    }
+    
+    // Scroll reveal animation
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-slide-up');
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    revealElements.forEach(el => revealObserver.observe(el));
+    
+    // Set current year
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear().toString();
+    }
+    
+    // Back to Top Button
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+      const toggleBackToTop = () => {
+        if (window.scrollY > 500) {
+          backToTopBtn.classList.remove('opacity-0', 'invisible');
+          backToTopBtn.classList.add('opacity-100', 'visible');
+        } else {
+          backToTopBtn.classList.add('opacity-0', 'invisible');
+          backToTopBtn.classList.remove('opacity-100', 'visible');
+        }
+      };
+      
+      window.addEventListener('scroll', toggleBackToTop, { passive: true });
+      
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    
+    // Copy to clipboard
+    (window as any).copyToClipboard = function(text: string, btn: HTMLElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      });
+    };
+    
+    // Contact form
+    const contactForm = document.getElementById('contactForm') as HTMLFormElement;
+    const formSuccess = document.getElementById('formSuccess');
+    
+    contactForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = contactForm.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const btnText = submitBtn?.querySelector('.btn-text');
+      const btnLoading = submitBtn?.querySelector('.btn-loading');
+      
+      if (btnText && btnLoading) {
+        btnText.classList.add('hidden');
+        btnLoading.classList.remove('hidden');
+      }
+      submitBtn.disabled = true;
+      
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      contactForm.style.display = 'none';
+      formSuccess?.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>

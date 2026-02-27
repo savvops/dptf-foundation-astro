@@ -1,0 +1,15 @@
+# Pagefind Configuration
+# https://pagefind.app/docs/config/
+
+site: dist
+
+# Exclude certain pages from indexing
+exclude_selectors:
+  - nav
+  - footer
+  - .no-search
+
+# Indexing options
+force_language: en
+
+# UI customization (applied via CSS in the search page)

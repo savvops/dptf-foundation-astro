@@ -1,0 +1,424 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Button from '../components/ui/Button.astro';
+
+const title = "Gallery | Dr. Patience Tsavnande Foundation";
+const description = "Explore photos from our medical outreaches, community programs, events, and activities across Nigeria.";
+
+// Get all images from each category folder
+const galleryCategories = [
+  {
+    id: "foundation-launch",
+    title: "Foundation Launch",
+    description: "The beginning of our journey - BOT meetings, incorporation, and early activities",
+    folder: "01-foundation-launch"
+  },
+  {
+    id: "bot-meetings",
+    title: "Board Meetings",
+    description: "Governance meetings of the Board of Trustees and General Meetings",
+    folder: "02-bot-meetings"
+  },
+  {
+    id: "medical-2020",
+    title: "Medical Outreach 2020",
+    description: "First medical outreach at Atighir Village, Tarka LGA - 1,053+ patients treated",
+    folder: "03-medical-outreach-2020"
+  },
+  {
+    id: "medical-2021",
+    title: "Medical Outreach 2021",
+    description: "Documentation of our medical activities and community health programs",
+    folder: "04-medical-outreach-2021"
+  },
+  {
+    id: "education",
+    title: "Educational Programs",
+    description: "Scholarships, school donations, and educational support initiatives",
+    folder: "05-educational-programs"
+  },
+  {
+    id: "annual-events",
+    title: "Annual Events",
+    description: "Thanksgiving Mass, book launches, and memorial activities",
+    folder: "06-annual-events"
+  },
+  {
+    id: "medical-2023",
+    title: "Medical Outreach 2023",
+    description: "Health symposium and mini medical outreach at Our Lady of Fatima School",
+    folder: "07-medical-outreach-2023"
+  },
+  {
+    id: "hospital-2024",
+    title: "Hospital Intervention 2024",
+    description: "1-week medical intervention at St. Gerard Hospital, Kakuri, Kaduna",
+    folder: "08-hospital-intervention-2024"
+  },
+  {
+    id: "bsu-convocation",
+    title: "BSU Convocation 2024",
+    description: "Prize presentation ceremony at Benue State University",
+    folder: "09-bsu-convocation"
+  },
+  {
+    id: "community",
+    title: "Community Activities",
+    description: "Operation Feed the North, JDPC donations, and welfare programs",
+    folder: "10-community-activities"
+  }
+];
+
+// Import images dynamically
+const allImages = import.meta.glob('/public/gallery/**/*.{jpg,jpeg,png,webp}', { eager: true });
+
+// Process images into categories
+const categoryImages = {};
+let totalImages = 0;
+
+galleryCategories.forEach(cat => {
+  const images = Object.keys(allImages)
+    .filter(path => path.includes(`/gallery/${cat.folder}/`))
+    .map(path => {
+      const filename = path.split('/').pop();
+      return {
+        src: `/gallery/${cat.folder}/${filename}`,
+        alt: filename.replace(/-/g, ' ').replace(/\.[^.]+$/, '')
+      };
+    });
+  
+  categoryImages[cat.id] = images;
+  totalImages += images.length;
+});
+
+const videoContent = [
+  { title: "Foundation Launch", date: "September 2020", file: "VIDEO-2020-08-22-10-17-23.mp4" },
+  { title: "Medical Outreach 2020", date: "December 2020", file: "VIDEO-2020-12-03-03-15-40.mp4" },
+  { title: "3rd Year Memorial", date: "September 2022", file: "VIDEO-2022-09-15-02-40-29.mp4" }
+];
+
+// Build flat array for lightbox
+const flatImages = [];
+galleryCategories.forEach(cat => {
+  const imgs = categoryImages[cat.id] || [];
+  imgs.forEach((img, idx) => {
+    flatImages.push({
+      src: img.src,
+      alt: img.alt,
+      category: cat.title,
+      categoryIndex: idx + 1,
+      totalInCategory: imgs.length
+    });
+  });
+});
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main id="main-content" class="flex flex-col">
+    <!-- Hero Section with Image -->
+    <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20">
+      <!-- Background Image -->
+      <div class="absolute inset-0">
+        <img 
+          src="/images/hero-gallery.jpg" 
+          alt="DPTF Community Activities"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/80"></div>
+      </div>
+      
+      <!-- Content -->
+      <div class="relative z-10 container mx-auto px-4 text-center text-white">
+        <h1 class="font-display text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+          Photo Gallery
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto mb-6">
+          Moments from our journey of service
+        </p>
+        <p class="text-lg opacity-80">
+          <span class="font-bold">{totalImages}</span> photos across <span class="font-bold">{galleryCategories.length}</span> categories
+        </p>
+      </div>
+    </section>
+
+    <!-- Gallery Categories -->
+    {galleryCategories.map((category, catIndex) => {
+      const images = categoryImages[category.id] || [];
+      if (images.length === 0) return null;
+      
+      return (
+        <section class={`py-16 ${catIndex % 2 === 0 ? 'bg-white' : 'bg-[#faf9f7]'}`} id={category.id}>
+          <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-8 gap-4">
+              <div>
+                <h2 class="font-display text-2xl md:text-3xl font-bold text-primary">{category.title}</h2>
+                <p class="mt-2 text-gray-600">{category.description}</p>
+              </div>
+              <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full self-start md:self-auto">
+                {images.length} photos
+              </span>
+            </div>
+
+            <!-- Photo Grid: first 12 visible, rest hidden until "Load More" -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" data-gallery-grid={category.id}>
+              {images.map((img, index) => {
+                const globalIndex = flatImages.findIndex(fi => fi.src === img.src);
+                const isHidden = index >= 12;
+                return (
+                  <div
+                    class={`group relative aspect-square overflow-hidden rounded-lg bg-gray-100 cursor-pointer gallery-item${isHidden ? ' gallery-hidden hidden' : ''}`}
+                    data-index={globalIndex}
+                    data-cat={category.id}
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      loading="lazy"
+                      decoding="async"
+                      width="400"
+                      height="400"
+                    />
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <svg class="w-8 h-8 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {images.length > 12 && (
+              <div class="mt-6 text-center">
+                <button
+                  class="load-more-btn px-6 py-2 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-colors text-sm"
+                  data-cat={category.id}
+                  data-shown="12"
+                  data-total={images.length}
+                  aria-label={`Load more photos from ${category.title}`}
+                >
+                  Show more ({images.length - 12} remaining)
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    })}
+
+    <!-- Stats -->
+    <section class="py-12 bg-primary text-white">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <p class="font-display text-4xl font-bold">{totalImages}</p>
+            <p class="text-sm mt-1 opacity-90">Photos</p>
+          </div>
+          <div>
+            <p class="font-display text-4xl font-bold">{galleryCategories.filter(c => (categoryImages[c.id] || []).length > 0).length}</p>
+            <p class="text-sm mt-1 opacity-90">Categories</p>
+          </div>
+          
+          <div>
+            <p class="font-display text-4xl font-bold">5+</p>
+            <p class="text-sm mt-1 opacity-90">Years</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Share Your Photos CTA -->
+    <section class="py-16 md:py-24 bg-[#faf9f7]">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="font-display text-3xl font-bold text-primary mb-4">Have Photos to Share?</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          If you have photos from our events or programs that you'd like to contribute to our gallery, please contact us.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/contact" variant="primary">
+            Contact Us
+          </Button>
+          <Button href="/our-work" variant="outline">
+            See Our Programs
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/95">
+    <!-- Header -->
+    <div class="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
+      <div class="text-white">
+        <p id="lightboxCounter" class="text-sm opacity-80"></p>
+        <p id="lightboxTitle" class="font-display text-lg font-bold"></p>
+      </div>
+      <button 
+        id="lightboxClose"
+        class="text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Image -->
+    <div class="h-full flex items-center justify-center p-4 md:p-16">
+      <img 
+        id="lightboxImage" 
+        src="" 
+        alt="" 
+        class="max-h-full max-w-full object-contain"
+      />
+    </div>
+
+    <!-- Navigation Buttons -->
+    <button 
+      id="lightboxPrev"
+      class="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors hidden md:block"
+    >
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    
+    <button 
+      id="lightboxNext"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors hidden md:block"
+    >
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+    <!-- Mobile Navigation -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 md:hidden">
+      <button 
+        id="lightboxPrevMobile"
+        class="text-white/80 hover:text-white p-3 rounded-full bg-white/10"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button 
+        id="lightboxNextMobile"
+        class="text-white/80 hover:text-white p-3 rounded-full bg-white/10"
+      >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
+
+<script is:inline define:vars={{ images: flatImages }}>
+  // Gallery lightbox functionality
+  let currentIndex = 0;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+
+  function openLightbox(index) {
+    currentIndex = index;
+    updateLightbox();
+    lightbox.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function updateLightbox() {
+    const img = images[currentIndex];
+    if (!img) return;
+    
+    lightboxImage.src = img.src;
+    lightboxImage.alt = img.alt;
+    lightboxTitle.textContent = img.category;
+    lightboxCounter.textContent = img.categoryIndex + ' / ' + img.totalInCategory;
+  }
+
+  function prevImage() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateLightbox();
+    }
+  }
+
+  function nextImage() {
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      updateLightbox();
+    }
+  }
+
+  // Load More button handler
+  document.querySelectorAll('.load-more-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      let shown = parseInt(btn.dataset.shown);
+      const total = parseInt(btn.dataset.total);
+      const BATCH = 12;
+      const hiddenItems = document.querySelectorAll(`.gallery-hidden[data-cat="${cat}"]`);
+      let revealed = 0;
+      hiddenItems.forEach(item => {
+        if (revealed < BATCH) {
+          item.classList.remove('hidden', 'gallery-hidden');
+          revealed++;
+        }
+      });
+      shown += revealed;
+      btn.dataset.shown = shown;
+      const remaining = total - shown;
+      if (remaining <= 0) {
+        btn.parentElement.remove();
+      } else {
+        btn.textContent = `Show more (${remaining} remaining)`;
+      }
+    });
+  });
+
+  // Attach click handlers to gallery items
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const index = parseInt(item.dataset.index);
+      openLightbox(index);
+    });
+  });
+
+  // Button handlers
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+  document.getElementById('lightboxNext').addEventListener('click', nextImage);
+  document.getElementById('lightboxPrevMobile').addEventListener('click', prevImage);
+  document.getElementById('lightboxNextMobile').addEventListener('click', nextImage);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('hidden')) return;
+    
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+  });
+
+  // Close on background click (but not on image)
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target.closest('.h-full') === e.target) {
+      closeLightbox();
+    }
+  });
+</script>

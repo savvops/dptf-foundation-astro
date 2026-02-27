@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+
+const stats = await getCollection('stats');
+const sortedStats = stats.sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="impact" class="py-16 md:py-24 stats-section bg-secondary">
+  <div class="container mx-auto px-4">
+    <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-12">
+      Our Impact at a Glance
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      {sortedStats.map((stat) => (
+        <div class="p-6">
+          <p 
+            class="stat-number font-display text-5xl md:text-6xl font-bold text-primary"
+            data-count={stat.data.number}
+            data-prefix={stat.data.prefix}
+            data-suffix={stat.data.suffix}
+          >
+            {stat.data.prefix}{stat.data.number.toLocaleString()}{stat.data.suffix}
+          </p>
+          <p class="mt-2 text-xl font-semibold">{stat.data.label}</p>
+          <p class="text-gray-600">{stat.data.sublabel}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

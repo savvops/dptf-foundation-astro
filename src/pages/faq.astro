@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Icon from '../components/ui/Icon.astro';
+
+const title = "FAQ | Dr. Patience Tsavnande Foundation";
+const description = "Frequently asked questions about DPTF, our programs, donations, volunteering, and how we operate.";
+
+const faqCategories = [
+  {
+    category: "About DPTF",
+    questions: [
+      {
+        q: "What is the Dr. Patience Tsavnande Foundation?",
+        a: "The Dr. Patience Tsavnande Foundation (DPTF) is a nonprofit organization established in 2020 to continue the legacy of Dr. Patience Tsavnande, who dedicated her life to serving humanity through medical care and support for the vulnerable. The Foundation focuses on healthcare, education, and community welfare programs in Nigeria."
+      },
+      {
+        q: "Who was Dr. Patience Tsavnande?",
+        a: "Dr. Patience Selumun Tsavnande was a medical doctor who lived a short but impactful life demonstrating profound humanity through her visits to orphanages and care for patients. She passed away on September 15, 2019, and her dream of assisting the poor continues through this Foundation established by her parents, friends, and colleagues."
+      },
+      {
+        q: "Is DPTF a registered organization?",
+        a: "Yes, the Dr. Patience Selumun Tsavnande Foundation is registered with the Corporate Affairs Commission (CAC) of Nigeria. We are committed to full transparency and accountability in all our operations."
+      }
+    ]
+  },
+  {
+    category: "Donations",
+    questions: [
+      {
+        q: "How can I donate to DPTF?",
+        a: "You can donate through multiple channels: (1) Online via Paystack using your debit/credit card, bank transfer, or USSD, (2) Direct bank transfer to our First Bank account: 2035804521, (3) USSD: *894*Amount*2035804521#, or (4) In-kind donations of medical supplies, books, or food items. Visit our Get Involved page for complete details."
+      },
+      {
+        q: "Is my donation tax-deductible?",
+        a: "DPTF is a registered nonprofit organization in Nigeria. While we are working on securing tax-exempt status for international donors, Nigerian donors should consult with their tax advisor regarding deductibility. We provide receipts for all donations."
+      },
+      {
+        q: "How is my donation used?",
+        a: "We are committed to 100% transparency. Your donations fund our medical outreaches (medications, supplies, logistics), educational support (scholarships, prizes, materials), food security programs, and operational costs. View our detailed financial reports on the Transparency page."
+      },
+      {
+        q: "Can I donate in memory of someone?",
+        a: "Yes, we welcome memorial donations. You can make a donation in memory of a loved one, and we can acknowledge this on our website or in our annual report (with your permission). Contact us for more information about memorial giving."
+      }
+    ]
+  },
+  {
+    category: "Volunteering",
+    questions: [
+      {
+        q: "How can I become a volunteer?",
+        a: "To volunteer with DPTF, fill out the volunteer application form on our Volunteer page. We review applications within 5-7 business days and will contact you about available opportunities that match your skills and interests."
+      },
+      {
+        q: "What volunteer opportunities are available?",
+        a: "We have various volunteer roles including: Medical Outreach (patient registration, vital signs, pharmacy), Educational Support (mentorship, program organization), Community Engagement, Media & Documentation, Administrative Support, and Logistics & Operations. Visit our Volunteer page for details."
+      },
+      {
+        q: "Do I need medical training to volunteer?",
+        a: "No, not all roles require medical training. While medical professionals are welcome for our outreaches, we also need volunteers for registration, crowd management, logistics, documentation, and administrative tasks. Everyone has something valuable to contribute!"
+      },
+      {
+        q: "Where are volunteer opportunities located?",
+        a: "Most of our activities are based in Kaduna, Nigeria, with medical outreaches extending to other communities like Tarka LGA in Benue State. Volunteers should be based in or willing to travel to these locations for events."
+      }
+    ]
+  },
+  {
+    category: "Programs",
+    questions: [
+      {
+        q: "What programs does DPTF run?",
+        a: "Our main programs are: (1) Medical Outreach - free healthcare services in underserved communities, (2) Educational Support - scholarships, prizes for female medical students, and school donations, (3) Food Security - Operation Feed the North program, and (4) Annual Memorial Activities - commemorating Dr. Patience's legacy."
+      },
+      {
+        q: "How can I benefit from your medical outreaches?",
+        a: "Our medical outreaches are free and open to residents of the communities we serve. Follow our social media or check our website for announcements about upcoming outreaches in your area. No registration is required - just come to the venue on the specified dates."
+      },
+      {
+        q: "How can students apply for educational support?",
+        a: "For the BSU Best Female Medical Doctor Prize, students are automatically considered based on their academic performance at Benue State University. For scholarships and other educational support, we announce application periods on our website and social media. Join our mailing list to stay informed."
+      },
+      {
+        q: "When is the annual memorial event?",
+        a: "Our annual memorial Thanksgiving Mass is held on or around September 15th each year at Holy Family Catholic Church, Barnawa, Kaduna. This commemorates the anniversary of Dr. Patience's passing. All are welcome to attend. Check our website for the exact date each year."
+      }
+    ]
+  },
+  {
+    category: "Transparency",
+    questions: [
+      {
+        q: "How can I see how donations are spent?",
+        a: "We maintain 100% transparency. Visit our Transparency page to download our financial reports, activity reports, and meeting notices. We publish annual financial statements and detailed reports on each program."
+      },
+      {
+        q: "Can I visit your office?",
+        a: "Yes, our office is located at No. 13 Tunisia Crescent, Barnawa Phase 1, Kaduna, Nigeria. We recommend contacting us first to schedule a visit so we can ensure someone is available to meet with you."
+      },
+      {
+        q: "How can I partner with DPTF?",
+        a: "We welcome partnerships with organizations, schools, hospitals, and businesses that align with our mission. Contact us to discuss partnership opportunities, whether for specific programs, event sponsorship, or ongoing collaboration."
+      }
+    ]
+  }
+];
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main id="main-content" class="pt-32 pb-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+          Frequently Asked Questions
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Find answers to common questions about DPTF, our programs, donations, volunteering, and more.
+        </p>
+      </div>
+
+      <!-- Category Navigation -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12">
+        {faqCategories.map((cat, index) => (
+          <a 
+            href={`#category-${index}`}
+            class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:border-primary hover:text-primary transition-colors"
+          >
+            {cat.category}
+          </a>
+        ))}
+      </div>
+
+      <!-- FAQ Content -->
+      <div class="space-y-12">
+        {faqCategories.map((category, catIndex) => (
+          <section id={`category-${catIndex}`} class="scroll-mt-24">
+            <h2 class="font-display text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+              <span class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-sm">
+                {catIndex + 1}
+              </span>
+              {category.category}
+            </h2>
+            
+            <div class="space-y-4">
+              {category.questions.map((item, qIndex) => (
+                <details class="group bg-white rounded-xl border border-gray-200 overflow-hidden">
+                  <summary class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <span class="font-medium text-gray-900 pr-4">{item.q}</span>
+                    <span class="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-open:rotate-180 transition-transform">
+                      <Icon name="chevron-down" class="w-5 h-5 text-primary" />
+                    </span>
+                  </summary>
+                  <div class="px-5 pb-5 text-gray-600 leading-relaxed">
+                    {item.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <!-- Still Have Questions -->
+      <div class="mt-16 bg-primary/5 rounded-2xl p-8 md:p-12 text-center">
+        <h2 class="font-display text-2xl font-bold text-primary mb-4">
+          Still Have Questions?
+        </h2>
+        <p class="text-gray-600 mb-6 max-w-xl mx-auto">
+          Can't find the answer you're looking for? Feel free to reach out to us directly and we'll get back to you as soon as possible.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a 
+            href="/contact" 
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors"
+          >
+            <Icon name="mail" class="w-5 h-5" />
+            Contact Us
+          </a>
+          <a 
+            href="tel:+2347034980459" 
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg border-2 border-primary hover:bg-primary/5 transition-colors"
+          >
+            <Icon name="phone" class="w-5 h-5" />
+            Call Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] summary ~ * {
+    animation: sweep 0.3s ease-in-out;
+  }
+  @keyframes sweep {
+    0%    {opacity: 0; transform: translateY(-10px)}
+    100%  {opacity: 1; transform: translateY(0)}
+  }
+</style>

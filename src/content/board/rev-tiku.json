@@ -1,0 +1,9 @@
+{
+  "id": "rev-tiku",
+  "name": "Rev. Tiku",
+  "role": "Spiritual Adviser",
+  "description": "Providing spiritual guidance and pastoral support to the Foundation.",
+  "image": "/images/dr-patience-memorial.jpg",
+  "category": "advisory",
+  "order": 1
+}

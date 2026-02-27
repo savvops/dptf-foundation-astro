@@ -1,0 +1,38 @@
+backend:
+  name: git-gateway
+  branch: master # or main if that's your default branch
+
+media_folder: "src/assets/images" # Where media files will be stored
+public_folder: "/assets/images" # The src attribute for uploaded media
+
+collections:
+  - name: "blog" # Used in routes, e.g., /admin/collections/blog
+    label: "Blog" # Used in the UI
+    folder: "src/content/blog" # The path to the directory where the documents are stored
+    create: true # Allow users to create new documents in this collection
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
+    fields: # The fields for each document, usually in front matter
+      - { label: "Layout", name: "layout", widget: "hidden", default: "../../layouts/BlogPost.astro" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Updated Date", name: "updatedDate", widget: "datetime", optional: true }
+      - { label: "Hero Image", name: "heroImage", widget: "image", optional: true }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "src/pages/about.astro"
+        label: "About Page"
+        name: "about"
+        fields:
+          - { label: "Layout", name: "layout", widget: "hidden", default: "../layouts/BlogPost.astro" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - file: "src/pages/index.astro"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }

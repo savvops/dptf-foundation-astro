@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import Intro from '../components/sections/Intro.astro';
+import Objectives from '../components/sections/Objectives.astro';
+import ImpactStats from '../components/sections/ImpactStats.astro';
+import JoinCTA from '../components/sections/JoinCTA.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const title = "DPTF - Dr. Patience Tsavnande Foundation";
+const description = "Continuing a Legacy of Profound Humanity. Service to Humanity; Let's help with the little we can...";
+---
+
+<Layout title={title} description={description} preloadImage="/images/hero-image.jpg">
+  <Navbar />
+  <main id="main-content">
+    <Hero />
+    <TrustBar />
+    <Intro />
+    <Objectives />
+    <ImpactStats />
+    <JoinCTA />
+  </main>
+  <Footer />
+</Layout>

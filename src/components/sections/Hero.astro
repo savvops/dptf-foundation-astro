@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+const homepageContent = await getCollection('homepage');
+const heroContent = homepageContent.find(item => item.data.section === 'hero');
+---
+
+{heroContent && (
+  <section class="relative h-screen flex items-center justify-center text-center text-white -mt-20">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+      <img 
+        src="/images/hero-image.jpg" 
+        alt="Volunteers and community members gathered during a medical outreach event in Nigeria"
+        class="w-full h-full object-cover"
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-black/60"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative z-10 p-4 max-w-4xl mx-auto">
+      <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight drop-shadow-lg">
+        {heroContent.data.title}
+      </h1>
+      <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto">
+        {heroContent.data.description}
+      </p>
+      {heroContent.data.buttonText && heroContent.data.buttonHref && (
+        <Button href={heroContent.data.buttonHref} variant="white" size="lg" class="mt-8">
+          {heroContent.data.buttonText}
+        </Button>
+      )}
+    </div>
+    
+    <!-- Scroll indicator: GPU-composited animation via will-change:transform -->
+    <div class="absolute bottom-8 left-0 right-0 flex justify-center scroll-bounce" aria-hidden="true">
+      <Icon name="arrow-right" class="w-6 h-6 rotate-90 text-white/70" />
+    </div>
+  </section>
+)}

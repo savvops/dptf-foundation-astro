@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+
+const title = "Search | Dr. Patience Tsavnande Foundation";
+const description = "Search the DPTF website for information about our programs, reports, gallery, and more.";
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main id="main-content" class="pt-32 pb-20 min-h-screen">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-primary text-center mb-4">
+        Search
+      </h1>
+      <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        Find information about our programs, reports, gallery photos, and more.
+      </p>
+      
+      <!-- Pagefind Search UI -->
+      <div id="search" class="pagefind-search"></div>
+      
+      <!-- Search Tips -->
+      <div class="mt-12 bg-gray-50 rounded-xl p-6">
+        <h2 class="font-display text-lg font-semibold mb-4">Search Tips</h2>
+        <ul class="space-y-2 text-gray-600 text-sm">
+          <li>• Type keywords like "medical outreach", "education", "reports"</li>
+          <li>• Search for specific years like "2024" or "2020"</li>
+          <li>• Look for locations like "Kaduna", "Benue", "Tarka"</li>
+          <li>• Find donation or volunteer information</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Dynamically import Pagefind UI
+  import('@pagefind/default-ui').then((module) => {
+    const PagefindUI = module.PagefindUI;
+    new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      showImages: false,
+      excerptLength: 15,
+      translations: {
+        placeholder: "Search DPTF website...",
+        clear_search: "Clear",
+        load_more: "Load more results",
+        search_label: "Search this site",
+        filters_label: "Filters",
+        zero_results: "No results found for [SEARCH_TERM]",
+        many_results: "[COUNT] results found",
+        one_result: "[COUNT] result found",
+        alt_search: "No results for [SEARCH_TERM]. Showing results for [DIFFERENT_TERM] instead.",
+        search_suggestion: "No results for [SEARCH_TERM]. Try one of the following searches:",
+        searching: "Searching...",
+      },
+    });
+  });
+</script>
+
+<style is:global>
+  /* Pagefind Custom Styling */
+  .pagefind-search {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: #1e4d8c;
+    --pagefind-ui-text: #1f2937;
+    --pagefind-ui-background: #ffffff;
+    --pagefind-ui-border: #e5e7eb;
+    --pagefind-ui-border-width: 2px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: 'PT Sans', system-ui, sans-serif;
+  }
+  
+  .pagefind-search .pagefind-ui__search-input {
+    padding: 1rem 1rem 1rem 3rem;
+    font-size: 1.1rem;
+  }
+  
+  .pagefind-search .pagefind-ui__search-clear {
+    padding: 0.5rem 1rem;
+  }
+  
+  .pagefind-search .pagefind-ui__result {
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+  }
+  
+  .pagefind-search .pagefind-ui__result:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pagefind-search .pagefind-ui__result-link {
+    color: #1e4d8c;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .pagefind-search .pagefind-ui__result-excerpt {
+    color: #4b5563;
+    margin-top: 0.5rem;
+  }
+</style>

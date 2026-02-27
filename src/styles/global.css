@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans text-gray-800 antialiased;
+    background-color: #faf9f7;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-header {
+    @apply mx-auto max-w-3xl text-center mb-12;
+  }
+  
+  .section-badge {
+    @apply inline-block px-4 py-1.5 rounded-full text-sm font-semibold bg-primary-light text-primary mb-4;
+  }
+  
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold text-dark mb-4;
+  }
+  
+  .section-subtitle {
+    @apply text-lg text-gray-600;
+  }
+  
+  .font-headline {
+    @apply font-display;
+  }
+  
+  .font-body {
+    @apply font-sans;
+  }
+  
+  .text-muted-foreground {
+    @apply text-gray-600;
+  }
+  
+  .bg-card {
+    @apply bg-white;
+  }
+  
+  .bg-background {
+    @apply bg-[#faf9f7];
+  }
+  
+  .border-border {
+    @apply border-gray-200;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+}
+
+/* Image fallback styling */
+img {
+  background-color: #f3f4f6;
+}
+
+img:not([src]),
+img[src=""] {
+  visibility: hidden;
+}
+
+/* Smooth scroll for back-to-top - defined in @layer base above */
+
+/* Composited scroll bounce animation (GPU-accelerated, avoids non-composited animation warning) */
+.scroll-bounce {
+  will-change: transform;
+  animation: scroll-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}

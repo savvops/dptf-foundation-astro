@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '../ui/Button.astro';
+
+const homepageContent = await getCollection('homepage');
+const introContent = homepageContent.find(item => item.data.section === 'intro');
+---
+
+{introContent && (
+  <section id="intro" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 text-center max-w-3xl">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">
+        {introContent.data.title}
+      </h2>
+      <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+        {introContent.data.description}
+      </p>
+      {introContent.data.buttonText && introContent.data.buttonHref && (
+        <Button href={introContent.data.buttonHref} variant="primary" size="lg" class="mt-8">
+          {introContent.data.buttonText}
+        </Button>
+      )}
+    </div>
+  </section>
+)}

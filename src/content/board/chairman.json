@@ -1,0 +1,9 @@
+{
+  "id": "chairman",
+  "name": "Sir Thaddeus Tsavnande",
+  "role": "Chairman, Board of Trustees",
+  "description": "Visionary leader guiding the Foundation's mission to honor Dr. Patience's legacy.",
+  "image": "/images/board-chairman.jpg",
+  "category": "trustees",
+  "order": 1
+}

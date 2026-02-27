@@ -1,0 +1,42 @@
+---
+import Icon from '../ui/Icon.astro';
+
+const trustItems = [
+  {
+    icon: 'award',
+    text: 'CAC Registered',
+    subtitle: 'Corporate Affairs Commission'
+  },
+  {
+    icon: 'eye',
+    text: '100% Transparent',
+    subtitle: 'Quarterly Reports Published'
+  },
+  {
+    icon: 'shield-check',
+    text: 'Secure Payments',
+    subtitle: 'Paystack Verified'
+  },
+  {
+    icon: 'users',
+    text: 'Local NGO',
+    subtitle: 'Kaduna, Nigeria'
+  },
+];
+---
+
+<section class="py-10 bg-white border-b border-gray-200">
+  <div class="container">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      {trustItems.map(item => (
+        <div class="flex items-center justify-center gap-3 p-4 bg-gray-50 rounded-xl">
+          <Icon name={item.icon} class="w-6 h-6 text-primary flex-shrink-0" />
+          <div class="min-w-0">
+            <span class="block font-semibold text-gray-800 text-sm md:text-base truncate">{item.text}</span>
+            <span class="block text-xs text-gray-500 truncate">{item.subtitle}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

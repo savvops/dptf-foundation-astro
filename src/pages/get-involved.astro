@@ -1,0 +1,357 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/ui/Button.astro';
+
+const title = "Get Involved | Dr. Patience Tsavnande Foundation";
+const description = "Your Support Can Change Lives. Donate to support our medical outreaches, educational programs, and food security initiatives.";
+
+// Paystack Integration
+// Sign up at https://paystack.com to get your keys and create payment links
+const PAYSTACK_PUBLIC_KEY = "pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4"; // DPTF Test Key
+const PAYSTACK_DONATION_LINK = "https://paystack.com/pay/dptf-donation"; // Create this in Paystack Dashboard
+
+const donationAmounts = [
+  { amount: 1000, label: "₦1,000", impact: "Provides basic medication for 1 patient" },
+  { amount: 5000, label: "₦5,000", impact: "Provides medications for 5 patients" },
+  { amount: 10000, label: "₦10,000", impact: "Supports medical screening for 10 people" },
+  { amount: 25000, label: "₦25,000", impact: "Feeds a family for 2 weeks" },
+  { amount: 50000, label: "₦50,000", impact: "Supports a student's scholarship" },
+  { amount: 100000, label: "₦100,000", impact: "Sponsors medical outreach supplies" },
+];
+
+const donationOptions = [
+  {
+    icon: 'credit-card',
+    title: 'Online Donation (Paystack)',
+    description: 'Make a secure online donation using your debit/credit card, bank transfer, or USSD. Paystack supports all Nigerian banks and cards.',
+    action: 'Donate Online',
+    popular: true,
+  },
+  {
+    icon: 'banknote',
+    title: 'Bank Transfer (Nigeria)',
+    content: [
+      { label: 'Account Name', value: 'Dr. Patience Selumun Tsavnande Foundation' },
+      { label: 'Account Number', value: '2035804521' },
+      { label: 'Bank Name', value: 'First Bank of Nigeria' },
+    ],
+  },
+  {
+    icon: 'smartphone',
+    title: 'USSD Payment',
+    description: 'Donate instantly using USSD code from any Nigerian bank. Fast and convenient.',
+    content: [
+      { label: 'Dial', value: '*894*Amount*2035804521#' },
+      { label: 'Example', value: '*894*10000*2035804521#' },
+    ],
+  },
+  {
+    icon: 'gift',
+    title: 'In-Kind Donations',
+    description: 'We also gratefully accept donations of medical supplies, books, educational materials, and non-perishable food items.',
+    contactInfo: 'Please contact us to arrange for drop-off or pickup.',
+  },
+];
+
+const impactAreas = [
+  {
+    icon: 'heart-pulse',
+    title: 'Medical Outreach',
+    description: 'Your donation helps us provide free healthcare to underserved communities.',
+    stats: '1,053+ patients treated'
+  },
+  {
+    icon: 'graduation-cap',
+    title: 'Education Support',
+    description: 'Support scholarships and educational prizes for deserving students.',
+    stats: '₦300,000 annual prize at BSU'
+  },
+  {
+    icon: 'utensils',
+    title: 'Food Security',
+    description: 'Help us feed vulnerable families through Operation Feed the North.',
+    stats: '1,000+ beneficiaries targeted'
+  },
+];
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main id="main-content">
+    {/* Hero Section */}
+    <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20">
+      {/* Background Image */}
+      <div class="absolute inset-0">
+        <img 
+          src="/images/hero-get-involved.jpg" 
+          alt="Get Involved with DPTF"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/80"></div>
+      </div>
+      
+      {/* Content */}
+      <div class="relative z-10 container mx-auto px-4 text-center text-white">
+        <h1 class="font-display text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+          Get Involved
+        </h1>
+        <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto mb-6">
+          Your support can change lives
+        </p>
+        <p class="text-lg opacity-80 max-w-2xl mx-auto">
+          Every contribution helps us provide medical care, support education, and bring hope to vulnerable communities
+        </p>
+        <div class="mt-8">
+          <a 
+            href="#donate" 
+            class="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary font-display font-bold rounded-full hover:bg-gray-100 transition-colors"
+          >
+            Donate Now
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Paystack Donation Section */}
+    <section id="donate" class="py-16 md:py-20 bg-white">
+      <div class="container mx-auto px-4 max-w-5xl">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-3xl font-bold text-primary">Donate Now</h2>
+          <p class="mt-4 text-gray-600">Choose an amount to make an immediate impact</p>
+          <p class="text-sm text-gray-500 mt-2">Secure payment by Paystack • All Nigerian banks supported</p>
+        </div>
+
+        {/* Donation Amounts Grid */}
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {donationAmounts.map((option) => (
+            <button 
+              class="group p-6 rounded-xl border-2 border-gray-200 hover:border-primary hover:bg-primary/5 transition-all text-center donation-btn"
+              data-amount={option.amount}
+              onclick={`payWithPaystack(${option.amount})`}
+            >
+              <p class="font-display text-2xl font-bold text-primary group-hover:scale-110 transition-transform">{option.label}</p>
+              <p class="text-sm text-gray-600 mt-2">{option.impact}</p>
+              <span class="inline-block mt-4 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                Click to Donate →
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Custom Amount */}
+        <div class="max-w-md mx-auto mt-8 p-6 bg-[#faf9f7] rounded-xl">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Or enter custom amount (₦)</label>
+          <div class="flex gap-3">
+            <input 
+              type="number" 
+              id="customAmount"
+              min="100"
+              placeholder="Enter amount"
+              class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
+            />
+            <button 
+              onclick="payCustomAmount()"
+              class="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+            >
+              Donate
+            </button>
+          </div>
+        </div>
+
+        {/* Paystack Trust Badges */}
+        <div class="flex flex-wrap justify-center items-center gap-6 mt-10 text-sm text-gray-500">
+          <span class="flex items-center gap-2">
+            <Icon name="shield-check" class="w-5 h-5 text-green-600" />
+            Secured by Paystack
+          </span>
+          <span class="flex items-center gap-2">
+            <Icon name="credit-card" class="w-5 h-5 text-primary" />
+            All Cards Accepted
+          </span>
+          <span class="flex items-center gap-2">
+            <Icon name="banknote" class="w-5 h-5 text-primary" />
+            Bank Transfer
+          </span>
+          <span class="flex items-center gap-2">
+            <Icon name="smartphone" class="w-5 h-5 text-primary" />
+            USSD
+          </span>
+        </div>
+      </div>
+    </section>
+
+    {/* All Donation Methods */}
+    <section class="py-16 md:py-20 bg-[#faf9f7]">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-3xl font-bold text-primary">All Ways to Give</h2>
+          <p class="mt-4 text-gray-600">Choose the method that works best for you</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {donationOptions.map((option) => (
+            <div class={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8 flex flex-col ${option.popular ? 'ring-2 ring-primary' : ''}`}>
+              {option.popular && (
+                <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full self-center mb-4">
+                  RECOMMENDED
+                </span>
+              )}
+              <div class="items-center text-center mb-6">
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-4">
+                  <Icon name={option.icon} class="w-8 h-8 text-primary" />
+                </div>
+                <h3 class="font-display text-xl font-bold">{option.title}</h3>
+              </div>
+              <div class="flex-grow">
+                {option.content && (
+                  <div class="space-y-3">
+                    {option.content.map(item => (
+                      <div class="bg-[#faf9f7] p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                          <p class="text-sm font-semibold text-gray-500">{item.label}</p>
+                          <p class="text-base font-mono tracking-wider text-dark">{item.value}</p>
+                        </div>
+                        <button 
+                          class="copy-btn p-2 rounded-lg hover:bg-gray-200 transition-colors text-primary"
+                          data-text={item.value}
+                          onclick="copyToClipboard(this.getAttribute('data-text'), this)"
+                        >
+                          <Icon name="copy" class="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {option.description && (
+                  <p class="text-gray-600 mb-4">{option.description}</p>
+                )}
+                {option.contactInfo && (
+                  <p class="text-sm text-gray-500 italic mt-4">{option.contactInfo}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Impact Areas */}
+    <section class="py-16 md:py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="font-display text-3xl font-bold text-primary">Where Your Donation Goes</h2>
+          <p class="mt-4 text-gray-600">Every naira you donate makes a real difference</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {impactAreas.map((area) => (
+            <div class="bg-[#faf9f7] rounded-xl p-8 text-center">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name={area.icon} class="w-8 h-8 text-primary" />
+              </div>
+              <h3 class="font-display text-xl font-bold text-gray-900 mb-2">{area.title}</h3>
+              <p class="text-gray-600 mb-4">{area.description}</p>
+              <span class="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                {area.stats}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-10">
+          <Button href="/transparency" variant="outline">
+            View Financial Reports
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Volunteer Section */}
+    <section class="py-16 md:py-20 bg-[#faf9f7]">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="font-display text-3xl font-bold text-primary mb-6">Volunteer With Us</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          We're always looking for dedicated volunteers to help with our medical outreaches, administrative tasks, and event coordination. Join our team and be part of something meaningful.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/volunteer" variant="primary" size="lg">
+            Apply to Volunteer
+          </Button>
+          <Button href="/our-work" variant="outline" size="lg">
+            See Our Programs
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Transparency CTA */}
+    <section class="py-16 md:py-20 bg-primary text-white">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="font-display text-3xl font-bold mb-6">We Value Transparency</h2>
+        <p class="text-lg leading-relaxed opacity-90 mb-8">
+          As a registered nonprofit organization, we are committed to full accountability. All donations are tracked and reported in our annual financial statements.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/transparency" variant="white" size="lg">
+            View All Reports
+          </Button>
+          <Button href="/gallery" variant="outline-white" size="lg">
+            See Our Work
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script is:inline src="https://js.paystack.co/v1/inline.js"></script>
+<script is:inline>
+  // Paystack Configuration
+  const PAYSTACK_PUBLIC_KEY = 'pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4'; // DPTF Test Key
+  
+  function payWithPaystack(amount) {
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: 'donor@example.com', // Will be updated by user
+      amount: amount * 100, // Paystack amount is in kobo
+      currency: 'NGN',
+      ref: 'DPTF_' + Math.floor(Math.random() * 1000000000),
+      callback: function(response) {
+        alert('Thank you for your donation! Reference: ' + response.reference);
+        // Redirect to thank you page
+        window.location.href = '/thank-you';
+      },
+      onClose: function() {
+        console.log('Payment window closed');
+      }
+    });
+    handler.openIframe();
+  }
+
+  function payCustomAmount() {
+    const amount = document.getElementById('customAmount').value;
+    if (amount && amount >= 100) {
+      payWithPaystack(parseInt(amount));
+    } else {
+      alert('Please enter a valid amount (minimum ₦100)');
+    }
+  }
+
+  // Copy to clipboard function
+  function copyToClipboard(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+      }, 2000);
+    });
+  }
+</script>

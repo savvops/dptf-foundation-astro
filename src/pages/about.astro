@@ -1,0 +1,361 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/sections/Navbar.astro';
+import Footer from '../components/sections/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import { getCollection } from 'astro:content';
+import boardSettingsData from '../content/settings/board-settings.json';
+
+const title = "About Us | Dr. Patience Tsavnande Foundation";
+const description = "Honoring the life of Dr. Patience by carrying her dream of service, hope, and compassion to vulnerable communities across Nigeria.";
+
+// Load board members from content collection
+const boardMembers = await getCollection('board');
+const trustees = boardMembers
+  .filter(m => m.data.category === 'trustees')
+  .sort((a, b) => a.data.order - b.data.order);
+const advisers = boardMembers
+  .filter(m => m.data.category === 'advisory')
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load board settings for photo visibility toggle
+const showBoardPhotos = boardSettingsData.showBoardPhotos ?? true;
+
+const timelineEvents = [
+  {
+    year: "September 2019",
+    event: "Dr. Patience passes away, leaving behind her dream of service to humanity.",
+  },
+  {
+    year: "August 1, 2020",
+    event: "The Dr. Patience Selumun Tsavnande Foundation is officially launched and incorporated with CAC.",
+  },
+  {
+    year: "December 2020",
+    event: "First Medical Outreach at Atighir Village, Tarka LGA, treating over 1,000 patients.",
+  },
+  {
+    year: "2021-Present",
+    event: "We continue medical outreaches, education support, welfare programs, and community partnerships across Nigeria.",
+  },
+];
+
+const coreValues = [
+  {
+    title: "Compassion",
+    description: "We approach every individual with empathy and a genuine desire to help."
+  },
+  {
+    title: "Integrity",
+    description: "We maintain the highest standards of transparency and accountability in all our operations."
+  },
+  {
+    title: "Excellence",
+    description: "We strive for the highest quality in our healthcare, education, and welfare programs."
+  },
+  {
+    title: "Service",
+    description: "We believe in selfless service to humanity, following Dr. Patience's example."
+  }
+];
+
+// Dr. Patience content
+const virtues = [
+  {
+    title: "Compassion",
+    description: "She had an extraordinary ability to feel and respond to the suffering of others, especially the vulnerable."
+  },
+  {
+    title: "Dedication",
+    description: "Committed to her medical career and to using her skills to serve those in need."
+  },
+  {
+    title: "Generosity",
+    description: "She gave freely of her time, resources, and love to help others, expecting nothing in return."
+  },
+  {
+    title: "Hope",
+    description: "She believed in a better future for the poor and worked tirelessly to make it a reality."
+  }
+];
+
+const drPatienceTimeline = [
+  {
+    year: "1991",
+    title: "Birth",
+    description: "Born into the Tsavnande family, a home rooted in Christian values and community service."
+  },
+  {
+    year: "2015",
+    title: "Medical Degree",
+    description: "Completed her MBBS degree in Ukraine, fulfilling her dream of becoming a medical doctor."
+  },
+  {
+    year: "2017",
+    title: "Specialization",
+    description: "Completed postgraduate program in Gastroenterology, expanding her medical expertise."
+  },
+  {
+    year: "2019",
+    title: "Homecoming",
+    description: "Passed MDCN qualifying exam and began her medical career at Benue State University Teaching Hospital."
+  },
+  {
+    year: "September 15, 2019",
+    title: "Eternal Rest",
+    description: "Tragically passed away in a road accident, but her legacy of service continues through the Foundation."
+  },
+  {
+    year: "August 2020",
+    title: "Legacy Lives On",
+    description: "The Dr. Patience Selumun Tsavnande Foundation was established to continue her work."
+  }
+];
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main id="main-content" class="flex flex-col">
+    <!-- Header -->
+    <section class="bg-secondary py-16 md:py-24 pt-32">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">About the Dr. Patience Selumun Tsavnande Foundation</h1>
+        <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Honoring the life of Dr. Patience by carrying her dream of service, hope, and compassion to vulnerable communities across Nigeria.
+        </p>
+      </div>
+    </section>
+
+    <!-- Inspiration Section -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+        <div class="md:col-span-2">
+          <div class="rounded-lg overflow-hidden shadow-2xl aspect-[3/4] max-w-sm mx-auto">
+            <img
+              src="/images/dr-patience.jpg"
+              alt="Portrait of Dr. Patience Tsavnande, medical doctor and founder inspiration"
+              class="w-full h-full object-cover"
+              width="400"
+              height="533"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+        <div class="md:col-span-3">
+          <h2 class="font-display text-3xl font-bold mb-4 text-primary">Our Inspiration: The Life of Dr. Patience Selumun Tsavnande</h2>
+          <div class="space-y-4 text-gray-600 text-base md:text-lg leading-relaxed">
+            <p>
+              Dr. Patience Selumun Tsavnande (1991–2019) lived a short but profoundly impactful life. She completed her MBBS in Ukraine in 2015 and a postgraduate program in Gastroenterology in 2017. Returning home, she passed the MDCN qualifying exam and began her medical career at Benue State University Teaching Hospital in 2019.
+            </p>
+            <p>
+              Beyond her training, Dr. Patience was known for her compassion. She visited orphanages, provided medicines for patients in need, and dreamed of a future where the poor and vulnerable could live with dignity. Her life was tragically cut short in a road accident, but her values continue to guide us today.
+            </p>
+            <a 
+              href="/our-work"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-medium"
+            >
+              <span>See Our Programs</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who We Are Section -->
+    <section class="py-16 md:py-20 bg-[#faf9f7]">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">
+          Who We Are
+        </h2>
+        <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+          The Dr. Patience Selumun Tsavnande Foundation (DPTF) was founded in August 2020 to carry her vision forward. We are a legally registered nonprofit in Nigeria (incorporated with CAC) dedicated to advancing healthcare, education, welfare, and empowerment for the most vulnerable in society.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/transparency" variant="outline" size="lg">
+            View Our Reports
+          </Button>
+          <Button href="/get-involved" variant="primary" size="lg">
+            Donate Now
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">Our Core Values</h2>
+          <p class="mt-4 text-lg text-gray-600">The principles that guide everything we do.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {coreValues.map((value) => (
+            <div class="bg-[#faf9f7] rounded-xl p-8 text-center shadow-sm">
+              <h3 class="font-display text-xl font-bold text-primary mb-3">{value.title}</h3>
+              <p class="text-gray-600">{value.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Guiding Belief Section -->
+    <section class="bg-primary text-white py-16 md:py-20">
+      <div class="container mx-auto px-4 text-center max-w-4xl space-y-6">
+        <h2 class="font-display text-3xl font-bold">Our Guiding Belief</h2>
+        <p class="text-xl md:text-2xl font-mono tracking-wide italic opacity-90 leading-relaxed">
+          "Service to Humanity; Let's help with the little we can…"
+        </p>
+        <p class="mt-2 text-lg max-w-2xl mx-auto leading-relaxed opacity-90">
+          This simple motto reflects what Dr. Patience stood for and continues to inspire every program we run.
+        </p>
+      </div>
+    </section>
+
+    <!-- Board of Trustees Section -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">Board of Trustees</h2>
+          <p class="mt-4 text-lg text-gray-600">
+            Our Board of Trustees provides strategic direction and governance oversight, ensuring the Foundation remains true to its mission.
+          </p>
+          {!showBoardPhotos && (
+            <p class="mt-4 text-sm text-amber-600 bg-amber-50 inline-block px-4 py-2 rounded-full">
+              Photos temporarily hidden pending member approval
+            </p>
+          )}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {trustees.map((member) => (
+            <div class="bg-[#faf9f7] rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              {showBoardPhotos ? (
+                <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-md">
+                  <img 
+                    src={member.data.image} 
+                    alt={member.data.name}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span class="font-display text-3xl font-bold text-primary">{member.data.name.charAt(0)}</span>
+                </div>
+              )}
+              <h3 class="font-display text-xl font-bold text-gray-900">{member.data.name}</h3>
+              <p class="text-primary font-medium text-sm mt-1">{member.data.role}</p>
+              <p class="text-gray-600 mt-3 text-sm">{member.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Board of Advisers Section -->
+    <section class="py-16 md:py-24 bg-[#faf9f7]">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">Board of Advisers</h2>
+          <p class="mt-4 text-lg text-gray-600">
+            Our Board of Advisers provides expert guidance and support across various fields.
+          </p>
+          {!showBoardPhotos && (
+            <p class="mt-4 text-sm text-amber-600 bg-amber-50 inline-block px-4 py-2 rounded-full">
+              Photos temporarily hidden pending member approval
+            </p>
+          )}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {advisers.map((member) => (
+            <div class="bg-white rounded-xl p-8 shadow-sm text-center hover:shadow-md transition-shadow">
+              {showBoardPhotos ? (
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-gray-100">
+                  <img 
+                    src={member.data.image} 
+                    alt={member.data.name}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span class="font-display text-2xl font-bold text-primary">{member.data.name.charAt(0)}</span>
+                </div>
+              )}
+              <h3 class="font-display text-lg font-bold text-gray-900">{member.data.name}</h3>
+              <p class="text-primary font-medium text-sm mt-1">{member.data.role}</p>
+              <p class="text-gray-600 mt-3 text-sm">{member.data.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Legacy Timeline Section -->
+    <section class="py-16 md:py-24 bg-white">
+      <div class="container mx-auto px-4 max-w-3xl">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-12">Our Journey</h2>
+        <div class="relative">
+          <div class="absolute left-1/2 h-full w-0.5 bg-gray-200 -translate-x-1/2"></div>
+          <div class="space-y-12">
+            {timelineEvents.map((item) => (
+              <div class="relative flex items-center">
+                <div class="w-1/2 pr-8 text-right">
+                  <h3 class="font-display text-2xl font-bold text-primary">{item.year}</h3>
+                </div>
+                <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-white shadow"></div>
+                <div class="w-1/2 pl-8">
+                  <p class="text-gray-600">{item.event}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal Status Section -->
+    <section class="py-16 md:py-20 bg-[#faf9f7]">
+      <div class="container mx-auto px-4 max-w-3xl text-center">
+        <h2 class="font-display text-3xl font-bold text-primary mb-6">Legal Status</h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          The Dr. Patience Selumun Tsavnande Foundation is a legally registered nonprofit organization in Nigeria, incorporated with the Corporate Affairs Commission (CAC) in August 2020. We are committed to full transparency and accountability in all our operations.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/transparency" variant="primary">
+            View Financial Reports
+          </Button>
+          <Button href="/our-work" variant="outline">
+            See Our Programs
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Us Section -->
+    <section class="py-16 md:py-24 bg-primary text-white">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="font-display text-3xl md:text-4xl font-bold">
+          Join the Movement
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed opacity-90">
+          Every effort counts. Whether through donations, volunteering, or partnerships, you can help us keep Dr. Patience's dream alive. Together, we can bring hope and healing to those who need it most.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <Button href="/get-involved" variant="white" size="lg">
+            Donate Now
+          </Button>
+          <Button href="/contact" variant="outline-white" size="lg">
+            Contact Us
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
