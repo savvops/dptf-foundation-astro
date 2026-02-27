@@ -1,4 +1,47 @@
 ---
+---
+// Layout.astro
+const isLockEnabled = import.meta.env.PUBLIC_ENABLE_PIN_LOCK === 'true';
+const sitePin = import.meta.env.PUBLIC_SITE_PIN;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<!-- Your other head tags -->
+
+		{isLockEnabled && (
+		  <script define:vars={{ sitePin }}>
+			// 1. Check if they already unlocked it this session
+			const isUnlocked = sessionStorage.getItem('site_unlocked');
+			
+			if (!isUnlocked) {
+			  // 2. Hide the body immediately before it renders
+			  document.documentElement.style.display = 'none';
+			  
+			  // 3. Ask for the PIN
+			  const userPin = prompt("This site is locked. Enter PIN:");
+			  
+			  if (userPin === sitePin) {
+				sessionStorage.setItem('site_unlocked', 'true');
+				// Show the body again
+				document.documentElement.style.display = '';
+			  } else {
+				alert("Incorrect PIN. Access Denied.");
+				// Keep the body hidden or redirect them away
+				window.location.href = "https://google.com";
+			  }
+			}
+		  </script>
+		)}
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+
 import '../styles/global.css';
 
 interface Props {

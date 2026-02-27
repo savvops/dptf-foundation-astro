@@ -1,0 +1,90 @@
+---
+// src/components/PinLock.astro
+const isLockEnabled = import.meta.env.PUBLIC_ENABLE_PIN_LOCK === 'true';
+const correctPin = import.meta.env.PUBLIC_SITE_PIN || '1234';
+---
+
+{isLockEnabled && (
+  <div id="pin-lock-overlay" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-zinc-900 text-white transition-opacity duration-300">
+    <div class="bg-zinc-800 p-8 rounded-xl shadow-2xl max-w-sm w-full mx-4 border border-zinc-700">
+      <h2 class="text-2xl font-bold mb-2 text-center">Restricted Access</h2>
+      <p class="text-zinc-400 text-sm mb-6 text-center">Please enter the PIN to view this site.</p>
+      
+      <form id="pin-form" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            id="pin-input"
+            class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 text-center text-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            placeholder="••••"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <button 
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-800"
+        >
+          Unlock Site
+        </button>
+        <p id="pin-error" class="text-red-400 text-sm text-center hidden mt-2">Incorrect PIN. Please try again.</p>
+      </form>
+    </div>
+  </div>
+)}
+
+<script define:vars={{ isLockEnabled, correctPin }}>
+  if (isLockEnabled) {
+    const overlay = document.getElementById('pin-lock-overlay');
+    const form = document.getElementById('pin-form');
+    const input = document.getElementById('pin-input');
+    const errorText = document.getElementById('pin-error');
+    
+    // Check session storage first
+    if (sessionStorage.getItem('site_unlocked') === 'true') {
+      if (overlay) overlay.style.display = 'none';
+    } else {
+      // Prevent scrolling while locked
+      document.body.style.overflow = 'hidden';
+      
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (input.value === correctPin) {
+          // Success
+          sessionStorage.setItem('site_unlocked', 'true');
+          document.body.style.overflow = '';
+          
+          // Fade out
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 300);
+        } else {
+          // Failure
+          errorText.classList.remove('hidden');
+          input.value = '';
+          input.focus();
+          
+          // Shake effect
+          overlay.firstElementChild.classList.add('animate-shake');
+          setTimeout(() => {
+            overlay.firstElementChild.classList.remove('animate-shake');
+          }, 500);
+        }
+      });
+    }
+  }
+</script>
+
+<style>
+  .animate-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+  }
+</style>
