@@ -58,7 +58,7 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
     .btn:hover { background: #2563eb; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1rem;
     }
     .card {
@@ -87,8 +87,14 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
     }
-    .card a:hover { color: #3b82f6; }
+    .card a:hover { 
+      color: #3b82f6; 
+      background: #0f172a;
+    }
     .images-section {
       margin-top: 2rem;
       background: #1e293b;
@@ -100,14 +106,15 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
     .images-section p { color: #94a3b8; margin-bottom: 1rem; }
     .images-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1rem;
     }
     .image-link {
       background: #0f172a;
-      padding: 1rem;
+      padding: 1.25rem;
       border-radius: 6px;
       text-align: center;
+      border: 1px solid #334155;
     }
     .image-link a {
       color: #3b82f6;
@@ -122,11 +129,19 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
       border-radius: 0 6px 6px 0;
     }
     .note p { color: #94a3b8; font-size: 0.875rem; }
+    .warning {
+      background: #451a03;
+      border: 1px solid #92400e;
+      color: #fdba74;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>📝 Edit Content</h1>
+    <h1>📝 Edit Website Content</h1>
     <a href="{siteUrl}">← Back to Website</a>
   </div>
   
@@ -137,21 +152,21 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
         Click any folder below to browse and edit content on GitHub. 
         Changes automatically deploy to your site in 1-2 minutes.
       </p>
-      <a href="{contentUrl}" target="_blank" class="btn">Browse All Content →</a>
+      <a href="{contentUrl}" target="_blank" class="btn">📁 Browse All Content</a>
     </div>
     
-    <div class="note">
-      <p>💡 <strong>Tip:</strong> You'll need to be logged into GitHub and have access to the repository to edit files.</p>
+    <div class="warning">
+      <strong>⚠️ Login Required:</strong> You must be logged into GitHub with write access to edit files.
     </div>
     
     <div class="grid">
       <div class="card">
         <h3>⚙️ Site Settings</h3>
         <ul>
-          <li><a href="{repoUrl}/blob/main/src/content/siteSettings/settings.json" target="_blank">📄 Site Settings</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/navigation" target="_blank">📁 Navigation</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/footerSettings" target="_blank">📁 Footer</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/socialLinks" target="_blank">📁 Social Links</a></li>
+          <li><a href="{repoUrl}/blob/main/src/content/siteSettings/settings.json" target="_blank">⚙️ Site Settings (config)</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/navigation" target="_blank">📁 Navigation Links</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/footerLinks" target="_blank">📁 Footer Links</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/socialLinks" target="_blank">📁 Social Media Links</a></li>
         </ul>
       </div>
       
@@ -159,7 +174,7 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
         <h3>🏠 Homepage</h3>
         <ul>
           <li><a href="{repoUrl}/tree/main/src/content/homepage" target="_blank">📁 Homepage Sections</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/stats" target="_blank">📁 Stats</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/stats" target="_blank">📁 Stats/Numbers</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/coreValues" target="_blank">📁 Core Values</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/objectives" target="_blank">📁 Objectives</a></li>
         </ul>
@@ -168,36 +183,38 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
       <div class="card">
         <h3>👥 About Page</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/aboutSettings" target="_blank">📁 About Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/aboutSettings" target="_blank">📁 About Page Settings</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/board" target="_blank">📁 Board Members</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/boardSettings" target="_blank">📁 Board Settings</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/timeline" target="_blank">📁 Timeline</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/drPatienceVirtues" target="_blank">📁 Dr. Patience Virtues</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/timeline" target="_blank">📁 Timeline Events</a></li>
         </ul>
       </div>
       
       <div class="card">
-        <h3>📋 Our Work</h3>
+        <h3>📋 Our Work / Programs</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/ourWorkSettings" target="_blank">📁 Page Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/ourWorkSettings" target="_blank">📁 Our Work Settings</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/programs" target="_blank">📁 Programs</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/impactAreas" target="_blank">📁 Impact Areas</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/medicalOutreaches" target="_blank">📁 Medical Outreaches</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/educationInitiatives" target="_blank">📁 Education Initiatives</a></li>
         </ul>
       </div>
       
       <div class="card">
-        <h3>❓ FAQ</h3>
+        <h3>❓ FAQ Page</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/faqSettings" target="_blank">📁 FAQ Settings</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/faqCategories" target="_blank">📁 Categories</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/faqItems" target="_blank">📁 FAQ Items</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/faqSettings" target="_blank">📁 FAQ Page Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/faqCategories" target="_blank">📁 FAQ Categories</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/faqItems" target="_blank">📁 FAQ Questions</a></li>
         </ul>
       </div>
       
       <div class="card">
-        <h3>🤝 Get Involved</h3>
+        <h3>🤝 Get Involved / Donate</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/getInvolvedSettings" target="_blank">📁 Page Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/getInvolvedSettings" target="_blank">📁 Get Involved Settings</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/donationAmounts" target="_blank">📁 Donation Amounts</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/donationMethods" target="_blank">📁 Donation Methods</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/bankDetails" target="_blank">📁 Bank Details</a></li>
@@ -205,40 +222,48 @@ const imagesUrl = `${repoUrl}/tree/main/public/images`;
       </div>
       
       <div class="card">
-        <h3>📊 Transparency</h3>
+        <h3>📊 Transparency / Reports</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/transparencySettings" target="_blank">📁 Page Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/transparencySettings" target="_blank">📁 Transparency Settings</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/financialReports" target="_blank">📁 Financial Reports</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/activityReports" target="_blank">📁 Activity Reports</a></li>
           <li><a href="{repoUrl}/tree/main/src/content/meetingNotices" target="_blank">📁 Meeting Notices</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/trustBadges" target="_blank">📁 Trust Badges</a></li>
         </ul>
       </div>
       
       <div class="card">
-        <h3>📞 Contact & More</h3>
+        <h3>📞 Contact & Other</h3>
         <ul>
-          <li><a href="{repoUrl}/tree/main/src/content/contactSettings" target="_blank">📁 Contact Settings</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/contactInfo" target="_blank">📁 Contact Info</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/galleryImages" target="_blank">📁 Gallery Images</a></li>
-          <li><a href="{repoUrl}/tree/main/src/content/trustBadges" target="_blank">📁 Trust Badges</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/contactSettings" target="_blank">📁 Contact Page Settings</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/contactInfo" target="_blank">📁 Contact Information</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/memorialActivities" target="_blank">📁 Memorial Activities</a></li>
+          <li><a href="{repoUrl}/tree/main/src/content/foodSecurity" target="_blank">📁 Food Security Items</a></li>
         </ul>
       </div>
     </div>
     
     <div class="images-section">
       <h2>🖼️ Manage Images</h2>
-      <p>Upload images to these folders. Reference them in content as <code>/images/folder/image.jpg</code></p>
+      <p>Click to upload or manage images. Reference them in content as <code>/images/folder/image.jpg</code></p>
       <div class="images-grid">
         <div class="image-link">
           <a href="{imagesUrl}" target="_blank">📁 All Images</a>
+          <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">Main image folder</p>
         </div>
         <div class="image-link">
-          <a href="{repoUrl}/tree/main/public/images/members" target="_blank">👥 Members</a>
+          <a href="{repoUrl}/tree/main/public/images/members" target="_blank">👥 Member Photos</a>
+          <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">Board & team photos</p>
         </div>
         <div class="image-link">
           <a href="{repoUrl}/tree/main/public/reports" target="_blank">📄 PDF Reports</a>
+          <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">Financial & activity reports</p>
         </div>
       </div>
+    </div>
+    
+    <div class="note" style="margin-top: 2rem;">
+      <p>💡 <strong>How to edit:</strong> Click folder → Click file → Click ✏️ pencil icon → Edit → Scroll down → Click "Commit changes"</p>
     </div>
   </div>
 </body>
