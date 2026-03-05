@@ -1,5 +1,5 @@
 # PagesCMS Configuration for DPTF Foundation
-# Full configuration with all 37 content collections
+# Full configuration with all 38 content collections
 
 media:
   - name: images
@@ -38,6 +38,7 @@ content:
     label: Navigation Links
     type: collection
     path: src/content/navigation
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -83,6 +84,7 @@ content:
     label: Footer Links
     type: collection
     path: src/content/footerLinks
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -107,6 +109,7 @@ content:
     label: Social Media Links
     type: collection
     path: src/content/socialLinks
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -127,11 +130,33 @@ content:
         label: Enabled
         type: boolean
 
+  - name: settings
+    label: Legacy Settings
+    type: file
+    path: src/content/settings/settings.json
+    fields:
+      - name: showBoardPhotos
+        label: Show Board Photos
+        type: boolean
+      - name: trusteesTitle
+        label: Trustees Title
+        type: string
+      - name: trusteesDescription
+        label: Trustees Description
+        type: string
+      - name: advisersTitle
+        label: Advisers Title
+        type: string
+      - name: advisersDescription
+        label: Advisers Description
+        type: string
+
   # ==================== HOMEPAGE ====================
   - name: homepage
     label: Homepage Sections
     type: collection
     path: src/content/homepage
+    filename: "{{section}}.json"
     fields:
       - name: section
         label: Section ID
@@ -156,6 +181,7 @@ content:
     label: Homepage Stats
     type: collection
     path: src/content/stats
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -186,6 +212,7 @@ content:
     label: Core Values
     type: collection
     path: src/content/coreValues
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -208,8 +235,6 @@ content:
     type: collection
     path: src/content/objectives
     filename: "{{id}}.json"
-    view:
-      fields: [id, icon, title, description, order, enabled]
     fields:
       - name: id
         label: ID
@@ -268,6 +293,7 @@ content:
     label: Board Members
     type: collection
     path: src/content/board
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -319,6 +345,7 @@ content:
     label: Dr. Patience Virtues
     type: collection
     path: src/content/drPatienceVirtues
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -340,6 +367,7 @@ content:
     label: Timeline Events
     type: collection
     path: src/content/timeline
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -383,6 +411,7 @@ content:
     label: Programs
     type: collection
     path: src/content/programs
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -407,6 +436,7 @@ content:
     label: Impact Areas
     type: collection
     path: src/content/impactAreas
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -434,6 +464,7 @@ content:
     label: Medical Outreaches
     type: collection
     path: src/content/medicalOutreaches
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -464,6 +495,7 @@ content:
     label: Education Initiatives
     type: collection
     path: src/content/educationInitiatives
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -488,6 +520,7 @@ content:
     label: Food Security Items
     type: collection
     path: src/content/foodSecurity
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -506,6 +539,7 @@ content:
     label: Memorial Activities
     type: collection
     path: src/content/memorialActivities
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -546,6 +580,7 @@ content:
     label: FAQ Categories
     type: collection
     path: src/content/faqCategories
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -564,6 +599,7 @@ content:
     label: FAQ Items
     type: collection
     path: src/content/faqItems
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -607,6 +643,7 @@ content:
     label: Donation Amounts
     type: collection
     path: src/content/donationAmounts
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -631,6 +668,7 @@ content:
     label: Donation Methods
     type: collection
     path: src/content/donationMethods
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -692,6 +730,7 @@ content:
     label: Transparency Stats
     type: collection
     path: src/content/transparencyStats
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -713,6 +752,7 @@ content:
     label: Financial Reports
     type: collection
     path: src/content/financialReports
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -743,6 +783,7 @@ content:
     label: Activity Reports
     type: collection
     path: src/content/activityReports
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -773,6 +814,7 @@ content:
     label: Meeting Notices
     type: collection
     path: src/content/meetingNotices
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -816,6 +858,7 @@ content:
     label: Contact Information
     type: collection
     path: src/content/contactInfo
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -840,6 +883,7 @@ content:
     label: Gallery Images
     type: collection
     path: src/content/galleryImages
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -867,6 +911,7 @@ content:
     label: Trust Badges
     type: collection
     path: src/content/trustBadges
+    filename: "{{id}}.json"
     fields:
       - name: id
         label: ID
@@ -883,4 +928,3 @@ content:
       - name: enabled
         label: Enabled
         type: boolean
-
