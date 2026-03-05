@@ -109,6 +109,11 @@ const siteUrl = Astro.url.origin;
       margin-right: 0.5rem;
     }
     .btn-secondary:hover { background: #64748b; }
+    .btn-success {
+      background: #16a34a;
+      color: white;
+    }
+    .btn-success:hover { background: #15803d; }
     .editor-content {
       padding: 1rem;
     }
@@ -145,6 +150,13 @@ const siteUrl = Astro.url.origin;
     }
     .info {
       background: #1e40af;
+      color: white;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .warning {
+      background: #ca8a04;
       color: white;
       padding: 1rem;
       border-radius: 6px;
@@ -190,6 +202,31 @@ const siteUrl = Astro.url.origin;
       color: #e2e8f0;
       font-size: 0.875rem;
     }
+    .token-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 1rem;
+    }
+    .token-status.saved {
+      background: #16a34a;
+      color: white;
+    }
+    .token-status.not-saved {
+      background: #dc2626;
+      color: white;
+    }
+    .debug-info {
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      text-align: left;
+    }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -199,7 +236,10 @@ const siteUrl = Astro.url.origin;
       <h1>📝 DPTF Content Editor</h1>
       <div class="subtitle">Edit website content directly</div>
     </div>
-    <div class="subtitle">{siteUrl}</div>
+    <div style="display: flex; align-items: center;">
+      <span id="tokenStatus" class="token-status not-saved">No Token</span>
+      <div class="subtitle" style="margin-left: 1rem;">{siteUrl}</div>
+    </div>
   </div>
   
   <div class="container">
@@ -255,18 +295,28 @@ const siteUrl = Astro.url.origin;
         </p>
         
         <div style="background: #1e293b; padding: 2rem; border-radius: 8px; max-width: 500px; margin: 0 auto; text-align: left;">
-          <h3 style="margin-bottom: 1rem; color: #fff;">Setup Required</h3>
-          <p style="margin-bottom: 1rem;">To save changes, you need a GitHub Personal Access Token:</p>
-          <ol style="margin-left: 1.5rem; color: #94a3b8; line-height: 1.8;">
-            <li>Go to GitHub → Settings → Developer settings → Personal access tokens</li>
-            <li>Generate new token (classic)</li>
-            <li>Select 'repo' scope</li>
-            <li>Copy and paste below:</li>
+          <h3 style="margin-bottom: 1rem; color: #fff;">Step 1: Enter GitHub Token</h3>
+          <p style="margin-bottom: 1rem; color: #94a3b8;">
+            You need a GitHub Personal Access Token with 'repo' scope:
+          </p>
+          <ol style="margin-left: 1.5rem; color: #94a3b8; line-height: 1.8; margin-bottom: 1rem;">
+            <li>Go to <a href="https://github.com/settings/tokens" target="_blank" style="color: #3b82f6;">GitHub Settings → Tokens</a></li>
+            <li>Click "Generate new token (classic)"</li>
+            <li>Select <strong>'repo'</strong> scope (full control)</li>
+            <li>Generate and copy the token</li>
           </ol>
-          <div class="token-input" style="margin-top: 1rem;">
-            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width: 100%;">
+          <div class="token-input">
+            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width: 100%; font-family: monospace;">
           </div>
-          <button class="btn btn-primary" onclick="saveToken()" style="width: 100%;">Save Token</button>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-primary" onclick="saveToken()" style="flex: 1;">💾 Save Token</button>
+            <button class="btn btn-success" onclick="testToken()" style="flex: 1;">🧪 Test Token</button>
+          </div>
+          
+          <div class="debug-info">
+            <strong>Debug Info:</strong><br>
+            <span id="debugText">localStorage status: checking...</span>
+          </div>
         </div>
       </div>
       
@@ -289,13 +339,39 @@ const siteUrl = Astro.url.origin;
     const REPO_OWNER = 'savvops';
     const REPO_NAME = 'dptf-foundation-astro';
     const BRANCH = 'main';
+    const STORAGE_KEY = 'dptf_github_token_v1';
     
     let currentFile = null;
     let originalContent = '';
     
+    // Check localStorage on load
+    window.addEventListener('load', () => {
+      checkStorage();
+      updateTokenStatus();
+    });
+    
+    function checkStorage() {
+      const debugText = document.getElementById('debugText');
+      try {
+        const test = localStorage.getItem('test');
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        debugText.textContent = '✅ localStorage is working';
+        return true;
+      } catch (e) {
+        debugText.textContent = '❌ localStorage is blocked: ' + e.message;
+        return false;
+      }
+    }
+    
     // Load token from localStorage
     function getToken() {
-      return localStorage.getItem('githubToken');
+      try {
+        return localStorage.getItem(STORAGE_KEY);
+      } catch (e) {
+        console.error('localStorage error:', e);
+        return null;
+      }
     }
     
     function saveToken() {
@@ -304,15 +380,82 @@ const siteUrl = Astro.url.origin;
         showMessage('Please enter a token', 'error');
         return;
       }
-      localStorage.setItem('githubToken', token);
-      showMessage('Token saved! You can now edit files.', 'success');
-      setTimeout(() => hideMessage(), 3000);
+      
+      if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+        showMessage('Warning: Token format looks unusual. GitHub tokens usually start with "ghp_"', 'warning');
+      }
+      
+      try {
+        localStorage.setItem(STORAGE_KEY, token);
+        showMessage('Token saved to localStorage!', 'success');
+        updateTokenStatus();
+        
+        // Clear the input for security
+        document.getElementById('githubToken').value = '';
+      } catch (e) {
+        showMessage('Failed to save token: ' + e.message, 'error');
+        console.error('localStorage error:', e);
+      }
+    }
+    
+    async function testToken() {
+      const token = getToken() || document.getElementById('githubToken').value.trim();
+      
+      if (!token) {
+        showMessage('No token to test. Enter or save a token first.', 'error');
+        return;
+      }
+      
+      showMessage('Testing token...', 'info');
+      
+      try {
+        const response = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          showMessage(`✅ Token works! Accessing: ${data.full_name}`, 'success');
+          updateTokenStatus(true);
+        } else {
+          const error = await response.json();
+          showMessage(`❌ Token failed: ${error.message}`, 'error');
+          updateTokenStatus(false);
+        }
+      } catch (e) {
+        showMessage('Error testing token: ' + e.message, 'error');
+      }
+    }
+    
+    function updateTokenStatus(working = null) {
+      const status = document.getElementById('tokenStatus');
+      const token = getToken();
+      
+      if (token) {
+        status.textContent = 'Token Saved';
+        status.className = 'token-status saved';
+      } else {
+        status.textContent = 'No Token';
+        status.className = 'token-status not-saved';
+      }
     }
     
     function showMessage(text, type) {
       const msg = document.getElementById('message');
       msg.className = type;
-      msg.textContent = text;
+      msg.innerHTML = text;
+      
+      // Auto-hide after 5 seconds for success messages
+      if (type === 'success') {
+        setTimeout(() => hideMessage(), 5000);
+      }
     }
     
     function hideMessage() {
@@ -321,10 +464,19 @@ const siteUrl = Astro.url.origin;
     
     // Load file from GitHub
     async function loadFile(filepath) {
-      const token = getToken();
+      // First try saved token, then check input field
+      let token = getToken();
+      
       if (!token) {
-        showMessage('Please set up your GitHub token first', 'error');
-        return;
+        const inputToken = document.getElementById('githubToken').value.trim();
+        if (inputToken) {
+          token = inputToken;
+          showMessage('Using token from input field (not saved)', 'info');
+        } else {
+          showMessage('Please enter your GitHub token in the input field above, or save it first', 'error');
+          document.getElementById('githubToken').focus();
+          return;
+        }
       }
       
       try {
@@ -334,28 +486,38 @@ const siteUrl = Astro.url.origin;
           `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filepath}?ref=${BRANCH}`,
           {
             headers: {
-              'Authorization': `token ${token}`,
-              'Accept': 'application/vnd.github.v3+json'
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'X-GitHub-Api-Version': '2022-11-28'
             }
           }
         );
         
         if (!response.ok) {
-          // File might not exist, create empty template
-          originalContent = '{}';
-          document.getElementById('editorContent').value = '{}\n';
+          if (response.status === 404) {
+            showMessage('File not found. Creating new file.', 'warning');
+            originalContent = '{\n  "title": "New Content"\n}';
+            document.getElementById('editorContent').value = originalContent;
+          } else if (response.status === 401) {
+            showMessage('Token is invalid or expired. Please check your token.', 'error');
+            return;
+          } else {
+            const error = await response.json();
+            showMessage('Error: ' + error.message, 'error');
+            return;
+          }
         } else {
           const data = await response.json();
           const content = atob(data.content);
           originalContent = content;
           document.getElementById('editorContent').value = content;
+          hideMessage();
         }
         
         currentFile = filepath;
         document.getElementById('filename').textContent = filepath;
         document.getElementById('welcome').classList.add('hidden');
         document.getElementById('editor').classList.remove('hidden');
-        hideMessage();
         
         // Update active sidebar item
         document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -367,14 +529,16 @@ const siteUrl = Astro.url.origin;
         
       } catch (error) {
         showMessage('Error loading file: ' + error.message, 'error');
+        console.error(error);
       }
     }
     
     // Save file to GitHub
     async function saveFile() {
       const token = getToken();
+      
       if (!token) {
-        showMessage('Please set up your GitHub token first', 'error');
+        showMessage('Token not found. Please save your token first.', 'error');
         return;
       }
       
@@ -404,8 +568,9 @@ const siteUrl = Astro.url.origin;
             `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${currentFile}?ref=${BRANCH}`,
             {
               headers: {
-                'Authorization': `token ${token}`,
-                'Accept': 'application/vnd.github.v3+json'
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'X-GitHub-Api-Version': '2022-11-28'
               }
             }
           );
@@ -420,7 +585,7 @@ const siteUrl = Astro.url.origin;
         // Save file
         const body = {
           message: `Update ${currentFile} via admin`,
-          content: btoa(content),
+          content: btoa(unescape(encodeURIComponent(content))),
           branch: BRANCH
         };
         
@@ -433,9 +598,10 @@ const siteUrl = Astro.url.origin;
           {
             method: 'PUT',
             headers: {
-              'Authorization': `token ${token}`,
+              'Authorization': `Bearer ${token}`,
               'Accept': 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28'
             },
             body: JSON.stringify(body)
           }
@@ -447,11 +613,11 @@ const siteUrl = Astro.url.origin;
         }
         
         originalContent = content;
-        showMessage('Saved! Your site will update in 1-2 minutes.', 'success');
-        setTimeout(() => hideMessage(), 5000);
+        showMessage('✅ Saved! Your site will update in 1-2 minutes.', 'success');
         
       } catch (error) {
         showMessage('Error saving: ' + error.message, 'error');
+        console.error(error);
       } finally {
         document.getElementById('saveBtn').disabled = false;
       }
