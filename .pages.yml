@@ -1,3 +1,6 @@
+# PagesCMS Configuration for DPTF Foundation
+# Updated: 2026-03-05
+
 media:
   - name: images
     label: Images
