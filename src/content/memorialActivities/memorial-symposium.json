@@ -1,0 +1,8 @@
+{
+  "id": "memorial-symposium",
+  "title": "Memorial Symposium",
+  "description": "Educational symposiums held in partnership with schools and institutions to discuss health and educational topics.",
+  "when": "Annually",
+  "order": 2,
+  "enabled": true
+}

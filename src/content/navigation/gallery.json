@@ -1,0 +1,8 @@
+{
+  "id": "gallery",
+  "label": "Gallery",
+  "href": "/gallery",
+  "order": 3,
+  "isButton": false,
+  "enabled": true
+}

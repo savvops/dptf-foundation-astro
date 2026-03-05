@@ -1,0 +1,19 @@
+{
+  "id": "medical",
+  "title": "Medical Outreach",
+  "icon": "heart-pulse",
+  "description": "Providing free healthcare services to underserved communities across Nigeria.",
+  "stats": [
+    { "value": "1,053+", "label": "Patients Treated" },
+    { "value": "3", "label": "Major Outreaches" },
+    { "value": "2020", "label": "Started" }
+  ],
+  "highlights": [
+    "Free medical consultations and treatments",
+    "Distribution of medications and medical supplies",
+    "Health education and awareness programs",
+    "Partnerships with local hospitals and medical professionals"
+  ],
+  "order": 1,
+  "enabled": true
+}

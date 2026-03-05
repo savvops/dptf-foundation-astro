@@ -5,5 +5,5 @@
   "description": "Dedicated trustee supporting the Foundation's welfare and outreach programs.",
   "image": "/images/board-member-5.jpg",
   "category": "trustees",
-  "order": 6
+  "order": 6,"enabled": true
 }

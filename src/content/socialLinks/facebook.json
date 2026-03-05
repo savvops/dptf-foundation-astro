@@ -1,0 +1,8 @@
+{
+  "id": "facebook",
+  "name": "Facebook",
+  "url": "https://facebook.com/dptfoundation",
+  "icon": "facebook",
+  "order": 1,
+  "enabled": true
+}

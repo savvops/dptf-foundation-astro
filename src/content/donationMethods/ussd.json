@@ -1,0 +1,1 @@
+{"id": "ussd", "icon": "smartphone", "title": "USSD Payment", "description": "Donate instantly using USSD code from any Nigerian bank. Fast and convenient.", "popular": false, "content": [{"label": "Dial", "value": "*894*Amount*2035804521#"}, {"label": "Example", "value": "*894*10000*2035804521#"}], "order": 3, "enabled": true}

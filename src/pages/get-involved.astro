@@ -4,81 +4,34 @@ import Navbar from '../components/sections/Navbar.astro';
 import Footer from '../components/sections/Footer.astro';
 import Icon from '../components/ui/Icon.astro';
 import Button from '../components/ui/Button.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const title = "Get Involved | Dr. Patience Tsavnande Foundation";
-const description = "Your Support Can Change Lives. Donate to support our medical outreaches, educational programs, and food security initiatives.";
+// Load Get Involved settings
+const getInvolvedSettings = await getEntry('getInvolvedSettings', 'settings');
+
+// Load donation amounts
+const donationAmounts = await getCollection('donationAmounts');
+const enabledDonationAmounts = donationAmounts
+  .filter(a => a.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load donation methods
+const donationMethods = await getCollection('donationMethods');
+const enabledDonationMethods = donationMethods
+  .filter(m => m.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load impact areas
+const impactAreas = await getCollection('impactAreas');
+const enabledImpactAreas = impactAreas
+  .filter(a => a.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
 
 // Paystack Integration
-// Sign up at https://paystack.com to get your keys and create payment links
-const PAYSTACK_PUBLIC_KEY = "pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4"; // DPTF Test Key
-const PAYSTACK_DONATION_LINK = "https://paystack.com/pay/dptf-donation"; // Create this in Paystack Dashboard
-
-const donationAmounts = [
-  { amount: 1000, label: "₦1,000", impact: "Provides basic medication for 1 patient" },
-  { amount: 5000, label: "₦5,000", impact: "Provides medications for 5 patients" },
-  { amount: 10000, label: "₦10,000", impact: "Supports medical screening for 10 people" },
-  { amount: 25000, label: "₦25,000", impact: "Feeds a family for 2 weeks" },
-  { amount: 50000, label: "₦50,000", impact: "Supports a student's scholarship" },
-  { amount: 100000, label: "₦100,000", impact: "Sponsors medical outreach supplies" },
-];
-
-const donationOptions = [
-  {
-    icon: 'credit-card',
-    title: 'Online Donation (Paystack)',
-    description: 'Make a secure online donation using your debit/credit card, bank transfer, or USSD. Paystack supports all Nigerian banks and cards.',
-    action: 'Donate Online',
-    popular: true,
-  },
-  {
-    icon: 'banknote',
-    title: 'Bank Transfer (Nigeria)',
-    content: [
-      { label: 'Account Name', value: 'Dr. Patience Selumun Tsavnande Foundation' },
-      { label: 'Account Number', value: '2035804521' },
-      { label: 'Bank Name', value: 'First Bank of Nigeria' },
-    ],
-  },
-  {
-    icon: 'smartphone',
-    title: 'USSD Payment',
-    description: 'Donate instantly using USSD code from any Nigerian bank. Fast and convenient.',
-    content: [
-      { label: 'Dial', value: '*894*Amount*2035804521#' },
-      { label: 'Example', value: '*894*10000*2035804521#' },
-    ],
-  },
-  {
-    icon: 'gift',
-    title: 'In-Kind Donations',
-    description: 'We also gratefully accept donations of medical supplies, books, educational materials, and non-perishable food items.',
-    contactInfo: 'Please contact us to arrange for drop-off or pickup.',
-  },
-];
-
-const impactAreas = [
-  {
-    icon: 'heart-pulse',
-    title: 'Medical Outreach',
-    description: 'Your donation helps us provide free healthcare to underserved communities.',
-    stats: '1,053+ patients treated'
-  },
-  {
-    icon: 'graduation-cap',
-    title: 'Education Support',
-    description: 'Support scholarships and educational prizes for deserving students.',
-    stats: '₦300,000 annual prize at BSU'
-  },
-  {
-    icon: 'utensils',
-    title: 'Food Security',
-    description: 'Help us feed vulnerable families through Operation Feed the North.',
-    stats: '1,000+ beneficiaries targeted'
-  },
-];
+const PAYSTACK_PUBLIC_KEY = "pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4";
 ---
 
-<Layout title={title} description={description}>
+<Layout title={getInvolvedSettings.data.pageTitle} description={getInvolvedSettings.data.pageDescription}>
   <Navbar />
   <main id="main-content">
     {/* Hero Section */}
@@ -96,13 +49,13 @@ const impactAreas = [
       {/* Content */}
       <div class="relative z-10 container mx-auto px-4 text-center text-white">
         <h1 class="font-display text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-          Get Involved
+          {getInvolvedSettings.data.heroTitle}
         </h1>
         <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto mb-6">
-          Your support can change lives
+          {getInvolvedSettings.data.heroSubtitle}
         </p>
         <p class="text-lg opacity-80 max-w-2xl mx-auto">
-          Every contribution helps us provide medical care, support education, and bring hope to vulnerable communities
+          {getInvolvedSettings.data.heroDescription}
         </p>
         <div class="mt-8">
           <a 
@@ -122,21 +75,21 @@ const impactAreas = [
     <section id="donate" class="py-16 md:py-20 bg-white">
       <div class="container mx-auto px-4 max-w-5xl">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">Donate Now</h2>
-          <p class="mt-4 text-gray-600">Choose an amount to make an immediate impact</p>
+          <h2 class="font-display text-3xl font-bold text-primary">{getInvolvedSettings.data.donateSectionTitle}</h2>
+          <p class="mt-4 text-gray-600">{getInvolvedSettings.data.donateSectionDescription}</p>
           <p class="text-sm text-gray-500 mt-2">Secure payment by Paystack • All Nigerian banks supported</p>
         </div>
 
         {/* Donation Amounts Grid */}
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          {donationAmounts.map((option) => (
+          {enabledDonationAmounts.map((option) => (
             <button 
               class="group p-6 rounded-xl border-2 border-gray-200 hover:border-primary hover:bg-primary/5 transition-all text-center donation-btn"
-              data-amount={option.amount}
-              onclick={`payWithPaystack(${option.amount})`}
+              data-amount={option.data.amount}
+              onclick={`payWithPaystack(${option.data.amount})`}
             >
-              <p class="font-display text-2xl font-bold text-primary group-hover:scale-110 transition-transform">{option.label}</p>
-              <p class="text-sm text-gray-600 mt-2">{option.impact}</p>
+              <p class="font-display text-2xl font-bold text-primary group-hover:scale-110 transition-transform">{option.data.label}</p>
+              <p class="text-sm text-gray-600 mt-2">{option.data.impact}</p>
               <span class="inline-block mt-4 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                 Click to Donate →
               </span>
@@ -190,28 +143,28 @@ const impactAreas = [
     <section class="py-16 md:py-20 bg-[#faf9f7]">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">All Ways to Give</h2>
-          <p class="mt-4 text-gray-600">Choose the method that works best for you</p>
+          <h2 class="font-display text-3xl font-bold text-primary">{getInvolvedSettings.data.allWaysToGiveTitle}</h2>
+          <p class="mt-4 text-gray-600">{getInvolvedSettings.data.allWaysToGiveDescription}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {donationOptions.map((option) => (
-            <div class={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8 flex flex-col ${option.popular ? 'ring-2 ring-primary' : ''}`}>
-              {option.popular && (
+          {enabledDonationMethods.map((option) => (
+            <div class={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-8 flex flex-col ${option.data.popular ? 'ring-2 ring-primary' : ''}`}>
+              {option.data.popular && (
                 <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full self-center mb-4">
                   RECOMMENDED
                 </span>
               )}
               <div class="items-center text-center mb-6">
                 <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 mb-4">
-                  <Icon name={option.icon} class="w-8 h-8 text-primary" />
+                  <Icon name={option.data.icon} class="w-8 h-8 text-primary" />
                 </div>
-                <h3 class="font-display text-xl font-bold">{option.title}</h3>
+                <h3 class="font-display text-xl font-bold">{option.data.title}</h3>
               </div>
               <div class="flex-grow">
-                {option.content && (
+                {option.data.content && (
                   <div class="space-y-3">
-                    {option.content.map(item => (
+                    {option.data.content.map(item => (
                       <div class="bg-[#faf9f7] p-3 rounded-lg flex justify-between items-center">
                         <div>
                           <p class="text-sm font-semibold text-gray-500">{item.label}</p>
@@ -228,11 +181,11 @@ const impactAreas = [
                     ))}
                   </div>
                 )}
-                {option.description && (
-                  <p class="text-gray-600 mb-4">{option.description}</p>
+                {option.data.description && (
+                  <p class="text-gray-600 mb-4">{option.data.description}</p>
                 )}
-                {option.contactInfo && (
-                  <p class="text-sm text-gray-500 italic mt-4">{option.contactInfo}</p>
+                {option.data.contactInfo && (
+                  <p class="text-sm text-gray-500 italic mt-4">{option.data.contactInfo}</p>
                 )}
               </div>
             </div>
@@ -245,20 +198,20 @@ const impactAreas = [
     <section class="py-16 md:py-20 bg-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">Where Your Donation Goes</h2>
-          <p class="mt-4 text-gray-600">Every naira you donate makes a real difference</p>
+          <h2 class="font-display text-3xl font-bold text-primary">{getInvolvedSettings.data.whereDonationGoesTitle}</h2>
+          <p class="mt-4 text-gray-600">{getInvolvedSettings.data.whereDonationGoesDescription}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {impactAreas.map((area) => (
+          {enabledImpactAreas.map((area) => (
             <div class="bg-[#faf9f7] rounded-xl p-8 text-center">
               <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name={area.icon} class="w-8 h-8 text-primary" />
+                <Icon name={area.data.icon} class="w-8 h-8 text-primary" />
               </div>
-              <h3 class="font-display text-xl font-bold text-gray-900 mb-2">{area.title}</h3>
-              <p class="text-gray-600 mb-4">{area.description}</p>
+              <h3 class="font-display text-xl font-bold text-gray-900 mb-2">{area.data.title}</h3>
+              <p class="text-gray-600 mb-4">{area.data.description}</p>
               <span class="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                {area.stats}
+                {area.data.stats}
               </span>
             </div>
           ))}
@@ -275,9 +228,9 @@ const impactAreas = [
     {/* Volunteer Section */}
     <section class="py-16 md:py-20 bg-[#faf9f7]">
       <div class="container mx-auto px-4 text-center max-w-3xl">
-        <h2 class="font-display text-3xl font-bold text-primary mb-6">Volunteer With Us</h2>
+        <h2 class="font-display text-3xl font-bold text-primary mb-6">{getInvolvedSettings.data.volunteerSectionTitle}</h2>
         <p class="text-lg text-gray-600 mb-8">
-          We're always looking for dedicated volunteers to help with our medical outreaches, administrative tasks, and event coordination. Join our team and be part of something meaningful.
+          {getInvolvedSettings.data.volunteerSectionDescription}
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
           <Button href="/volunteer" variant="primary" size="lg">
@@ -293,9 +246,9 @@ const impactAreas = [
     {/* Transparency CTA */}
     <section class="py-16 md:py-20 bg-primary text-white">
       <div class="container mx-auto px-4 text-center max-w-3xl">
-        <h2 class="font-display text-3xl font-bold mb-6">We Value Transparency</h2>
+        <h2 class="font-display text-3xl font-bold mb-6">{getInvolvedSettings.data.transparencyTitle}</h2>
         <p class="text-lg leading-relaxed opacity-90 mb-8">
-          As a registered nonprofit organization, we are committed to full accountability. All donations are tracked and reported in our annual financial statements.
+          {getInvolvedSettings.data.transparencyDescription}
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
           <Button href="/transparency" variant="white" size="lg">
@@ -314,18 +267,17 @@ const impactAreas = [
 <script is:inline src="https://js.paystack.co/v1/inline.js"></script>
 <script is:inline>
   // Paystack Configuration
-  const PAYSTACK_PUBLIC_KEY = 'pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4'; // DPTF Test Key
+  const PAYSTACK_PUBLIC_KEY = 'pk_test_a7294d9ffea6780241bb7f45b09bf6afd1fef9c4';
   
   function payWithPaystack(amount) {
     const handler = PaystackPop.setup({
       key: PAYSTACK_PUBLIC_KEY,
-      email: 'donor@example.com', // Will be updated by user
-      amount: amount * 100, // Paystack amount is in kobo
+      email: 'donor@example.com',
+      amount: amount * 100,
       currency: 'NGN',
       ref: 'DPTF_' + Math.floor(Math.random() * 1000000000),
       callback: function(response) {
         alert('Thank you for your donation! Reference: ' + response.reference);
-        // Redirect to thank you page
         window.location.href = '/thank-you';
       },
       onClose: function() {

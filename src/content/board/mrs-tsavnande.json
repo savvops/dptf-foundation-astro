@@ -5,5 +5,5 @@
   "description": "Family member and dedicated supporter of the Foundation's mission.",
   "image": "/images/foundation-launch-1.jpg",
   "category": "advisory",
-  "order": 4
+  "order": 4,"enabled": true
 }

@@ -1,0 +1,9 @@
+{
+  "id": "phone",
+  "icon": "phone",
+  "title": "Phone",
+  "value": "+234 703 498 0459",
+  "href": "tel:+2347034980459",
+  "order": 3,
+  "enabled": true
+}

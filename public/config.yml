@@ -1,38 +1,593 @@
 backend:
   name: git-gateway
-  branch: master # or main if that's your default branch
+  branch: master
 
-media_folder: "src/assets/images" # Where media files will be stored
-public_folder: "/assets/images" # The src attribute for uploaded media
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
 
+# Site URL for preview links
+site_url: https://dptf-foundation.pages.dev
+
+# Editorial workflow (optional - for draft/preview/publish)
+# publish_mode: editorial_workflow
+
+# Collections organized by section
 collections:
-  - name: "blog" # Used in routes, e.g., /admin/collections/blog
-    label: "Blog" # Used in the UI
-    folder: "src/content/blog" # The path to the directory where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
-    fields: # The fields for each document, usually in front matter
-      - { label: "Layout", name: "layout", widget: "hidden", default: "../../layouts/BlogPost.astro" }
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "string" }
-      - { label: "Author", name: "author", widget: "string" }
-      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
-      - { label: "Updated Date", name: "updatedDate", widget: "datetime", optional: true }
-      - { label: "Hero Image", name: "heroImage", widget: "image", optional: true }
-      - { label: "Body", name: "body", widget: "markdown" }
-  - name: "pages"
-    label: "Pages"
+  # ============================================================================
+  # SITE SETTINGS
+  # ============================================================================
+  - name: "siteSettings"
+    label: "⚙️ Site Settings"
     files:
-      - file: "src/pages/about.astro"
-        label: "About Page"
-        name: "about"
+      - file: "src/content/siteSettings/settings.json"
+        label: "General Site Settings"
+        name: "settings"
         fields:
-          - { label: "Layout", name: "layout", widget: "hidden", default: "../layouts/BlogPost.astro" }
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown" }
-      - file: "src/pages/index.astro"
-        label: "Home Page"
-        name: "home"
+          - { label: "Site Name", name: "siteName", widget: "string" }
+          - { label: "Site Description", name: "siteDescription", widget: "text" }
+          - { label: "Default Page Title", name: "defaultTitle", widget: "string" }
+          - { label: "Default Meta Description", name: "defaultDescription", widget: "text" }
+          - { label: "Logo Path", name: "logo", widget: "string", default: "/images/dptf-logo.png" }
+          - { label: "Favicon", name: "favicon", widget: "string", required: false }
+
+      - file: "src/content/bankDetails/details.json"
+        label: "Bank Account Details"
+        name: "bankDetails"
         fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown" }
+          - { label: "Account Name", name: "accountName", widget: "string" }
+          - { label: "Account Number", name: "accountNumber", widget: "string" }
+          - { label: "Bank Name", name: "bankName", widget: "string" }
+          - { label: "USSD Code Template", name: "ussdCode", widget: "string", hint: "Use *894*Amount*ACCOUNT# format" }
+
+  # ============================================================================
+  # NAVIGATION
+  # ============================================================================
+  - name: "navigation"
+    label: "🧭 Navigation"
+    folder: "src/content/navigation"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string", hint: "Unique identifier" }
+      - { label: "Label", name: "label", widget: "string" }
+      - { label: "URL", name: "href", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Is Button", name: "isButton", widget: "boolean", default: false }
+      - { label: "Button Variant", name: "buttonVariant", widget: "select", options: ["primary", "white", "outline"], required: false }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "footerLinks"
+    label: "🔗 Footer Links"
+    folder: "src/content/footerLinks"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Label", name: "label", widget: "string" }
+      - { label: "URL", name: "href", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["quick", "resources"] }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "socialLinks"
+    label: "📱 Social Media Links"
+    folder: "src/content/socialLinks"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Platform Name", name: "name", widget: "string" }
+      - { label: "URL", name: "url", widget: "string" }
+      - { label: "Icon Name", name: "icon", widget: "string", hint: "Icon component name" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "trustBadges"
+    label: "✅ Trust Badges"
+    folder: "src/content/trustBadges"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Label", name: "label", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "footerSettings"
+    label: "📋 Footer Settings"
+    files:
+      - file: "src/content/footerSettings/settings.json"
+        label: "Footer Configuration"
+        name: "footerSettings"
+        fields:
+          - { label: "Footer Description", name: "description", widget: "text" }
+          - { label: "Copyright Text", name: "copyrightText", widget: "string", hint: "Use {year} for current year" }
+          - { label: "Quick Links Title", name: "quickLinksTitle", widget: "string" }
+          - { label: "Resources Title", name: "resourcesTitle", widget: "string" }
+          - { label: "Contact Title", name: "contactTitle", widget: "string" }
+
+  # ============================================================================
+  # HOMEPAGE
+  # ============================================================================
+  - name: "homepage"
+    label: "🏠 Homepage Sections"
+    folder: "src/content/homepage"
+    create: false
+    slug: "{{section}}"
+    fields:
+      - { label: "Section", name: "section", widget: "select", options: ["hero", "intro", "joinCta", "trustBar"] }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Button Text", name: "buttonText", widget: "string", required: false }
+      - { label: "Button URL", name: "buttonHref", widget: "string", required: false }
+      - { label: "Background Image", name: "backgroundImage", widget: "image", required: false }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "stats"
+    label: "📊 Impact Statistics"
+    folder: "src/content/stats"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Number", name: "number", widget: "number", value_type: "int" }
+      - { label: "Prefix", name: "prefix", widget: "string", required: false }
+      - { label: "Suffix", name: "suffix", widget: "string", required: false }
+      - { label: "Label", name: "label", widget: "string" }
+      - { label: "Sub-label", name: "sublabel", widget: "string", required: false }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "objectives"
+    label: "🎯 Objectives"
+    folder: "src/content/objectives"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string", hint: "Icon component name" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # ABOUT PAGE
+  # ============================================================================
+  - name: "aboutSettings"
+    label: "ℹ️ About Page Settings"
+    files:
+      - file: "src/content/aboutSettings/settings.json"
+        label: "About Page Configuration"
+        name: "aboutSettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Header Title", name: "headerTitle", widget: "string" }
+          - { label: "Header Description", name: "headerDescription", widget: "text" }
+          - { label: "Dr. Patience Image", name: "drPatienceImage", widget: "image" }
+          - { label: "Dr. Patience Name", name: "drPatienceName", widget: "string" }
+          - { label: "Dr. Patience Bio", name: "drPatienceBio", widget: "markdown" }
+          - { label: "Who We Are Title", name: "whoWeAreTitle", widget: "string" }
+          - { label: "Who We Are Description", name: "whoWeAreDescription", widget: "text" }
+          - { label: "Guiding Belief Title", name: "guidingBeliefTitle", widget: "string" }
+          - { label: "Guiding Belief Quote", name: "guidingBeliefQuote", widget: "string" }
+          - { label: "Guiding Belief Description", name: "guidingBeliefDescription", widget: "text" }
+          - { label: "Legal Status Title", name: "legalStatusTitle", widget: "string" }
+          - { label: "Legal Status Description", name: "legalStatusDescription", widget: "text" }
+          - { label: "Join Section Title", name: "joinSectionTitle", widget: "string" }
+          - { label: "Join Section Description", name: "joinSectionDescription", widget: "text" }
+
+  - name: "timeline"
+    label: "📅 Timeline Events"
+    folder: "src/content/timeline"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Year/Date", name: "year", widget: "string", hint: "e.g., 'September 2019' or '2020-Present'" }
+      - { label: "Title", name: "title", widget: "string", required: false }
+      - { label: "Event Description", name: "event", widget: "text" }
+      - { label: "Category", name: "category", widget: "select", options: ["foundation", "drPatience"], default: "foundation" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "coreValues"
+    label: "💎 Core Values"
+    folder: "src/content/coreValues"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "drPatienceVirtues"
+    label: "🕊️ Dr. Patience Virtues"
+    folder: "src/content/drPatienceVirtues"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Virtue Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # BOARD MEMBERS
+  # ============================================================================
+  - name: "board"
+    label: "👥 Board Members"
+    folder: "src/content/board"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role/Title", name: "role", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Photo", name: "image", widget: "image" }
+      - { label: "Category", name: "category", widget: "select", options: ["trustees", "advisory"] }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "boardSettings"
+    label: "⚙️ Board Settings"
+    files:
+      - file: "src/content/boardSettings/settings.json"
+        label: "Board Display Settings"
+        name: "boardSettings"
+        fields:
+          - { label: "Show Board Photos", name: "showBoardPhotos", widget: "boolean", default: true }
+          - { label: "Trustees Section Title", name: "trusteesTitle", widget: "string" }
+          - { label: "Trustees Section Description", name: "trusteesDescription", widget: "text" }
+          - { label: "Advisers Section Title", name: "advisersTitle", widget: "string" }
+          - { label: "Advisers Section Description", name: "advisersDescription", widget: "text" }
+          - { label: "Photos Hidden Message", name: "photosHiddenMessage", widget: "string" }
+
+  # ============================================================================
+  # PROGRAMS / OUR WORK
+  # ============================================================================
+  - name: "ourWorkSettings"
+    label: "🌍 Our Work Settings"
+    files:
+      - file: "src/content/ourWorkSettings/settings.json"
+        label: "Our Work Page Configuration"
+        name: "ourWorkSettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Hero Title", name: "heroTitle", widget: "string" }
+          - { label: "Hero Description", name: "heroDescription", widget: "text" }
+          - { label: "Memorial Section Title", name: "memorialSectionTitle", widget: "string" }
+          - { label: "Memorial Section Description", name: "memorialSectionDescription", widget: "text" }
+          - { label: "Impact CTA Title", name: "impactCtaTitle", widget: "string" }
+          - { label: "Impact CTA Description", name: "impactCtaDescription", widget: "text" }
+
+  - name: "programs"
+    label: "📋 Programs"
+    folder: "src/content/programs"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Program Title", name: "title", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Statistics"
+        name: "stats"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Value", name: "value", widget: "string" }
+          - { label: "Label", name: "label", widget: "string" }
+      - label: "Highlights"
+        name: "highlights"
+        widget: "list"
+        required: false
+        field: { label: "Highlight", name: "highlight", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "medicalOutreaches"
+    label: "🏥 Medical Outreaches"
+    folder: "src/content/medicalOutreaches"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Outreach Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Impact", name: "impact", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "educationInitiatives"
+    label: "🎓 Education Initiatives"
+    folder: "src/content/educationInitiatives"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Initiative Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "string", hint: "e.g., 'Annual' or 'June 2021'" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "foodSecurity"
+    label: "🍲 Food Security Items"
+    folder: "src/content/foodSecurity"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Food Item", name: "item", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "memorialActivities"
+    label: "🕯️ Memorial Activities"
+    folder: "src/content/memorialActivities"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Activity Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "When", name: "when", widget: "string", hint: "e.g., 'September 15/17 annually'" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # FAQ
+  # ============================================================================
+  - name: "faqSettings"
+    label: "❓ FAQ Settings"
+    files:
+      - file: "src/content/faqSettings/settings.json"
+        label: "FAQ Page Configuration"
+        name: "faqSettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Header Title", name: "headerTitle", widget: "string" }
+          - { label: "Header Description", name: "headerDescription", widget: "text" }
+          - { label: "Still Have Questions Title", name: "stillHaveQuestionsTitle", widget: "string" }
+          - { label: "Still Have Questions Description", name: "stillHaveQuestionsDescription", widget: "text" }
+
+  - name: "faqCategories"
+    label: "📁 FAQ Categories"
+    folder: "src/content/faqCategories"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Category Name", name: "category", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "faqItems"
+    label: "💬 FAQ Items"
+    folder: "src/content/faqItems"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Category ID", name: "categoryId", widget: "relation", collection: "faqCategories", value_field: "id", display_fields: ["category"], search_fields: ["category"] }
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Answer", name: "answer", widget: "markdown" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # GET INVOLVED / DONATIONS
+  # ============================================================================
+  - name: "getInvolvedSettings"
+    label: "🤝 Get Involved Settings"
+    files:
+      - file: "src/content/getInvolvedSettings/settings.json"
+        label: "Get Involved Page Configuration"
+        name: "getInvolvedSettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Hero Title", name: "heroTitle", widget: "string" }
+          - { label: "Hero Subtitle", name: "heroSubtitle", widget: "string" }
+          - { label: "Hero Description", name: "heroDescription", widget: "text" }
+          - { label: "Donate Section Title", name: "donateSectionTitle", widget: "string" }
+          - { label: "Donate Section Description", name: "donateSectionDescription", widget: "text" }
+          - { label: "All Ways to Give Title", name: "allWaysToGiveTitle", widget: "string" }
+          - { label: "All Ways to Give Description", name: "allWaysToGiveDescription", widget: "text" }
+          - { label: "Where Donation Goes Title", name: "whereDonationGoesTitle", widget: "string" }
+          - { label: "Where Donation Goes Description", name: "whereDonationGoesDescription", widget: "text" }
+          - { label: "Volunteer Section Title", name: "volunteerSectionTitle", widget: "string" }
+          - { label: "Volunteer Section Description", name: "volunteerSectionDescription", widget: "text" }
+          - { label: "Transparency Title", name: "transparencyTitle", widget: "string" }
+          - { label: "Transparency Description", name: "transparencyDescription", widget: "text" }
+
+  - name: "donationAmounts"
+    label: "💰 Donation Amounts"
+    folder: "src/content/donationAmounts"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Amount (₦)", name: "amount", widget: "number", value_type: "int" }
+      - { label: "Display Label", name: "label", widget: "string", hint: "e.g., '₦1,000'" }
+      - { label: "Impact Description", name: "impact", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "donationMethods"
+    label: "💳 Donation Methods"
+    folder: "src/content/donationMethods"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Method Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Action Text", name: "action", widget: "string", required: false }
+      - { label: "Is Popular/Recommended", name: "popular", widget: "boolean", default: false }
+      - label: "Content Details"
+        name: "content"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Value", name: "value", widget: "string" }
+      - { label: "Contact Info", name: "contactInfo", widget: "string", required: false }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "impactAreas"
+    label: "🌟 Impact Areas"
+    folder: "src/content/impactAreas"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Area Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Statistics", name: "stats", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # CONTACT PAGE
+  # ============================================================================
+  - name: "contactSettings"
+    label: "📞 Contact Page Settings"
+    files:
+      - file: "src/content/contactSettings/settings.json"
+        label: "Contact Page Configuration"
+        name: "contactSettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Header Title", name: "headerTitle", widget: "string" }
+          - { label: "Header Description", name: "headerDescription", widget: "text" }
+          - { label: "Contact Info Section Title", name: "contactInfoTitle", widget: "string" }
+          - { label: "Form Title", name: "formTitle", widget: "string" }
+          - { label: "Form Submit Button Text", name: "formSubmitButton", widget: "string" }
+          - { label: "Follow Us Title", name: "followUsTitle", widget: "string" }
+
+  - name: "contactInfo"
+    label: "📍 Contact Information"
+    folder: "src/content/contactInfo"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Value", name: "value", widget: "string" }
+      - { label: "Link URL", name: "href", widget: "string", required: false, hint: "e.g., mailto:email@example.com or tel:+1234567890" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # TRANSPARENCY PAGE
+  # ============================================================================
+  - name: "transparencySettings"
+    label: "📊 Transparency Settings"
+    files:
+      - file: "src/content/transparencySettings/settings.json"
+        label: "Transparency Page Configuration"
+        name: "transparencySettings"
+        fields:
+          - { label: "Page Title", name: "pageTitle", widget: "string" }
+          - { label: "Page Description", name: "pageDescription", widget: "text" }
+          - { label: "Hero Title", name: "heroTitle", widget: "string" }
+          - { label: "Hero Description", name: "heroDescription", widget: "text" }
+          - { label: "Financial Reports Title", name: "financialReportsTitle", widget: "string" }
+          - { label: "Financial Reports Description", name: "financialReportsDescription", widget: "text" }
+          - { label: "Activity Reports Title", name: "activityReportsTitle", widget: "string" }
+          - { label: "Activity Reports Description", name: "activityReportsDescription", widget: "text" }
+          - { label: "Meeting Notices Title", name: "meetingNoticesTitle", widget: "string" }
+          - { label: "Meeting Notices Description", name: "meetingNoticesDescription", widget: "text" }
+          - { label: "Bank Details Title", name: "bankDetailsTitle", widget: "string" }
+          - { label: "Bank Details Description", name: "bankDetailsDescription", widget: "text" }
+          - { label: "Accountability Title", name: "accountabilityTitle", widget: "string" }
+          - { label: "Accountability Description", name: "accountabilityDescription", widget: "text" }
+
+  - name: "transparencyStats"
+    label: "📈 Transparency Stats"
+    folder: "src/content/transparencyStats"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Value", name: "value", widget: "string" }
+      - { label: "Label", name: "label", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "financialReports"
+    label: "📑 Financial Reports"
+    folder: "src/content/financialReports"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Report Title", name: "title", widget: "string" }
+      - { label: "Date/Year", name: "date", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "PDF File", name: "file", widget: "file" }
+      - { label: "File Size Label", name: "size", widget: "string", default: "PDF" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "activityReports"
+    label: "📋 Activity Reports"
+    folder: "src/content/activityReports"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Report Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "PDF File", name: "file", widget: "file" }
+      - { label: "File Size Label", name: "size", widget: "string", default: "PDF" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  - name: "meetingNotices"
+    label: "📢 Meeting Notices"
+    folder: "src/content/meetingNotices"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Meeting Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string" }
+      - { label: "Meeting Type", name: "type", widget: "select", options: ["Board of Trustees", "General Meeting", "Advisory Board"] }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }
+
+  # ============================================================================
+  # GALLERY
+  # ============================================================================
+  - name: "galleryImages"
+    label: "🖼️ Gallery Images"
+    folder: "src/content/galleryImages"
+    create: true
+    slug: "{{id}}"
+    fields:
+      - { label: "ID", name: "id", widget: "string" }
+      - { label: "Image", name: "src", widget: "image" }
+      - { label: "Alt Text", name: "alt", widget: "string" }
+      - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["medical", "education", "food", "memorial", "general"], default: "general" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 0 }
+      - { label: "Enabled", name: "enabled", widget: "boolean", default: true }

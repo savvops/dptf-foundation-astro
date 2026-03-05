@@ -1,0 +1,9 @@
+{
+  "id": "email",
+  "icon": "mail",
+  "title": "Email",
+  "value": "nelson@drtsavnandefoundation.com",
+  "href": "mailto:nelson@drtsavnandefoundation.com",
+  "order": 2,
+  "enabled": true
+}

@@ -1,0 +1,9 @@
+{
+  "id": "donate",
+  "label": "Donate",
+  "href": "/get-involved",
+  "order": 6,
+  "isButton": true,
+  "buttonVariant": "white",
+  "enabled": true
+}

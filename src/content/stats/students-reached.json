@@ -1,8 +1,10 @@
 {
-  "number": 220,
+  "id": "students-reached",
+  "number": 500,
   "prefix": "",
   "suffix": "+",
   "label": "Students Reached",
-  "sublabel": "Our Lady of Fatima symposium",
-  "order": 2
+  "sublabel": "Through educational programs",
+  "order": 2,
+  "enabled": true
 }

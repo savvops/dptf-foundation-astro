@@ -1,0 +1,19 @@
+{
+  "id": "education",
+  "title": "Educational Support",
+  "icon": "graduation-cap",
+  "description": "Supporting education through scholarships, prizes, and educational material donations.",
+  "stats": [
+    { "value": "₦300K", "label": "Annual Prize" },
+    { "value": "2020/21", "label": "Started" },
+    { "value": "BSU", "label": "Partner University" }
+  ],
+  "highlights": [
+    "Annual prize for Best Graduating Female Medical Doctor at BSU",
+    "Scholarship programs for deserving students",
+    "Donation of educational materials to schools",
+    "Support for medical education and training"
+  ],
+  "order": 2,
+  "enabled": true
+}

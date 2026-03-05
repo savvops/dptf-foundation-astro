@@ -1,8 +1,10 @@
 {
+  "id": "patients-treated",
   "number": 1053,
   "prefix": "",
   "suffix": "+",
   "label": "Patients Treated",
-  "sublabel": "Atighir Village outreach",
-  "order": 1
+  "sublabel": "Through our medical outreaches",
+  "order": 1,
+  "enabled": true
 }

@@ -3,9 +3,40 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/sections/Navbar.astro';
 import Footer from '../components/sections/Footer.astro';
 import Button from '../components/ui/Button.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const title = "Our Work | Dr. Patience Tsavnande Foundation";
-const description = "Explore our programs: Medical Outreach, Educational Support, Food Security, and Annual Memorial Activities. See how we're making a difference.";
+// Load Our Work settings
+const ourWorkSettings = await getEntry('ourWorkSettings', 'settings');
+
+// Load programs
+const programs = await getCollection('programs');
+const enabledPrograms = programs
+  .filter(p => p.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load medical outreaches
+const medicalOutreaches = await getCollection('medicalOutreaches');
+const enabledMedicalOutreaches = medicalOutreaches
+  .filter(o => o.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load education initiatives
+const educationInitiatives = await getCollection('educationInitiatives');
+const enabledEducationInitiatives = educationInitiatives
+  .filter(i => i.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load food security items
+const foodSecurityItems = await getCollection('foodSecurity');
+const enabledFoodItems = foodSecurityItems
+  .filter(item => item.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load memorial activities
+const memorialActivities = await getCollection('memorialActivities');
+const enabledMemorialActivities = memorialActivities
+  .filter(a => a.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
 
 // Calculate next memorial date for structured data
 const today = new Date();
@@ -41,141 +72,21 @@ const memorialEventSchema = {
     "url": "https://dptf-foundation.pages.dev"
   }
 };
-
-const programs = [
-  {
-    id: "medical",
-    title: "Medical Outreach",
-    icon: "heart-pulse",
-    description: "Providing free healthcare services to underserved communities across Nigeria.",
-    stats: [
-      { value: "1,053+", label: "Patients Treated" },
-      { value: "3", label: "Major Outreaches" },
-      { value: "2020", label: "Started" }
-    ],
-    highlights: [
-      "Free medical consultations and treatments",
-      "Distribution of medications and medical supplies",
-      "Health education and awareness programs",
-      "Partnerships with local hospitals and medical professionals"
-    ],
-    outreaches: [
-      {
-        title: "First Medical Outreach - Tarka LGA",
-        date: "December 2-3, 2020",
-        location: "Atighir Village, Tarka LGA, Benue State",
-        impact: "Treated 1,053+ patients over 2 days",
-        description: "Our inaugural medical outreach in Dr. Patience's home community provided free healthcare services including consultations, medications, and health education. The event was attended by community leaders including the Chairman of Tarka LGA."
-      },
-      {
-        title: "School Medical Outreach",
-        date: "November 25, 2023",
-        location: "Our Lady of Fatima Girls Secondary School, Kaduna",
-        impact: "Health symposium and medical checkups for students",
-        description: "A mini medical outreach combining a health symposium with practical medical checkups for students. The Foundation received an award and letter of appreciation from the school for this initiative."
-      },
-      {
-        title: "Hospital Intervention Program",
-        date: "September 16-21, 2024",
-        location: "St. Gerard Catholic Hospital (Veritas University Teaching Hospital), Kakuri, Kaduna",
-        impact: "1-week accident & emergency support",
-        description: "In partnership with Veritas University Teaching Hospital, the Foundation supplied medical consumables for the treatment of accident and emergency patients for one week, marking the 5th anniversary of Dr. Patience's passing."
-      }
-    ]
-  },
-  {
-    id: "education",
-    title: "Educational Support",
-    icon: "graduation-cap",
-    description: "Supporting education through scholarships, prizes, and educational material donations.",
-    stats: [
-      { value: "₦300K", label: "Annual Prize" },
-      { value: "2020/21", label: "Started" },
-      { value: "BSU", label: "Partner University" }
-    ],
-    highlights: [
-      "Annual prize for Best Graduating Female Medical Doctor at BSU",
-      "Scholarship programs for deserving students",
-      "Donation of educational materials to schools",
-      "Support for medical education and training"
-    ],
-    initiatives: [
-      {
-        title: "BSU Best Female Medical Doctor Prize",
-        description: "The Foundation instituted an annual prize of ₦300,000 for the Best Graduating Female Medical Doctor at Benue State University, Makurdi, starting from the 2020/2021 academic session. The prize is presented during the university's convocation ceremony.",
-        date: "Annual (Since 2021)"
-      },
-      {
-        title: "Educational Materials Donation",
-        description: "In June 2021, the Foundation donated educational materials to Kadwell International School, Barnawa. The materials were generously provided by Lady Phil Iyoha, a member of the Advisory Board.",
-        date: "June 2021"
-      },
-      {
-        title: "Scholarship Program",
-        description: "The Foundation has launched a scholarship program calling for applications from deserving students. Details on eligibility and application process are announced annually.",
-        date: "Ongoing"
-      }
-    ]
-  },
-  {
-    id: "food",
-    title: "Food Security",
-    icon: "utensils",
-    description: "Combating hunger through food distribution programs for vulnerable communities.",
-    stats: [
-      { value: "1,000+", label: "Target Beneficiaries" },
-      { value: "Multiple", label: "Food Items" },
-      { value: "AHEF", label: "Partner NGO" }
-    ],
-    highlights: [
-      "Operation Feed the North program",
-      "Distribution of essential food items",
-      "Partnership with AHEF NGO",
-      "Targeted support for the poor and vulnerable"
-    ],
-    items: [
-      "Rice and beans",
-      "Garri and spaghetti",
-      "Cooking oil",
-      "Indomie noodles",
-      "Tomatoes and onions",
-      "Yams and groundnut oil"
-    ]
-  }
-];
-
-const memorialActivities = {
-  title: "Annual Memorial Activities",
-  description: "Each year on September 15th, we commemorate Dr. Patience's passing with special programs that honor her memory and continue her work.",
-  activities: [
-    {
-      title: "Thanksgiving Mass",
-      description: "An annual Thanksgiving Mass held at Holy Family Catholic Church, Barnawa, Kaduna, to celebrate Dr. Patience's life and pray for the repose of her soul.",
-      when: "September 15/17 annually"
-    },
-    {
-      title: "Memorial Symposium",
-      description: "Educational symposiums held in partnership with schools and institutions to discuss health and educational topics.",
-      when: "Annually"
-    },
-    {
-      title: "Community Service",
-      description: "Special outreach programs and community service activities organized around the memorial period.",
-      when: "September annually"
-    }
-  ]
-};
 ---
 
-<Layout title={title} description={description} additionalSchema={memorialEventSchema}>
+<Layout 
+  title={ourWorkSettings.data.pageTitle} 
+  description={ourWorkSettings.data.pageDescription} 
+  additionalSchema={memorialEventSchema}
+>
   <Navbar />
   <main id="main-content" class="flex flex-col">
     <!-- Hero Section -->
     <section class="bg-secondary py-16 md:py-24 pt-32">
       <div class="container mx-auto px-4 text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">Our Programs</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">{ourWorkSettings.data.heroTitle}</h1>
         <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Through medical outreach, educational support, and food security programs, we continue Dr. Patience's mission of service to humanity.
+          {ourWorkSettings.data.heroDescription}
         </p>
       </div>
     </section>
@@ -184,12 +95,12 @@ const memorialActivities = {
     <section class="bg-white border-b border-gray-200 sticky top-20 z-40">
       <div class="container mx-auto px-4 py-4">
         <div class="flex flex-wrap justify-center gap-4">
-          {programs.map((program) => (
+          {enabledPrograms.map((program) => (
             <a 
-              href={`#${program.id}`}
+              href={`#${program.data.id}`}
               class="px-4 py-2 rounded-full bg-gray-100 hover:bg-primary hover:text-white transition-colors text-sm font-medium"
             >
-              {program.title}
+              {program.data.title}
             </a>
           ))}
           <a 
@@ -203,19 +114,19 @@ const memorialActivities = {
     </section>
 
     {/* Programs Detail Sections */}
-    {programs.map((program, index) => (
-      <section id={program.id} class={`py-16 md:py-24 ${index % 2 === 0 ? 'bg-white' : 'bg-[#faf9f7]'}`}>
+    {enabledPrograms.map((program, index) => (
+      <section id={program.data.id} class={`py-16 md:py-24 ${index % 2 === 0 ? 'bg-white' : 'bg-[#faf9f7]'}`}>
         <div class="container mx-auto px-4">
           {/* Program Header */}
           <div class="max-w-4xl mx-auto text-center mb-16">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">{program.title}</h2>
-            <p class="mt-4 text-lg text-gray-600">{program.description}</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">{program.data.title}</h2>
+            <p class="mt-4 text-lg text-gray-600">{program.data.description}</p>
           </div>
 
           {/* Stats */}
-          {program.stats && (
+          {program.data.stats && (
             <div class="grid grid-cols-3 gap-8 max-w-3xl mx-auto mb-16">
-              {program.stats.map((stat) => (
+              {program.data.stats.map((stat) => (
                 <div class="text-center">
                   <p class="font-display text-3xl md:text-4xl font-bold text-primary">{stat.value}</p>
                   <p class="text-gray-600 text-sm mt-1">{stat.label}</p>
@@ -225,11 +136,11 @@ const memorialActivities = {
           )}
 
           {/* Highlights */}
-          {program.highlights && (
+          {program.data.highlights && (
             <div class="max-w-4xl mx-auto mb-16">
               <h3 class="font-display text-xl font-bold text-gray-900 mb-6 text-center">Program Highlights</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {program.highlights.map((highlight) => (
+                {program.data.highlights.map((highlight) => (
                   <div class="flex items-start gap-3">
                     <div class="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                     <p class="text-gray-600">{highlight}</p>
@@ -240,23 +151,23 @@ const memorialActivities = {
           )}
 
           {/* Specific Program Content */}
-          {program.id === "medical" && program.outreaches && (
+          {program.data.id === "medical" && enabledMedicalOutreaches.length > 0 && (
             <div class="max-w-5xl mx-auto">
               <h3 class="font-display text-2xl font-bold text-gray-900 mb-8 text-center">Our Medical Outreaches</h3>
               <div class="space-y-8">
-                {program.outreaches.map((outreach) => (
+                {enabledMedicalOutreaches.map((outreach) => (
                   <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                      <h4 class="font-display text-xl font-bold text-primary">{outreach.title}</h4>
-                      <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{outreach.date}</span>
+                      <h4 class="font-display text-xl font-bold text-primary">{outreach.data.title}</h4>
+                      <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{outreach.data.date}</span>
                     </div>
-                    <p class="text-gray-600 mb-4">{outreach.description}</p>
+                    <p class="text-gray-600 mb-4">{outreach.data.description}</p>
                     <div class="flex flex-wrap gap-4 text-sm">
                       <span class="text-gray-500">
-                        <strong>Location:</strong> {outreach.location}
+                        <strong>Location:</strong> {outreach.data.location}
                       </span>
                       <span class="text-primary font-medium">
-                        <strong>Impact:</strong> {outreach.impact}
+                        <strong>Impact:</strong> {outreach.data.impact}
                       </span>
                     </div>
                   </div>
@@ -265,31 +176,31 @@ const memorialActivities = {
             </div>
           )}
 
-          {program.id === "education" && program.initiatives && (
+          {program.data.id === "education" && enabledEducationInitiatives.length > 0 && (
             <div class="max-w-5xl mx-auto">
               <h3 class="font-display text-2xl font-bold text-gray-900 mb-8 text-center">Educational Initiatives</h3>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {program.initiatives.map((initiative) => (
+                {enabledEducationInitiatives.map((initiative) => (
                   <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                    <span class="text-xs text-primary font-medium uppercase tracking-wide">{initiative.date}</span>
-                    <h4 class="font-display text-lg font-bold text-gray-900 mt-2 mb-3">{initiative.title}</h4>
-                    <p class="text-gray-600 text-sm">{initiative.description}</p>
+                    <span class="text-xs text-primary font-medium uppercase tracking-wide">{initiative.data.date}</span>
+                    <h4 class="font-display text-lg font-bold text-gray-900 mt-2 mb-3">{initiative.data.title}</h4>
+                    <p class="text-gray-600 text-sm">{initiative.data.description}</p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {program.id === "food" && program.items && (
+          {program.data.id === "food" && enabledFoodItems.length > 0 && (
             <div class="max-w-4xl mx-auto">
               <h3 class="font-display text-2xl font-bold text-gray-900 mb-8 text-center">Operation Feed the North</h3>
               <p class="text-gray-600 text-center mb-8">
                 In partnership with AHEF NGO, we distribute essential food items to vulnerable communities. Our goal is to reach 1,000+ beneficiaries with comprehensive food packages.
               </p>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {program.items.map((item) => (
+                {enabledFoodItems.map((item) => (
                   <div class="bg-white rounded-lg p-4 text-center shadow-sm">
-                    <p class="text-gray-700 font-medium">{item}</p>
+                    <p class="text-gray-700 font-medium">{item.data.item}</p>
                   </div>
                 ))}
               </div>
@@ -299,7 +210,7 @@ const memorialActivities = {
           {/* Gallery Link */}
           <div class="text-center mt-12">
             <Button href="/gallery" variant="outline">
-              View {program.title} Photos
+              View {program.data.title} Photos
             </Button>
           </div>
         </div>
@@ -311,23 +222,23 @@ const memorialActivities = {
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">{memorialActivities.title}</h2>
-            <p class="mt-4 text-lg text-gray-600">{memorialActivities.description}</p>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary">{ourWorkSettings.data.memorialSectionTitle}</h2>
+            <p class="mt-4 text-lg text-gray-600">{ourWorkSettings.data.memorialSectionDescription}</p>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {memorialActivities.activities.map((activity) => (
+            {enabledMemorialActivities.map((activity) => (
               <div class="bg-white rounded-xl p-8 shadow-sm text-center">
-                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{activity.title}</h3>
-                <p class="text-gray-600 mb-4">{activity.description}</p>
-                <span class="text-sm text-primary font-medium">{activity.when}</span>
+                <h3 class="font-display text-xl font-bold text-gray-900 mb-3">{activity.data.title}</h3>
+                <p class="text-gray-600 mb-4">{activity.data.description}</p>
+                <span class="text-sm text-primary font-medium">{activity.data.when}</span>
               </div>
             ))}
           </div>
 
           <div class="mt-12 bg-primary/5 rounded-xl p-8 text-center">
             <h3 class="font-display text-xl font-bold text-primary mb-4">Next Memorial</h3>
-            <p class="text-2xl font-display font-bold text-gray-900" id="nextMemorialDateWork">September 15, 2026</p>
+            <p class="text-2xl font-display font-bold text-gray-900" id="nextMemorialDateWork">September 15, {memorialYear}</p>
             <p class="text-gray-600 mt-2">Holy Family Catholic Church, Barnawa, Kaduna</p>
             <p class="text-sm text-primary font-medium mt-2" id="memorialCountdownWork"></p>
             <p class="text-sm text-gray-500 mt-4">All are invited to join us in remembrance and prayer</p>
@@ -340,10 +251,10 @@ const memorialActivities = {
     <section class="py-16 md:py-24 bg-primary text-white">
       <div class="container mx-auto px-4 text-center max-w-3xl">
         <h2 class="font-display text-3xl md:text-4xl font-bold">
-          Help Us Do More
+          {ourWorkSettings.data.impactCtaTitle}
         </h2>
         <p class="mt-4 text-lg leading-relaxed opacity-90">
-          Your support enables us to reach more communities, treat more patients, educate more students, and feed more families. Every donation brings us closer to realizing Dr. Patience's dream.
+          {ourWorkSettings.data.impactCtaDescription}
         </p>
         <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
           <Button href="/get-involved" variant="white" size="lg">
@@ -371,11 +282,17 @@ const memorialActivities = {
     }
     
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('nextMemorialDateWork').textContent = memorialDate.toLocaleDateString('en-US', options);
+    const dateEl = document.getElementById('nextMemorialDateWork');
+    if (dateEl) {
+      dateEl.textContent = memorialDate.toLocaleDateString('en-US', options);
+    }
     
     const daysUntil = Math.ceil((memorialDate - today) / (1000 * 60 * 60 * 24));
     const countdownText = daysUntil === 0 ? 'Today!' : daysUntil === 1 ? 'Tomorrow!' : `${daysUntil} days away`;
-    document.getElementById('memorialCountdownWork').textContent = countdownText;
+    const countdownEl = document.getElementById('memorialCountdownWork');
+    if (countdownEl) {
+      countdownEl.textContent = countdownText;
+    }
   }
   
   updateMemorialDate();

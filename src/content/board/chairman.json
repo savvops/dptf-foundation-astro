@@ -5,5 +5,5 @@
   "description": "Visionary leader guiding the Foundation's mission to honor Dr. Patience's legacy.",
   "image": "/images/board-chairman.jpg",
   "category": "trustees",
-  "order": 1
+  "order": 1,"enabled": true
 }

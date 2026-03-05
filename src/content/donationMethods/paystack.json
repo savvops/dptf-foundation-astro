@@ -1,0 +1,1 @@
+{"id": "paystack", "icon": "credit-card", "title": "Online Donation (Paystack)", "description": "Make a secure online donation using your debit/credit card, bank transfer, or USSD. Paystack supports all Nigerian banks and cards.", "action": "Donate Online", "popular": true, "order": 1, "enabled": true}

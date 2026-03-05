@@ -5,5 +5,5 @@
   "description": "Providing spiritual guidance and pastoral support to the Foundation.",
   "image": "/images/dr-patience-memorial.jpg",
   "category": "advisory",
-  "order": 1
+  "order": 1,"enabled": true
 }

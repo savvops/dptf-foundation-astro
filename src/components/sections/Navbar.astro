@@ -1,14 +1,18 @@
 ---
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/our-work', label: 'Our Work' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+// Load navigation
+const navigation = await getCollection('navigation');
+const navLinks = navigation
+  .filter(link => link.data.enabled && !link.data.isButton)
+  .sort((a, b) => a.data.order - b.data.order);
+const donateButton = navigation
+  .find(link => link.data.isButton && link.data.enabled);
+
+// Load site settings for logo
+const siteSettings = await getEntry('siteSettings', 'settings');
 
 const currentPath = Astro.url.pathname;
 ---
@@ -19,7 +23,7 @@ const currentPath = Astro.url.pathname;
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3" id="navLogo">
         <img 
-          src="/images/dptf-logo.png" 
+          src={siteSettings.data.logo} 
           alt="DPTF Logo" 
           class="w-12 h-12 rounded-full object-cover"
           width="48"
@@ -36,17 +40,17 @@ const currentPath = Astro.url.pathname;
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-1">
         {navLinks.map(link => {
-          const isActive = link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href);
+          const isActive = link.data.href === '/' ? currentPath === '/' : currentPath.startsWith(link.data.href);
           return (
             <a 
-              href={link.href} 
+              href={link.data.href} 
               class={`nav-link px-3 py-2 text-sm font-medium transition-colors relative ${
                 isActive 
                   ? 'text-white font-semibold' 
                   : 'text-white/90 hover:text-white'
               }`}
             >
-              {link.label}
+              {link.data.label}
               {isActive && (
                 <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
               )}
@@ -54,10 +58,11 @@ const currentPath = Astro.url.pathname;
           );
         })}
         
-        
-        <Button href="/get-involved" variant="white" size="sm" class="ml-4">
-          Donate
-        </Button>
+        {donateButton && (
+          <Button href={donateButton.data.href} variant="white" size="sm" class="ml-4">
+            {donateButton.data.label}
+          </Button>
+        )}
       </div>
       
       <!-- Mobile Menu Toggle -->
@@ -75,25 +80,25 @@ const currentPath = Astro.url.pathname;
   <div id="navMenu" class="hidden lg:hidden flex-col bg-white border-t border-gray-200 py-4 absolute top-full left-0 right-0 shadow-lg max-h-[80vh] overflow-y-auto">
     <div class="container flex flex-col gap-1">
       {navLinks.map(link => {
-        const isActive = link.href === '/' ? currentPath === '/' : currentPath.startsWith(link.href);
+        const isActive = link.data.href === '/' ? currentPath === '/' : currentPath.startsWith(link.data.href);
         return (
           <a 
-            href={link.href} 
+            href={link.data.href} 
             class={`nav-link px-4 py-3 font-medium rounded-lg transition-colors ${
               isActive 
                 ? 'text-primary bg-primary-light' 
                 : 'text-gray-600 hover:text-primary hover:bg-primary-light'
             }`}
           >
-            {link.label}
+            {link.data.label}
           </a>
         );
       })}
-      <Button href="/get-involved" variant="primary" class="mt-2">
-        Donate Now
-      </Button>
-      
-
+      {donateButton && (
+        <Button href={donateButton.data.href} variant="primary" class="mt-2">
+          {donateButton.data.label}
+        </Button>
+      )}
     </div>
   </div>
 </nav>

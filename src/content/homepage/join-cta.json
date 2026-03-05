@@ -1,7 +1,8 @@
 {
   "section": "joinCta",
   "title": "Join Us in Making a Difference",
-  "description": "Whether through donations, volunteering, or partnerships, you can help us keep Dr. Patience's dream alive. Together, we can bring hope and healing to those who need it most.",
+  "description": "Your support helps us continue Dr. Patience's mission of service to humanity.",
   "buttonText": "Get Involved",
-  "buttonHref": "/get-involved"
+  "buttonHref": "/get-involved",
+  "enabled": true
 }

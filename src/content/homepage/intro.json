@@ -1,7 +1,8 @@
 {
   "section": "intro",
-  "title": "Continuing a Legacy of Profound Humanity",
-  "description": "Dr. Patience Tsavnande lived a short but impactful life, demonstrating profound humanity through her visits to orphanages and her care for patients. Her ultimate dream was to assist the poor and improve their conditions. The Dr. Patience Tsavnande Foundation was established by her parents, friends, and colleagues to ensure these dreams do not die with her.",
+  "title": "About the Foundation",
+  "description": "The Dr. Patience Selumun Tsavnande Foundation (DPTF) was established in August 2020 to continue her legacy of service to humanity.",
   "buttonText": "Learn More",
-  "buttonHref": "/about"
+  "buttonHref": "/about",
+  "enabled": true
 }

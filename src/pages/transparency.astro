@@ -3,191 +3,58 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/sections/Navbar.astro';
 import Footer from '../components/sections/Footer.astro';
 import Button from '../components/ui/Button.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const title = "Transparency & Reports | Dr. Patience Tsavnande Foundation";
-const description = "We are committed to full transparency. View our financial reports, activity reports, and see how your donations are making a difference.";
+// Load transparency settings
+const transparencySettings = await getEntry('transparencySettings', 'settings');
 
-// Last updated date - update this whenever reports are added
+// Load bank details
+const bankDetails = await getEntry('bankDetails', 'details');
+
+// Load transparency stats
+const transparencyStats = await getCollection('transparencyStats');
+const enabledStats = transparencyStats
+  .filter(stat => stat.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load financial reports
+const financialReports = await getCollection('financialReports');
+const enabledFinancialReports = financialReports
+  .filter(r => r.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load activity reports
+const activityReports = await getCollection('activityReports');
+const enabledActivityReports = activityReports
+  .filter(r => r.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load meeting notices
+const meetingNotices = await getCollection('meetingNotices');
+const enabledMeetingNotices = meetingNotices
+  .filter(n => n.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Last updated date
 const lastUpdated = new Date().toLocaleDateString('en-NG', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
-
-const financialReports = [
-  {
-    title: "2025 Financial Report",
-    date: "2025",
-    description: "Complete financial statement for the year 2025, including income, expenses, and fund allocation.",
-    file: "/reports/00000950-DPTF-2025-Finance-report.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Interim Financial Report 2020",
-    date: "October 2020",
-    description: "First interim financial report following the Foundation's launch, covering initial donations and expenses.",
-    file: "/reports/00000239-INTRIM-F-REPORT-1.docx",
-    size: "PDF"
-  },
-  {
-    title: "Convocation Budget 2024",
-    date: "December 2024",
-    description: "Budget for BSU Convocation ceremony and prize presentation event.",
-    file: "/reports/00000873-DPSTF-convocation-budget-2024.pdf",
-    size: "PDF"
-  }
-];
-
-const activityReports = [
-  {
-    title: "Medical Intervention Activity Report 2024",
-    date: "November 2025",
-    description: "Comprehensive report on the 1-week medical intervention at St. Gerard Catholic Hospital, Kakuri, Kaduna.",
-    file: "/reports/00000948-Dptf-Medical-intervention-activity-report.pdf",
-    size: "PDF"
-  },
-  {
-    title: "BSU Convocation Report 2024",
-    date: "January 2025",
-    description: "Report on the Foundation's participation in the Benue State University Convocation and prize presentation.",
-    file: "/reports/00000895-DPSTF-Activity-Report-BSU-convocation-.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Mini Medical Outreach 2023 Report",
-    date: "April 2024",
-    description: "Detailed report on the symposium and mini medical outreach at Our Lady of Fatima Girls Secondary School.",
-    file: "/reports/00000794-DPSTF-Report-on-Mini-Medical-Outreach-2023.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Medical Outreach 2020 Report",
-    date: "August 2021",
-    description: "Complete report on the first medical outreach at Atighir Village, Tarka LGA, including patient statistics and outcomes.",
-    file: "/reports/00000470-Medical-Outreach-2020-Report.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Report on the Launching",
-    date: "October 2020",
-    description: "Administrative report on the Foundation's official launching ceremony held in September 2020.",
-    file: "/reports/00000236-REPORT-ON-THE-LAUNCHING.pdf",
-    size: "PDF"
-  },
-  {
-    title: "First Anniversary Thanksgiving Report",
-    date: "April 2022",
-    description: "Report on the first anniversary Thanksgiving Mass held on September 19, 2021.",
-    file: "/reports/00000560-First-Anniversary-Thanksgiving-Report-19092021.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Book Launch Report",
-    date: "April 2022",
-    description: "Report on the Foundation's participation in the book launch event on November 26, 2021.",
-    file: "/reports/00000559-Report-on-Book-Launch-26112021.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Proposed Medical Outreach Report",
-    date: "November 2020",
-    description: "Initial proposal and planning document for the first medical outreach program.",
-    file: "/reports/00000259-Report-on-Proposed-Medical-Outreach.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Medical Outreach in Pictures",
-    date: "August 2021",
-    description: "Photo documentary of the 2020 medical outreach activities.",
-    file: "/reports/00000471-Medical-Outreach-in-pictures.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Foundation Activity Report 1",
-    date: "November 2020",
-    description: "First comprehensive activity report covering the Foundation's initial programs and achievements.",
-    file: "/reports/00000247-DPST-Foundation-Activity-Report-1.pdf",
-    size: "PDF"
-  },
-  {
-    title: "Interim Report on Hope Project",
-    date: "May 2024",
-    description: "Progress report on the Foundation's participation in the Hope Project for employment and empowerment.",
-    file: "/reports/00000805-Interim-Report-on-Hope-Project.pdf",
-    size: "PDF"
-  }
-];
-
-const meetingNotices = [
-  {
-    title: "Notice of BOT Meeting No6",
-    date: "October 2025",
-    type: "Board of Trustees"
-  },
-  {
-    title: "Notice of General Meeting No8",
-    date: "September 2023",
-    type: "General Meeting"
-  },
-  {
-    title: "Notice of General Meeting No7",
-    date: "May 2023",
-    type: "General Meeting"
-  },
-  {
-    title: "Notice of BOT Meeting No5",
-    date: "April 2023",
-    type: "Board of Trustees"
-  },
-  {
-    title: "Notice of General Meeting",
-    date: "January 2022",
-    type: "General Meeting"
-  },
-  {
-    title: "Notice No5 of General Meeting",
-    date: "August 2021",
-    type: "General Meeting"
-  },
-  {
-    title: "Revised Notice of General Meeting",
-    date: "August 2021",
-    type: "General Meeting"
-  },
-  {
-    title: "Notice of BoT Meeting",
-    date: "October 2020",
-    type: "Board of Trustees"
-  },
-  {
-    title: "Notice No2 of Gen Meeting",
-    date: "September 2020",
-    type: "General Meeting"
-  },
-  {
-    title: "DPSTF Notice on General Meeting",
-    date: "August 2020",
-    type: "General Meeting"
-  }
-];
-
-const impactStats = [
-  { value: "₦2M+", label: "Donations Received" },
-  { value: "1,053+", label: "Patients Treated" },
-  { value: "3", label: "Medical Outreaches" },
-  { value: "5+", label: "Years of Service" }
-];
 ---
 
-<Layout title={title} description={description}>
+<Layout 
+  title={transparencySettings.data.pageTitle} 
+  description={transparencySettings.data.pageDescription}
+>
   <Navbar />
   <main id="main-content" class="flex flex-col">
     <!-- Hero Section -->
     <section class="bg-secondary py-16 md:py-24 pt-32">
       <div class="container mx-auto px-4 text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">Transparency & Reports</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">{transparencySettings.data.heroTitle}</h1>
         <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          We are committed to full transparency and accountability. Here you can access our financial reports, activity reports, and see how your donations are making a difference.
+          {transparencySettings.data.heroDescription}
         </p>
       </div>
     </section>
@@ -196,10 +63,10 @@ const impactStats = [
     <section class="py-12 bg-primary text-white">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {impactStats.map((stat) => (
+          {enabledStats.map((stat) => (
             <div>
-              <p class="font-display text-3xl md:text-4xl font-bold">{stat.value}</p>
-              <p class="text-sm mt-1 opacity-90">{stat.label}</p>
+              <p class="font-display text-3xl md:text-4xl font-bold">{stat.data.value}</p>
+              <p class="text-sm mt-1 opacity-90">{stat.data.label}</p>
             </div>
           ))}
         </div>
@@ -210,9 +77,9 @@ const impactStats = [
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-4 max-w-5xl">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">Financial Reports</h2>
+          <h2 class="font-display text-3xl font-bold text-primary">{transparencySettings.data.financialReportsTitle}</h2>
           <p class="mt-4 text-gray-600">
-            Complete financial transparency is important to us. View our audited financial statements and budgets.
+            {transparencySettings.data.financialReportsDescription}
           </p>
           <p class="text-sm text-gray-500 mt-2">
             Last updated: {lastUpdated}
@@ -220,23 +87,23 @@ const impactStats = [
         </div>
 
         <div class="space-y-4">
-          {financialReports.map((report) => (
+          {enabledFinancialReports.map((report) => (
             <div class="bg-[#faf9f7] rounded-xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div class="flex-1">
                 <div class="flex items-center gap-3 mb-2">
-                  <h3 class="font-display text-lg font-bold text-gray-900">{report.title}</h3>
-                  <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{report.date}</span>
+                  <h3 class="font-display text-lg font-bold text-gray-900">{report.data.title}</h3>
+                  <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{report.data.date}</span>
                 </div>
-                <p class="text-gray-600 text-sm">{report.description}</p>
+                <p class="text-gray-600 text-sm">{report.data.description}</p>
               </div>
               <div class="flex items-center gap-3">
-                <span class="text-sm text-gray-500">{report.size}</span>
+                <span class="text-sm text-gray-500">{report.data.size}</span>
                 <a 
-                  href={report.file}
+                  href={report.data.file}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 px-4 py-2 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors text-sm font-medium"
-                  aria-label={`View ${report.title} online`}
+                  aria-label={`View ${report.data.title} online`}
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -245,10 +112,10 @@ const impactStats = [
                   View
                 </a>
                 <a 
-                  href={report.file}
+                  href={report.data.file}
                   download
                   class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"
-                  aria-label={`Download ${report.title}`}
+                  aria-label={`Download ${report.data.title}`}
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -266,27 +133,27 @@ const impactStats = [
     <section class="py-16 md:py-24 bg-[#faf9f7]">
       <div class="container mx-auto px-4 max-w-5xl">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">Activity Reports</h2>
+          <h2 class="font-display text-3xl font-bold text-primary">{transparencySettings.data.activityReportsTitle}</h2>
           <p class="mt-4 text-gray-600">
-            Detailed reports on our programs, outreaches, and events. See the impact we're making in communities across Nigeria.
+            {transparencySettings.data.activityReportsDescription}
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {activityReports.map((report) => (
+          {enabledActivityReports.map((report) => (
             <div class="bg-white rounded-xl p-6 shadow-sm">
               <div class="flex items-start justify-between gap-4 mb-3">
-                <h3 class="font-display text-lg font-bold text-gray-900">{report.title}</h3>
-                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded flex-shrink-0">{report.date}</span>
+                <h3 class="font-display text-lg font-bold text-gray-900">{report.data.title}</h3>
+                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded flex-shrink-0">{report.data.date}</span>
               </div>
-              <p class="text-gray-600 text-sm mb-4">{report.description}</p>
+              <p class="text-gray-600 text-sm mb-4">{report.data.description}</p>
               <div class="flex items-center gap-3">
                 <a 
-                  href={report.file}
+                  href={report.data.file}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 px-3 py-1.5 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors text-sm font-medium"
-                  aria-label={`View ${report.title} online`}
+                  aria-label={`View ${report.data.title} online`}
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -295,10 +162,10 @@ const impactStats = [
                   View
                 </a>
                 <a 
-                  href={report.file}
+                  href={report.data.file}
                   download
                   class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"
-                  aria-label={`Download ${report.title}`}
+                  aria-label={`Download ${report.data.title}`}
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -316,9 +183,9 @@ const impactStats = [
     <section class="py-16 md:py-24 bg-white">
       <div class="container mx-auto px-4 max-w-4xl">
         <div class="text-center mb-12">
-          <h2 class="font-display text-3xl font-bold text-primary">Meeting Notices</h2>
+          <h2 class="font-display text-3xl font-bold text-primary">{transparencySettings.data.meetingNoticesTitle}</h2>
           <p class="mt-4 text-gray-600">
-            Public notices of Foundation meetings. Meeting minutes are kept internal for administrative purposes.
+            {transparencySettings.data.meetingNoticesDescription}
           </p>
         </div>
 
@@ -332,12 +199,12 @@ const impactStats = [
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              {meetingNotices.map((notice) => (
+              {enabledMeetingNotices.map((notice) => (
                 <tr class="hover:bg-white transition-colors">
-                  <td class="px-6 py-4 font-medium text-gray-900">{notice.title}</td>
-                  <td class="px-6 py-4 text-gray-600">{notice.date}</td>
+                  <td class="px-6 py-4 font-medium text-gray-900">{notice.data.title}</td>
+                  <td class="px-6 py-4 text-gray-600">{notice.data.date}</td>
                   <td class="px-6 py-4">
-                    <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{notice.type}</span>
+                    <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{notice.data.type}</span>
                   </td>
                 </tr>
               ))}
@@ -351,24 +218,24 @@ const impactStats = [
     <section class="py-16 md:py-20 bg-[#faf9f7]">
       <div class="container mx-auto px-4 max-w-3xl">
         <div class="bg-white rounded-xl p-8 md:p-12 shadow-sm text-center">
-          <h2 class="font-display text-2xl font-bold text-primary mb-6">Bank Account Details</h2>
+          <h2 class="font-display text-2xl font-bold text-primary mb-6">{transparencySettings.data.bankDetailsTitle}</h2>
           <p class="text-gray-600 mb-8">
-            For direct bank transfers and donations, please use the account details below. All donations are fully accounted for and reported in our financial statements.
+            {transparencySettings.data.bankDetailsDescription}
           </p>
           
           <div class="bg-[#faf9f7] rounded-xl p-8 max-w-md mx-auto">
             <div class="space-y-4 text-left">
               <div>
                 <p class="text-sm text-gray-500">Account Name</p>
-                <p class="font-display text-lg font-bold text-gray-900">Dr. Patience Selumun Tsavnande Foundation</p>
+                <p class="font-display text-lg font-bold text-gray-900">{bankDetails.data.accountName}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Account Number</p>
-                <p class="font-display text-2xl font-bold text-primary">2035804521</p>
+                <p class="font-display text-2xl font-bold text-primary">{bankDetails.data.accountNumber}</p>
               </div>
               <div>
                 <p class="text-sm text-gray-500">Bank</p>
-                <p class="font-medium text-gray-900">First Bank of Nigeria</p>
+                <p class="font-medium text-gray-900">{bankDetails.data.bankName}</p>
               </div>
             </div>
           </div>
@@ -385,9 +252,9 @@ const impactStats = [
     {/* Accountability Statement */}
     <section class="py-16 md:py-24 bg-primary text-white">
       <div class="container mx-auto px-4 max-w-4xl text-center">
-        <h2 class="font-display text-3xl font-bold mb-6">Our Commitment to Accountability</h2>
+        <h2 class="font-display text-3xl font-bold mb-6">{transparencySettings.data.accountabilityTitle}</h2>
         <p class="text-lg leading-relaxed opacity-90 mb-8">
-          The Dr. Patience Selumun Tsavnande Foundation is registered with the Corporate Affairs Commission (CAC) of Nigeria. We maintain rigorous financial controls and transparency standards. Every naira donated is accounted for, and our financial reports are made publicly available.
+          {transparencySettings.data.accountabilityDescription}
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
           <Button href="/contact" variant="white">

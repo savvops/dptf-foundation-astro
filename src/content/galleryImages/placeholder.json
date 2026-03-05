@@ -1,0 +1,9 @@
+{
+  "id": "placeholder",
+  "src": "/images/hero-image.jpg",
+  "alt": "Placeholder gallery image",
+  "caption": "Sample image",
+  "category": "general",
+  "order": 1,
+  "enabled": false
+}

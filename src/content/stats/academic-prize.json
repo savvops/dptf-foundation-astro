@@ -1,8 +1,10 @@
 {
+  "id": "academic-prize",
   "number": 300000,
   "prefix": "₦",
   "suffix": "",
   "label": "Academic Prize",
   "sublabel": "Supporting top female medical graduates at BSU",
-  "order": 3
+  "order": 3,
+  "enabled": true
 }

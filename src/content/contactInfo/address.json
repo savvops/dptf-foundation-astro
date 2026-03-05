@@ -1,0 +1,8 @@
+{
+  "id": "address",
+  "icon": "map-pin",
+  "title": "Address",
+  "value": "No. 13 Tunisia Crescent, Barnawa Phase 1, Kaduna.",
+  "order": 1,
+  "enabled": true
+}

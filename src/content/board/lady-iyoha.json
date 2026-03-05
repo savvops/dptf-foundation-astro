@@ -5,5 +5,5 @@
   "description": "Philanthropist who has donated educational materials to support the Foundation's programs.",
   "image": "/images/dr-patience-3.jpg",
   "category": "advisory",
-  "order": 3
+  "order": 3,"enabled": true
 }

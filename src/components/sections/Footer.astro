@@ -1,25 +1,42 @@
 ---
 import Icon from '../ui/Icon.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const quickLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/our-work', label: 'Our Work' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
-];
+// Load footer settings
+const footerSettings = await getEntry('footerSettings', 'settings');
+const bankDetails = await getEntry('bankDetails', 'details');
 
-const contactInfo = [
-  { icon: 'map-pin', value: 'No. 13 Tunisia Crescent, Barnawa Phase 1, Kaduna, Nigeria.' },
-  { icon: 'mail', value: 'nelson@drtsavnandefoundation.com', href: 'mailto:nelson@drtsavnandefoundation.com' },
-  { icon: 'phone', value: '+234 703 498 0459', href: 'tel:+2347034980459' },
-];
+// Load footer links
+const footerLinks = await getCollection('footerLinks');
+const quickLinks = footerLinks
+  .filter(link => link.data.category === 'quick' && link.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+const resourceLinks = footerLinks
+  .filter(link => link.data.category === 'resources' && link.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
 
-const bankInfo = {
-  name: 'Dr. Patience Selumun Tsavnande Foundation',
-  account: '2035804521',
-  bank: 'First Bank of Nigeria'
-};
+// Load contact info
+const contactInfo = await getCollection('contactInfo');
+const enabledContactInfo = contactInfo
+  .filter(item => item.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load social links
+const socialLinks = await getCollection('socialLinks');
+const enabledSocialLinks = socialLinks
+  .filter(link => link.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load trust badges
+const trustBadges = await getCollection('trustBadges');
+const enabledTrustBadges = trustBadges
+  .filter(badge => badge.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Get site settings for logo
+const siteSettings = await getEntry('siteSettings', 'settings');
+
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="bg-secondary text-secondary-foreground">
@@ -29,7 +46,7 @@ const bankInfo = {
       <div class="md:col-span-4">
         <a href="/" class="inline-flex items-center gap-3 mb-4">
           <img 
-            src="/images/dptf-logo.png" 
+            src={siteSettings.data.logo} 
             alt="DPTF Logo" 
             class="w-12 h-12 rounded-full object-cover"
             width="48"
@@ -40,24 +57,24 @@ const bankInfo = {
           <span class="font-display font-bold text-lg">DPTF</span>
         </a>
         <p class="text-sm text-gray-600 mb-4">
-          Continuing the legacy of Dr. Patience Tsavnande by providing medical care, supporting education, and bringing hope to vulnerable communities.
+          {footerSettings.data.description}
         </p>
         <div class="bg-white/50 rounded-lg p-4">
           <p class="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-2">Bank Details</p>
-          <p class="text-sm font-medium text-gray-900">{bankInfo.name}</p>
-          <p class="text-lg font-display font-bold text-primary">{bankInfo.account}</p>
-          <p class="text-sm text-gray-600">{bankInfo.bank}</p>
+          <p class="text-sm font-medium text-gray-900">{bankDetails.data.accountName}</p>
+          <p class="text-lg font-display font-bold text-primary">{bankDetails.data.accountNumber}</p>
+          <p class="text-sm text-gray-600">{bankDetails.data.bankName}</p>
         </div>
       </div>
       
       <!-- Quick Links -->
       <div class="md:col-span-3">
-        <h3 class="font-display text-lg font-semibold mb-4">Quick Links</h3>
+        <h3 class="font-display text-lg font-semibold mb-4">{footerSettings.data.quickLinksTitle}</h3>
         <ul class="space-y-2 text-sm">
           {quickLinks.slice(0, 4).map(link => (
             <li>
-              <a href={link.href} class="text-gray-600 hover:text-primary transition-colors">
-                {link.label}
+              <a href={link.data.href} class="text-gray-600 hover:text-primary transition-colors">
+                {link.data.label}
               </a>
             </li>
           ))}
@@ -66,36 +83,31 @@ const bankInfo = {
 
       <!-- Resources -->
       <div class="md:col-span-2">
-        <h3 class="font-display text-lg font-semibold mb-4">Resources</h3>
+        <h3 class="font-display text-lg font-semibold mb-4">{footerSettings.data.resourcesTitle}</h3>
         <ul class="space-y-2 text-sm">
-          <li>
-            <a href="/transparency" class="text-gray-600 hover:text-primary transition-colors">Transparency</a>
-          </li>
-          <li>
-            <a href="/get-involved" class="text-gray-600 hover:text-primary transition-colors">Get Involved</a>
-          </li>
-          <li>
-            <a href="/faq" class="text-gray-600 hover:text-primary transition-colors">FAQ</a>
-          </li>
-          <li>
-            <a href="/volunteer" class="text-gray-600 hover:text-primary transition-colors">Volunteer</a>
-          </li>
+          {resourceLinks.map(link => (
+            <li>
+              <a href={link.data.href} class="text-gray-600 hover:text-primary transition-colors">
+                {link.data.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
       
       <!-- Contact Us -->
       <div class="md:col-span-3">
-        <h3 class="font-display text-lg font-semibold mb-4">Contact Us</h3>
+        <h3 class="font-display text-lg font-semibold mb-4">{footerSettings.data.contactTitle}</h3>
         <ul class="space-y-3 text-sm">
-          {contactInfo.map(item => (
+          {enabledContactInfo.map(item => (
             <li class="flex items-start gap-2">
-              <Icon name={item.icon} class="w-4 h-4 mt-1 flex-shrink-0 text-primary" />
-              {item.href ? (
-                <a href={item.href} class="text-gray-600 hover:text-primary transition-colors">
-                  {item.value}
+              <Icon name={item.data.icon} class="w-4 h-4 mt-1 flex-shrink-0 text-primary" />
+              {item.data.href ? (
+                <a href={item.data.href} class="text-gray-600 hover:text-primary transition-colors">
+                  {item.data.value}
                 </a>
               ) : (
-                <span class="text-gray-600">{item.value}</span>
+                <span class="text-gray-600">{item.data.value}</span>
               )}
             </li>
           ))}
@@ -113,42 +125,31 @@ const bankInfo = {
     {/* Trust Badges */}
     <div class="mt-8 pt-6 border-t border-gray-200">
       <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-xs text-gray-500">
-        <div class="flex items-center gap-1.5">
-          <Icon name="shield-check" class="w-4 h-4 text-primary" />
-          <span>CAC Registered</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <Icon name="file-check" class="w-4 h-4 text-primary" />
-          <span>100% Transparent</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <Icon name="heart-handshake" class="w-4 h-4 text-primary" />
-          <span>Registered NGO</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <Icon name="lock" class="w-4 h-4 text-primary" />
-          <span>Paystack Secured</span>
-        </div>
+        {enabledTrustBadges.map(badge => (
+          <div class="flex items-center gap-1.5">
+            <Icon name={badge.data.icon} class="w-4 h-4 text-primary" />
+            <span>{badge.data.label}</span>
+          </div>
+        ))}
       </div>
     </div>
 
     <div class="mt-6 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600">
-      <p>&copy; <span id="year">2025</span> Dr. Patience Selumun Tsavnande Foundation. All rights reserved.</p>
+      <p>&copy; {currentYear} {footerSettings.data.copyrightText}</p>
       <div class="flex items-center gap-4 mt-4 sm:mt-0">
-        <a href="https://facebook.com/dptfoundation" target="_blank" rel="noopener noreferrer" aria-label="Follow DPTF on Facebook" class="hover:text-primary transition-colors inline-flex items-center gap-1">
-          <Icon name="facebook" class="w-5 h-5" />
-          <span class="sr-only">DPTF on Facebook</span>
-        </a>
-        <a href="https://www.instagram.com/drpst_foundation?igsh=ZDNlNWI3OGM5b3lr" target="_blank" rel="noopener noreferrer" aria-label="Follow DPTF on Instagram" class="hover:text-primary transition-colors inline-flex items-center gap-1">
-          <Icon name="instagram" class="w-5 h-5" />
-          <span class="sr-only">DPTF on Instagram</span>
-        </a>
+        {enabledSocialLinks.map(link => (
+          <a 
+            href={link.data.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label={`Follow DPTF on ${link.data.name}`} 
+            class="hover:text-primary transition-colors inline-flex items-center gap-1"
+          >
+            <Icon name={link.data.icon} class="w-5 h-5" />
+            <span class="sr-only">DPTF on {link.data.name}</span>
+          </a>
+        ))}
       </div>
     </div>
   </div>
 </footer>
-
-<script>
-  // Update copyright year
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>

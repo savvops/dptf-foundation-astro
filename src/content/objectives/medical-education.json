@@ -1,6 +1,8 @@
 {
+  "id": "medical-education",
   "icon": "graduation-cap",
-  "title": "Promoting Medical Education",
-  "description": "Encouraging the study of Medicine and funding indigent girls.",
-  "order": 2
+  "title": "Medical Education Support",
+  "description": "Scholarships and resources for aspiring medical students.",
+  "order": 1,
+  "enabled": true
 }

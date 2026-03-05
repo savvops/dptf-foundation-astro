@@ -1,0 +1,19 @@
+{
+  "id": "food",
+  "title": "Food Security",
+  "icon": "utensils",
+  "description": "Combating hunger through food distribution programs for vulnerable communities.",
+  "stats": [
+    { "value": "1,000+", "label": "Target Beneficiaries" },
+    { "value": "Multiple", "label": "Food Items" },
+    { "value": "AHEF", "label": "Partner NGO" }
+  ],
+  "highlights": [
+    "Operation Feed the North program",
+    "Distribution of essential food items",
+    "Partnership with AHEF NGO",
+    "Targeted support for the poor and vulnerable"
+  ],
+  "order": 3,
+  "enabled": true
+}

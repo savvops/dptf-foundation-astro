@@ -1,0 +1,8 @@
+{
+  "id": "instagram",
+  "name": "Instagram",
+  "url": "https://www.instagram.com/drpst_foundation",
+  "icon": "instagram",
+  "order": 2,
+  "enabled": true
+}

@@ -5,5 +5,5 @@
   "description": "Medical professional and generous supporter of Foundation activities.",
   "image": "/images/dr-patience-2.jpg",
   "category": "advisory",
-  "order": 2
+  "order": 2,"enabled": true
 }

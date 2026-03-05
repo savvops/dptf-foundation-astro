@@ -1,0 +1,8 @@
+{
+  "id": "contact",
+  "label": "Contact",
+  "href": "/contact",
+  "order": 5,
+  "isButton": false,
+  "enabled": true
+}

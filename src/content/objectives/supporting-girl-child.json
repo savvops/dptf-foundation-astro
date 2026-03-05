@@ -1,6 +1,8 @@
 {
-  "icon": "heart-hand",
-  "title": "Supporting the Girl-Child",
-  "description": "Reducing dropouts, abuse, and inequality.",
-  "order": 1
+  "id": "supporting-girl-child",
+  "icon": "heart",
+  "title": "Supporting the Girl Child",
+  "description": "Programs focused on empowering young girls through education and healthcare.",
+  "order": 2,
+  "enabled": true
 }

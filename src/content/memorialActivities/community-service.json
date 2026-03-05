@@ -1,0 +1,8 @@
+{
+  "id": "community-service",
+  "title": "Community Service",
+  "description": "Special outreach programs and community service activities organized around the memorial period.",
+  "when": "September annually",
+  "order": 3,
+  "enabled": true
+}

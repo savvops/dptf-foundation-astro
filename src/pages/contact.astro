@@ -4,60 +4,53 @@ import Navbar from '../components/sections/Navbar.astro';
 import Footer from '../components/sections/Footer.astro';
 import Icon from '../components/ui/Icon.astro';
 import Button from '../components/ui/Button.astro';
+import { getCollection, getEntry } from 'astro:content';
 
-const title = "Contact Us | Dr. Patience Tsavnande Foundation";
-const description = "We'd love to hear from you. Whether you have a question, a suggestion, or want to partner with us, feel free to reach out.";
+// Load contact settings
+const contactSettings = await getEntry('contactSettings', 'settings');
 
-const contactDetails = [
-  {
-    icon: 'map-pin',
-    title: 'Address',
-    value: 'No. 13 Tunisia Crescent, Barnawa Phase 1, Kaduna.',
-  },
-  {
-    icon: 'mail',
-    title: 'Email',
-    value: 'nelson@drtsavnandefoundation.com',
-    href: 'mailto:nelson@drtsavnandefoundation.com',
-  },
-  {
-    icon: 'phone',
-    title: 'Phone',
-    value: '+234 703 498 0459',
-    href: 'tel:+2347034980459',
-  },
-];
+// Load contact info
+const contactInfo = await getCollection('contactInfo');
+const enabledContactInfo = contactInfo
+  .filter(item => item.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Load social links
+const socialLinks = await getCollection('socialLinks');
+const enabledSocialLinks = socialLinks
+  .filter(link => link.data.enabled)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={contactSettings.data.pageTitle} description={contactSettings.data.pageDescription}>
   <Navbar />
   <main id="main-content" class="pt-20">
     <div class="container mx-auto px-4 py-16 md:py-24">
       <header class="text-center mb-16">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">Get in Touch</h1>
+        <h1 class="font-display text-4xl md:text-5xl font-bold text-primary">{contactSettings.data.headerTitle}</h1>
         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-          We'd love to hear from you. Whether you have a question, a suggestion, or want to partner with us, feel free to reach out.
+          {contactSettings.data.headerDescription}
         </p>
       </header>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
         <!-- Contact Information -->
         <div class="bg-white p-8 rounded-2xl shadow-lg">
-          <h2 class="font-display text-3xl mb-6">Contact Information</h2>
+          <h2 class="font-display text-3xl mb-6">{contactSettings.data.contactInfoTitle}</h2>
           <div class="space-y-6">
-            {contactDetails.map((detail) => (
+            {enabledContactInfo.map((detail) => (
               <div class="flex items-start gap-4">
                 <div class="flex-shrink-0 mt-1">
-                  <Icon name={detail.icon} class="w-8 h-8 text-primary" />
+                  <Icon name={detail.data.icon} class="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h3 class="text-xl font-semibold">{detail.title}</h3>
-                  {detail.href ? (
-                    <a href={detail.href} class="text-gray-600 hover:text-primary transition-colors">
-                      {detail.value}
+                  <h3 class="text-xl font-semibold">{detail.data.title}</h3>
+                  {detail.data.href ? (
+                    <a href={detail.data.href} class="text-gray-600 hover:text-primary transition-colors">
+                      {detail.data.value}
                     </a>
                   ) : (
-                    <p class="text-gray-600">{detail.value}</p>
+                    <p class="text-gray-600">{detail.data.value}</p>
                   )}
                 </div>
               </div>
@@ -66,21 +59,26 @@ const contactDetails = [
 
           <!-- Social Links -->
           <div class="mt-10 pt-8 border-t border-gray-200">
-            <h3 class="font-display text-xl font-semibold mb-4">Follow Us</h3>
+            <h3 class="font-display text-xl font-semibold mb-4">{contactSettings.data.followUsTitle}</h3>
             <div class="flex items-center gap-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow DPTF on Facebook" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                <Icon name="facebook" class="w-6 h-6" />
-              </a>
-              <a href="https://www.instagram.com/drpst_foundation?igsh=ZDNlNWI3OGM5b3lr" target="_blank" rel="noopener noreferrer" aria-label="Follow DPTF on Instagram" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                <Icon name="instagram" class="w-6 h-6" />
-              </a>
+              {enabledSocialLinks.map((link) => (
+                <a 
+                  href={link.data.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label={`Follow DPTF on ${link.data.name}`} 
+                  class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  <Icon name={link.data.icon} class="w-6 h-6" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         <!-- Contact Form -->
         <div class="bg-white p-8 rounded-2xl shadow-lg">
-          <h2 class="font-display text-3xl mb-6">Send Us a Message</h2>
+          <h2 class="font-display text-3xl mb-6">{contactSettings.data.formTitle}</h2>
           
           <form id="contactForm" class="space-y-6">
             <div>
@@ -137,7 +135,7 @@ const contactDetails = [
             >
               <span class="btn-text flex items-center gap-2">
                 <Icon name="send" class="w-5 h-5" />
-                Send Message
+                {contactSettings.data.formSubmitButton}
               </span>
               <span class="btn-loading hidden items-center gap-2">
                 <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
