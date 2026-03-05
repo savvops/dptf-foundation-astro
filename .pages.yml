@@ -1,14 +1,15 @@
 # PagesCMS Configuration for DPTF Foundation
-# Simplified version for testing
+# Full configuration with all 37 content collections
 
 media:
   - name: images
     label: Images
     input: public/images
     output: /images
+    path: /images
 
 content:
-  # Site Settings
+  # ==================== SITE SETTINGS ====================
   - name: siteSettings
     label: Site Settings
     type: file
@@ -19,6 +20,18 @@ content:
         type: string
       - name: siteDescription
         label: Site Description
+        type: text
+      - name: defaultTitle
+        label: Default Page Title
+        type: string
+      - name: defaultDescription
+        label: Default Meta Description
+        type: text
+      - name: logo
+        label: Logo Path
+        type: string
+      - name: favicon
+        label: Favicon Path
         type: string
 
   - name: navigation
@@ -38,11 +51,83 @@ content:
       - name: order
         label: Order
         type: number
+      - name: isButton
+        label: Is Button
+        type: boolean
       - name: enabled
         label: Enabled
         type: boolean
 
-  # Homepage
+  - name: footerSettings
+    label: Footer Settings
+    type: file
+    path: src/content/footerSettings/settings.json
+    fields:
+      - name: description
+        label: Footer Description
+        type: text
+      - name: copyrightText
+        label: Copyright Text
+        type: string
+      - name: quickLinksTitle
+        label: Quick Links Title
+        type: string
+      - name: resourcesTitle
+        label: Resources Title
+        type: string
+      - name: contactTitle
+        label: Contact Title
+        type: string
+
+  - name: footerLinks
+    label: Footer Links
+    type: collection
+    path: src/content/footerLinks
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: label
+        label: Label
+        type: string
+      - name: href
+        label: URL
+        type: string
+      - name: category
+        label: Category
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  - name: socialLinks
+    label: Social Media Links
+    type: collection
+    path: src/content/socialLinks
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: name
+        label: Platform Name
+        type: string
+      - name: url
+        label: URL
+        type: string
+      - name: icon
+        label: Icon
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # ==================== HOMEPAGE ====================
   - name: homepage
     label: Homepage Sections
     type: collection
@@ -56,6 +141,12 @@ content:
         type: string
       - name: description
         label: Description
+        type: text
+      - name: buttonText
+        label: Button Text
+        type: string
+      - name: buttonHref
+        label: Button URL
         type: string
       - name: enabled
         label: Enabled
@@ -70,11 +161,23 @@ content:
         label: ID
         type: string
       - name: number
-        label: Number
+        label: Number Value
         type: number
+      - name: prefix
+        label: Prefix
+        type: string
+      - name: suffix
+        label: Suffix
+        type: string
       - name: label
         label: Label
         type: string
+      - name: sublabel
+        label: Sublabel
+        type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -92,7 +195,10 @@ content:
         type: string
       - name: description
         label: Description
-        type: string
+        type: text
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -105,27 +211,54 @@ content:
       - name: id
         label: ID
         type: string
+      - name: icon
+        label: Icon
+        type: string
       - name: title
         label: Title
         type: string
       - name: description
         label: Description
-        type: string
+        type: text
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
 
-  # About
+  # ==================== ABOUT PAGE ====================
   - name: aboutSettings
-    label: About Settings
+    label: About Page Settings
     type: file
     path: src/content/aboutSettings/settings.json
     fields:
       - name: pageTitle
         label: Page Title
         type: string
+      - name: pageDescription
+        label: Page Description
+        type: text
       - name: headerTitle
         label: Header Title
+        type: string
+      - name: headerDescription
+        label: Header Description
+        type: text
+      - name: drPatienceName
+        label: Dr. Patience Name
+        type: string
+      - name: drPatienceBio
+        label: Dr. Patience Bio
+        type: text
+      - name: whoWeAreTitle
+        label: Who We Are Title
+        type: string
+      - name: whoWeAreDescription
+        label: Who We Are Description
+        type: text
+      - name: guidingBeliefQuote
+        label: Guiding Belief Quote
         type: string
 
   - name: board
@@ -144,9 +277,9 @@ content:
         type: string
       - name: description
         label: Description
-        type: string
+        type: text
       - name: image
-        label: Image
+        label: Image Path
         type: string
       - name: category
         label: Category
@@ -158,8 +291,50 @@ content:
         label: Enabled
         type: boolean
 
+  - name: boardSettings
+    label: Board Settings
+    type: file
+    path: src/content/boardSettings/settings.json
+    fields:
+      - name: showBoardPhotos
+        label: Show Board Photos
+        type: boolean
+      - name: trusteesTitle
+        label: Trustees Title
+        type: string
+      - name: trusteesDescription
+        label: Trustees Description
+        type: text
+      - name: advisersTitle
+        label: Advisers Title
+        type: string
+      - name: advisersDescription
+        label: Advisers Description
+        type: text
+
+  - name: drPatienceVirtues
+    label: Dr. Patience Virtues
+    type: collection
+    path: src/content/drPatienceVirtues
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
   - name: timeline
-    label: Timeline
+    label: Timeline Events
     type: collection
     path: src/content/timeline
     fields:
@@ -173,13 +348,34 @@ content:
         label: Title
         type: string
       - name: event
-        label: Event
+        label: Event Description
+        type: text
+      - name: category
+        label: Category
         type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
 
-  # Programs
+  # ==================== OUR WORK / PROGRAMS ====================
+  - name: ourWorkSettings
+    label: Our Work Settings
+    type: file
+    path: src/content/ourWorkSettings/settings.json
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+      - name: heroTitle
+        label: Hero Title
+        type: string
+      - name: heroDescription
+        label: Hero Description
+        type: text
+
   - name: programs
     label: Programs
     type: collection
@@ -191,9 +387,15 @@ content:
       - name: title
         label: Title
         type: string
+      - name: icon
+        label: Icon
+        type: string
       - name: description
         label: Description
-        type: string
+        type: text
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -206,12 +408,21 @@ content:
       - name: id
         label: ID
         type: string
+      - name: icon
+        label: Icon
+        type: string
       - name: title
         label: Title
         type: string
       - name: description
         label: Description
+        type: text
+      - name: stats
+        label: Stats Display
         type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -233,9 +444,15 @@ content:
       - name: location
         label: Location
         type: string
+      - name: impact
+        label: Impact Summary
+        type: string
       - name: description
         label: Description
-        type: string
+        type: text
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -253,12 +470,93 @@ content:
         type: string
       - name: description
         label: Description
+        type: text
+      - name: date
+        label: Date
         type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
 
-  # FAQ
+  - name: foodSecurity
+    label: Food Security Items
+    type: collection
+    path: src/content/foodSecurity
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: item
+        label: Item Name
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  - name: memorialActivities
+    label: Memorial Activities
+    type: collection
+    path: src/content/memorialActivities
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: when
+        label: When
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # ==================== FAQ ====================
+  - name: faqSettings
+    label: FAQ Settings
+    type: file
+    path: src/content/faqSettings/settings.json
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+      - name: headerTitle
+        label: Header Title
+        type: string
+      - name: headerDescription
+        label: Header Description
+        type: text
+
+  - name: faqCategories
+    label: FAQ Categories
+    type: collection
+    path: src/content/faqCategories
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: category
+        label: Category Name
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
   - name: faqItems
     label: FAQ Items
     type: collection
@@ -267,17 +565,41 @@ content:
       - name: id
         label: ID
         type: string
+      - name: categoryId
+        label: Category ID
+        type: string
       - name: question
         label: Question
-        type: string
+        type: text
       - name: answer
         label: Answer
-        type: string
+        type: text
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
 
-  # Get Involved
+  # ==================== GET INVOLVED ====================
+  - name: getInvolvedSettings
+    label: Get Involved Settings
+    type: file
+    path: src/content/getInvolvedSettings/settings.json
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+      - name: heroTitle
+        label: Hero Title
+        type: string
+      - name: donateSectionTitle
+        label: Donate Section Title
+        type: string
+      - name: volunteerSectionTitle
+        label: Volunteer Section Title
+        type: string
+
   - name: donationAmounts
     label: Donation Amounts
     type: collection
@@ -287,14 +609,44 @@ content:
         label: ID
         type: string
       - name: amount
-        label: Amount
+        label: Amount (Naira)
         type: number
       - name: label
-        label: Label
+        label: Display Label
         type: string
       - name: impact
-        label: Impact
+        label: Impact Description
         type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  - name: donationMethods
+    label: Donation Methods
+    type: collection
+    path: src/content/donationMethods
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: icon
+        label: Icon
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: popular
+        label: Popular
+        type: boolean
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -313,8 +665,77 @@ content:
       - name: bankName
         label: Bank Name
         type: string
+      - name: ussdCode
+        label: USSD Code
+        type: string
 
-  # Transparency
+  # ==================== TRANSPARENCY ====================
+  - name: transparencySettings
+    label: Transparency Settings
+    type: file
+    path: src/content/transparencySettings/settings.json
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+      - name: heroTitle
+        label: Hero Title
+        type: string
+      - name: heroDescription
+        label: Hero Description
+        type: text
+
+  - name: transparencyStats
+    label: Transparency Stats
+    type: collection
+    path: src/content/transparencyStats
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: value
+        label: Value
+        type: string
+      - name: label
+        label: Label
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  - name: financialReports
+    label: Financial Reports
+    type: collection
+    path: src/content/financialReports
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: date
+        label: Date
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: file
+        label: File Path
+        type: string
+      - name: size
+        label: File Size
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
   - name: activityReports
     label: Activity Reports
     type: collection
@@ -331,7 +752,16 @@ content:
         type: string
       - name: description
         label: Description
+        type: text
+      - name: file
+        label: File Path
         type: string
+      - name: size
+        label: File Size
+        type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -351,13 +781,34 @@ content:
         label: Date
         type: string
       - name: type
-        label: Type
+        label: Meeting Type
         type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
 
-  # Contact
+  # ==================== CONTACT ====================
+  - name: contactSettings
+    label: Contact Settings
+    type: file
+    path: src/content/contactSettings/settings.json
+    fields:
+      - name: pageTitle
+        label: Page Title
+        type: string
+      - name: headerTitle
+        label: Header Title
+        type: string
+      - name: headerDescription
+        label: Header Description
+        type: text
+      - name: formTitle
+        label: Form Title
+        type: string
+
   - name: contactInfo
     label: Contact Information
     type: collection
@@ -366,12 +817,45 @@ content:
       - name: id
         label: ID
         type: string
+      - name: icon
+        label: Icon
+        type: string
       - name: title
         label: Title
         type: string
       - name: value
         label: Value
+        type: text
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  - name: galleryImages
+    label: Gallery Images
+    type: collection
+    path: src/content/galleryImages
+    fields:
+      - name: id
+        label: ID
         type: string
+      - name: src
+        label: Image Path
+        type: string
+      - name: alt
+        label: Alt Text
+        type: string
+      - name: caption
+        label: Caption
+        type: string
+      - name: category
+        label: Category
+        type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
@@ -390,6 +874,9 @@ content:
       - name: label
         label: Label
         type: string
+      - name: order
+        label: Order
+        type: number
       - name: enabled
         label: Enabled
         type: boolean
