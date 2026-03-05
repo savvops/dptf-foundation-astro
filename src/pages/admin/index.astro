@@ -1,4 +1,476 @@
 ---
-// Redirect to Keystatic CMS
-return Astro.redirect('/keystatic');
+// Simple JSON Editor Admin for Cloudflare Pages
+// This uses client-side GitHub API to save changes
+
+const siteUrl = Astro.url.origin;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DPTF Admin - Content Editor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .header {
+      background: #1e293b;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-size: 1.25rem; color: #fff; }
+    .header .subtitle { font-size: 0.875rem; color: #94a3b8; }
+    .container {
+      display: flex;
+      min-height: calc(100vh - 65px);
+    }
+    .sidebar {
+      width: 280px;
+      background: #1e293b;
+      border-right: 1px solid #334155;
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      border-bottom: 1px solid #334155;
+    }
+    .sidebar-title {
+      padding: 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #64748b;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .sidebar-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      font-size: 0.875rem;
+    }
+    .sidebar-item:hover {
+      background: #334155;
+      border-left-color: #3b82f6;
+    }
+    .sidebar-item.active {
+      background: #334155;
+      border-left-color: #3b82f6;
+      color: #fff;
+    }
+    .main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    .editor-container {
+      background: #1e293b;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      overflow: hidden;
+    }
+    .editor-header {
+      background: #334155;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .editor-header h2 { font-size: 1rem; color: #fff; }
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-primary:disabled {
+      background: #475569;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: #475569;
+      color: #e2e8f0;
+      margin-right: 0.5rem;
+    }
+    .btn-secondary:hover { background: #64748b; }
+    .editor-content {
+      padding: 1rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 500px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 1rem;
+      color: #e2e8f0;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .error {
+      background: #dc2626;
+      color: white;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .success {
+      background: #16a34a;
+      color: white;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .info {
+      background: #1e40af;
+      color: white;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: #64748b;
+    }
+    .welcome {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .welcome h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+    .welcome p {
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .token-input {
+      margin-bottom: 1rem;
+    }
+    .token-input label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+    .token-input input {
+      width: 100%;
+      padding: 0.75rem;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #e2e8f0;
+      font-size: 0.875rem;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>📝 DPTF Content Editor</h1>
+      <div class="subtitle">Edit website content directly</div>
+    </div>
+    <div class="subtitle">{siteUrl}</div>
+  </div>
+  
+  <div class="container">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">⚙️ Site Settings</div>
+        <div class="sidebar-item" data-file="src/content/siteSettings/settings.json">Site Settings</div>
+        <div class="sidebar-item" data-file="src/content/navigation/main.json">Navigation</div>
+        <div class="sidebar-item" data-file="src/content/footerSettings/settings.json">Footer Settings</div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">🏠 Homepage</div>
+        <div class="sidebar-item" data-file="src/content/homepage/hero.json">Hero Section</div>
+        <div class="sidebar-item" data-file="src/content/homepage/intro.json">Intro Section</div>
+        <div class="sidebar-item" data-file="src/content/homepage/cta.json">CTA Section</div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">👥 About</div>
+        <div class="sidebar-item" data-file="src/content/aboutSettings/settings.json">About Settings</div>
+        <div class="sidebar-item" data-file="src/content/boardSettings/settings.json">Board Settings</div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">📋 Content</div>
+        <div class="sidebar-item" data-file="src/content/programs/education.json">Programs</div>
+        <div class="sidebar-item" data-file="src/content/faqSettings/settings.json">FAQ Settings</div>
+        <div class="sidebar-item" data-file="src/content/contactSettings/settings.json">Contact Settings</div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">🤝 Get Involved</div>
+        <div class="sidebar-item" data-file="src/content/getInvolvedSettings/settings.json">Get Involved</div>
+        <div class="sidebar-item" data-file="src/content/donationAmounts/1000.json">Donation Amounts</div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-title">📊 Transparency</div>
+        <div class="sidebar-item" data-file="src/content/transparencySettings/settings.json">Transparency</div>
+        <div class="sidebar-item" data-file="src/content/bankDetails/details.json">Bank Details</div>
+      </div>
+    </aside>
+    
+    <main class="main">
+      <div id="message"></div>
+      
+      <div id="welcome" class="welcome">
+        <h2>Welcome to the Content Editor</h2>
+        <p>
+          This tool lets you edit your website content directly. Select a file from the sidebar to start editing.
+          Changes are saved to GitHub and your site will update automatically.
+        </p>
+        
+        <div style="background: #1e293b; padding: 2rem; border-radius: 8px; max-width: 500px; margin: 0 auto; text-align: left;">
+          <h3 style="margin-bottom: 1rem; color: #fff;">Setup Required</h3>
+          <p style="margin-bottom: 1rem;">To save changes, you need a GitHub Personal Access Token:</p>
+          <ol style="margin-left: 1.5rem; color: #94a3b8; line-height: 1.8;">
+            <li>Go to GitHub → Settings → Developer settings → Personal access tokens</li>
+            <li>Generate new token (classic)</li>
+            <li>Select 'repo' scope</li>
+            <li>Copy and paste below:</li>
+          </ol>
+          <div class="token-input" style="margin-top: 1rem;">
+            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width: 100%;">
+          </div>
+          <button class="btn btn-primary" onclick="saveToken()" style="width: 100%;">Save Token</button>
+        </div>
+      </div>
+      
+      <div id="editor" class="editor-container hidden">
+        <div class="editor-header">
+          <h2 id="filename">Select a file</h2>
+          <div>
+            <button class="btn btn-secondary" onclick="resetChanges()">Reset</button>
+            <button class="btn btn-primary" id="saveBtn" onclick="saveFile()">Save Changes</button>
+          </div>
+        </div>
+        <div class="editor-content">
+          <textarea id="editorContent" placeholder="Select a file from the sidebar..."></textarea>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const REPO_OWNER = 'savvops';
+    const REPO_NAME = 'dptf-foundation-astro';
+    const BRANCH = 'main';
+    
+    let currentFile = null;
+    let originalContent = '';
+    
+    // Load token from localStorage
+    function getToken() {
+      return localStorage.getItem('githubToken');
+    }
+    
+    function saveToken() {
+      const token = document.getElementById('githubToken').value.trim();
+      if (!token) {
+        showMessage('Please enter a token', 'error');
+        return;
+      }
+      localStorage.setItem('githubToken', token);
+      showMessage('Token saved! You can now edit files.', 'success');
+      setTimeout(() => hideMessage(), 3000);
+    }
+    
+    function showMessage(text, type) {
+      const msg = document.getElementById('message');
+      msg.className = type;
+      msg.textContent = text;
+    }
+    
+    function hideMessage() {
+      document.getElementById('message').className = 'hidden';
+    }
+    
+    // Load file from GitHub
+    async function loadFile(filepath) {
+      const token = getToken();
+      if (!token) {
+        showMessage('Please set up your GitHub token first', 'error');
+        return;
+      }
+      
+      try {
+        showMessage('Loading...', 'info');
+        
+        const response = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filepath}?ref=${BRANCH}`,
+          {
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          }
+        );
+        
+        if (!response.ok) {
+          // File might not exist, create empty template
+          originalContent = '{}';
+          document.getElementById('editorContent').value = '{}\n';
+        } else {
+          const data = await response.json();
+          const content = atob(data.content);
+          originalContent = content;
+          document.getElementById('editorContent').value = content;
+        }
+        
+        currentFile = filepath;
+        document.getElementById('filename').textContent = filepath;
+        document.getElementById('welcome').classList.add('hidden');
+        document.getElementById('editor').classList.remove('hidden');
+        hideMessage();
+        
+        // Update active sidebar item
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+          item.classList.remove('active');
+          if (item.dataset.file === filepath) {
+            item.classList.add('active');
+          }
+        });
+        
+      } catch (error) {
+        showMessage('Error loading file: ' + error.message, 'error');
+      }
+    }
+    
+    // Save file to GitHub
+    async function saveFile() {
+      const token = getToken();
+      if (!token) {
+        showMessage('Please set up your GitHub token first', 'error');
+        return;
+      }
+      
+      if (!currentFile) {
+        showMessage('No file selected', 'error');
+        return;
+      }
+      
+      const content = document.getElementById('editorContent').value;
+      
+      // Validate JSON
+      try {
+        JSON.parse(content);
+      } catch (e) {
+        showMessage('Invalid JSON: ' + e.message, 'error');
+        return;
+      }
+      
+      document.getElementById('saveBtn').disabled = true;
+      showMessage('Saving...', 'info');
+      
+      try {
+        // Get current file SHA (if exists)
+        let sha = null;
+        try {
+          const getResponse = await fetch(
+            `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${currentFile}?ref=${BRANCH}`,
+            {
+              headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+              }
+            }
+          );
+          if (getResponse.ok) {
+            const data = await getResponse.json();
+            sha = data.sha;
+          }
+        } catch (e) {
+          // File doesn't exist, will create new
+        }
+        
+        // Save file
+        const body = {
+          message: `Update ${currentFile} via admin`,
+          content: btoa(content),
+          branch: BRANCH
+        };
+        
+        if (sha) {
+          body.sha = sha;
+        }
+        
+        const response = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${currentFile}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          }
+        );
+        
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to save');
+        }
+        
+        originalContent = content;
+        showMessage('Saved! Your site will update in 1-2 minutes.', 'success');
+        setTimeout(() => hideMessage(), 5000);
+        
+      } catch (error) {
+        showMessage('Error saving: ' + error.message, 'error');
+      } finally {
+        document.getElementById('saveBtn').disabled = false;
+      }
+    }
+    
+    function resetChanges() {
+      if (confirm('Reset all changes? This cannot be undone.')) {
+        document.getElementById('editorContent').value = originalContent;
+      }
+    }
+    
+    // Sidebar click handlers
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const filepath = item.dataset.file;
+        loadFile(filepath);
+      });
+    });
+  </script>
+</body>
+</html>
 ---
