@@ -240,6 +240,13 @@ const siteUrl = Astro.url.origin;
     const REPO_NAME = 'dptf-foundation-astro';
     const BRANCH = 'main';
     
+    // Helper: Convert string to base64 (handles Unicode)
+    function toBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      const binString = String.fromCodePoint(...bytes);
+      return btoa(binString);
+    }
+    
     let currentFile = null;
     let originalContent = '';
     
@@ -380,10 +387,10 @@ const siteUrl = Astro.url.origin;
           sha = data.sha;
         }
         
-        // Save the file
+        // Save the file - use proper base64 encoding
         const body = {
           message: `Update ${currentFile} via admin`,
-          content: btoa(unescape(encodeURIComponent(content))),
+          content: toBase64(content),
           branch: BRANCH
         };
         
@@ -405,13 +412,15 @@ const siteUrl = Astro.url.origin;
         
         if (!response.ok) {
           const error = await response.json();
-          throw new Error(error.message);
+          console.error('GitHub API Error:', error);
+          throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
         }
         
         originalContent = content;
         showMessage('✅ Saved! Site will update in 1-2 minutes.', 'success');
         
       } catch (error) {
+        console.error('Save error:', error);
         showMessage('Save failed: ' + error.message, 'error');
       } finally {
         document.getElementById('saveBtn').disabled = false;
