@@ -207,6 +207,9 @@ content:
     label: Objectives
     type: collection
     path: src/content/objectives
+    filename: "{{id}}.json"
+    view:
+      fields: [id, icon, title, description, order, enabled]
     fields:
       - name: id
         label: ID
