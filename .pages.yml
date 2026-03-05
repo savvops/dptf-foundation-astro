@@ -729,3 +729,174 @@ content:
       - name: enabled
         label: Enabled
         type: boolean
+
+  # Missing Collections - Dr. Patience Virtues
+  - name: drPatienceVirtues
+    label: Dr. Patience Virtues
+    type: collection
+    path: src/content/drPatienceVirtues
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Food Security
+  - name: foodSecurity
+    label: Food Security Items
+    type: collection
+    path: src/content/foodSecurity
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: item
+        label: Item Name
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Footer Links (separate collection)
+  - name: footerLinks
+    label: Footer Links
+    type: collection
+    path: src/content/footerLinks
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: label
+        label: Label
+        type: string
+      - name: href
+        label: URL
+        type: string
+      - name: category
+        label: Category
+        type: select
+        options:
+          - label: Quick Links
+            value: quick
+          - label: Resources
+            value: resources
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Gallery Images
+  - name: galleryImages
+    label: Gallery Images
+    type: collection
+    path: src/content/galleryImages
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: src
+        label: Image Path
+        type: string
+      - name: alt
+        label: Alt Text
+        type: string
+      - name: caption
+        label: Caption
+        type: string
+      - name: category
+        label: Category
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Memorial Activities
+  - name: memorialActivities
+    label: Memorial Activities
+    type: collection
+    path: src/content/memorialActivities
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: when
+        label: When
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Social Links
+  - name: socialLinks
+    label: Social Media Links
+    type: collection
+    path: src/content/socialLinks
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: name
+        label: Platform Name
+        type: string
+      - name: url
+        label: URL
+        type: string
+      - name: icon
+        label: Icon
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
+
+  # Transparency Stats
+  - name: transparencyStats
+    label: Transparency Stats
+    type: collection
+    path: src/content/transparencyStats
+    fields:
+      - name: id
+        label: ID
+        type: string
+      - name: value
+        label: Value
+        type: string
+      - name: label
+        label: Label
+        type: string
+      - name: order
+        label: Order
+        type: number
+      - name: enabled
+        label: Enabled
+        type: boolean
