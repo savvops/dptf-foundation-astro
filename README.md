@@ -2,63 +2,42 @@
 
 The Dr. Patience Tsavnande Foundation website rebuilt with Astro, TypeScript, and Tailwind CSS.
 
-## Tech Stack
+## 🚀 Tech Stack
 
 - **Framework:** [Astro](https://astro.build) v5+
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS v3+
+- **CMS:** [Keystatic](https://keystatic.com) - Git-based, $0 cost
+- **Hosting:** Cloudflare Pages (free)
 - **Icons:** Custom SVG icons
-- **Hosting:** Cloudflare Pages
-- **CMS:** Decap CMS (Git-based)
 
-## Project Structure
+## ✨ Features
+
+- ⚡ **Lightning fast** - Astro static site generation
+- 🎨 **Fully customizable** - 39+ content collections
+- 🔒 **Self-hosted CMS** - No monthly fees, no vendor lock-in
+- 📱 **Mobile-first** - Responsive design
+- 🔍 **SEO optimized** - Built-in sitemap and meta tags
+- ♿ **Accessible** - WCAG compliant
+
+## 📁 Project Structure
 
 ```
 dptf-foundation-astro/
 ├── public/                 # Static assets
-│   ├── admin/             # Decap CMS admin panel
-│   │   ├── config.yml     # CMS configuration
-│   │   └── index.html     # Admin entry
 │   └── images/            # Images
 ├── src/
-│   ├── components/
-│   │   ├── sections/      # Page sections
-│   │   │   ├── Navbar.astro
-│   │   │   ├── Hero.astro
-│   │   │   ├── Footer.astro
-│   │   │   └── ...
-│   │   └── ui/            # Reusable UI components
-│   │       ├── Button.astro
-│   │       └── Icon.astro
-│   ├── content/           # Content collections
-│   │   └── config.ts      # Schema definitions
-│   ├── layouts/
-│   │   └── Layout.astro   # Base layout with SEO
-│   ├── pages/
-│   │   ├── index.astro    # Homepage
-│   │   ├── about.astro    # About page
-│   │   ├── our-work.astro # Our Work page
-│   │   ├── get-involved.astro # Get Involved page
-│   │   ├── contact.astro  # Contact page
-│   │   └── admin.astro    # CMS redirect
-│   └── styles/
-│       └── global.css     # Tailwind + custom CSS
-├── astro.config.mjs
-├── tailwind.config.mjs
-├── tsconfig.json
-├── wrangler.toml          # Cloudflare deployment config
+│   ├── components/        # Reusable components
+│   ├── content/           # 39+ content collections (JSON)
+│   ├── layouts/           # Page layouts
+│   ├── pages/             # Route pages
+│   └── styles/            # Global styles
+├── keystatic.config.ts    # CMS configuration
+├── astro.config.mjs       # Astro config
 └── README.md
 ```
 
-## Pages
-
-1. **Home** (`/`) - Hero, intro, objectives, impact stats, CTA
-2. **About** (`/about`) - Foundation story, Dr. Patience's legacy, timeline
-3. **Our Work** (`/our-work`) - Programs and projects showcase
-4. **Get Involved** (`/get-involved`) - Donation information
-5. **Contact** (`/contact`) - Contact form and information
-
-## Quick Start
+## 🛠️ Quick Start
 
 ```bash
 # Install dependencies
@@ -74,20 +53,86 @@ npm run build
 npm run preview
 ```
 
-## Deployment
+## 📝 Content Management
 
-The site auto-deploys to Cloudflare Pages on push to `main`. Configure these secrets in GitHub:
+### Access the CMS
 
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
+1. **Local development:** `http://localhost:4321/keystatic`
+2. **Production:** `https://yoursite.com/admin`
 
-## Content Management
+### CMS Sections
 
-Access the CMS at `https://yoursite.pages.dev/admin/`
+| Section | Content |
+|---------|---------|
+| ⚙️ Site | Settings, navigation, footer, social links |
+| 🏠 Homepage | Hero, stats, core values, programs |
+| 👥 About | Board members, virtues, timeline |
+| 📋 Our Work | Impact areas, medical outreaches, education |
+| ❓ FAQ | Categories and questions |
+| 🤝 Get Involved | Donation amounts and methods |
+| 📊 Transparency | Reports, notices, trust badges |
+| 📞 Contact | Contact information |
+| 🖼️ Gallery | Gallery images |
 
-1. Enable Identity on Cloudflare Pages
-2. Configure Git Gateway
-3. Login with credentials
+### How It Works
+
+1. **Edit content** in the CMS UI
+2. **Changes save** to JSON files in `src/content/`
+3. **Auto-deploy** to Cloudflare Pages
+4. **Site updates** instantly
+
+## 🚀 Deployment
+
+### To Cloudflare Pages
+
+1. Push code to GitHub
+2. Connect repo to Cloudflare Pages
+3. Build command: `npm run build`
+4. Build output: `dist`
+5. Done! Auto-deploys on every push
+
+### Environment Variables
+
+None required! Keystatic uses local storage (no API keys needed).
+
+## 💼 White-Label Business Model
+
+This setup is perfect for selling websites to clients:
+
+### Your Costs: $0/month
+- Cloudflare Pages: Free
+- Keystatic CMS: Free
+- Domain: ~$12/year
+
+### Charge Clients
+- Setup: $500-1,500
+- Monthly: $50-100
+- **Profit margin: 100%**
+
+See `KEYSTATIC_CMS_GUIDE.md` for complete business guide.
+
+## 📄 Pages
+
+1. **Home** (`/`) - Hero, intro, objectives, impact stats
+2. **About** (`/about`) - Foundation story, Dr. Patience's legacy
+3. **Our Work** (`/our-work`) - Programs and projects
+4. **Get Involved** (`/get-involved`) - Donation information
+5. **Contact** (`/contact`) - Contact form and information
+6. **FAQ** (`/faq`) - Frequently asked questions
+7. **Transparency** (`/transparency`) - Reports and accountability
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📚 Documentation
+
+- [Keystatic Docs](https://keystatic.com/docs)
+- [Astro Docs](https://docs.astro.build)
+- [Business Guide](./KEYSTATIC_CMS_GUIDE.md)
 
 ---
 

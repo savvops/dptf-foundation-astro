@@ -1,11 +1,14 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import keystatic from '@keystatic/astro';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://dptf-foundation.pages.dev',
-  output: 'static',
+  output: 'server',
+  adapter: cloudflare(),
   server: {
     host: 'localhost',
     port: 4321,
@@ -15,6 +18,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap(),
+    keystatic(),
   ],
   vite: {
     build: {
