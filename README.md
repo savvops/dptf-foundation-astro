@@ -1,138 +1,317 @@
-# DPTF Foundation Website
+# DPTF Foundation Website - Complete Guide
 
-The Dr. Patience Tsavnande Foundation website rebuilt with Astro, TypeScript, and Tailwind CSS.
+Astro + Tailwind website with GitHub-based CMS for zero-cost content management.
 
-## 🚀 Tech Stack
+**Live Site:** https://drtsavnandefoundation.com  
+**Edit Content:** https://drtsavnandefoundation.com/edit  
+**Repository:** https://github.com/savvops/dptf-foundation-astro
 
-- **Framework:** [Astro](https://astro.build) v5+
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v3+
-- **CMS:** [Keystatic](https://keystatic.com) - Git-based, $0 cost
-- **Hosting:** Cloudflare Pages (free)
-- **Icons:** Custom SVG icons
+---
 
-## ✨ Features
+## 📁 Content Structure
 
-- ⚡ **Lightning fast** - Astro static site generation
-- 🎨 **Fully customizable** - 39+ content collections
-- 🔒 **Self-hosted CMS** - No monthly fees, no vendor lock-in
-- 📱 **Mobile-first** - Responsive design
-- 🔍 **SEO optimized** - Built-in sitemap and meta tags
-- ♿ **Accessible** - WCAG compliant
-
-## 📁 Project Structure
+All website content is stored as JSON files in `src/content/`:
 
 ```
-dptf-foundation-astro/
-├── public/                 # Static assets
-│   └── images/            # Images
-├── src/
-│   ├── components/        # Reusable components
-│   ├── content/           # 39+ content collections (JSON)
-│   ├── layouts/           # Page layouts
-│   ├── pages/             # Route pages
-│   └── styles/            # Global styles
-├── keystatic.config.ts    # CMS configuration
-├── astro.config.mjs       # Astro config
-└── README.md
+src/content/
+├── siteSettings/        # Site name, logo, meta
+├── navigation/          # Menu links
+├── homepage/            # Hero, intro, CTA sections
+├── stats/               # Homepage statistics
+├── coreValues/          # Core values list
+├── objectives/          # Foundation objectives
+├── board/               # Board members
+├── programs/            # Our programs
+├── impactAreas/         # Impact areas
+├── medicalOutreaches/   # Medical outreach events
+├── educationInitiatives/# Education programs
+├── faqItems/            # FAQ questions & answers
+├── donationAmounts/     # Donation preset amounts
+├── getInvolvedSettings/ # Get Involved page
+├── transparencySettings/# Transparency page
+├── financialReports/    # PDF financial reports
+├── activityReports/     # PDF activity reports
+├── contactSettings/     # Contact page
+└── ... (39 total folders)
 ```
 
-## 🛠️ Quick Start
+**Images are stored in:** `public/images/`
 
-```bash
-# Install dependencies
-npm install
+---
 
-# Start development server
-npm run dev
+## ✏️ How to Edit Content
 
-# Build for production
-npm run build
+### Method 1: Easy Edit Page (Recommended)
 
-# Preview production build
-npm run preview
+1. Go to: **https://drtsavnandefoundation.com/edit**
+2. Click any folder (e.g., "Homepage" → "Homepage Sections")
+3. Click the pencil (✏️) icon on any file
+4. Edit the JSON content
+5. Click **"Commit changes..."**
+6. Your site updates in 1-2 minutes automatically
+
+### Method 2: Direct GitHub
+
+1. Go to: https://github.com/savvops/dptf-foundation-astro/tree/main/src/content
+2. Navigate to the folder you want to edit
+3. Click the file, then click ✏️ pencil icon
+4. Edit and commit
+
+---
+
+## 📝 JSON Editing Guide
+
+### Basic Structure
+
+Each file is a JSON object with key-value pairs:
+
+```json
+{
+  "title": "My Title",
+  "description": "My description text",
+  "enabled": true,
+  "order": 1
+}
 ```
 
-## 📝 Content Management
+### Common Fields
 
-### Access the CMS
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | text | Heading/title |
+| `description` | text | Body text (can be multi-line) |
+| `enabled` | boolean | `true` to show, `false` to hide |
+| `order` | number | Sort order (1, 2, 3...) |
+| `image` | text | Path: `/images/folder/image.jpg` |
 
-1. **Local development:** `http://localhost:4321/keystatic`
-2. **Production:** `https://yoursite.com/admin`
+### Multi-line Text
 
-### CMS Sections
+Use `\n` for line breaks:
 
-| Section | Content |
-|---------|---------|
-| ⚙️ Site | Settings, navigation, footer, social links |
-| 🏠 Homepage | Hero, stats, core values, programs |
-| 👥 About | Board members, virtues, timeline |
-| 📋 Our Work | Impact areas, medical outreaches, education |
-| ❓ FAQ | Categories and questions |
-| 🤝 Get Involved | Donation amounts and methods |
-| 📊 Transparency | Reports, notices, trust badges |
-| 📞 Contact | Contact information |
-| 🖼️ Gallery | Gallery images |
+```json
+{
+  "description": "First line\n\nSecond paragraph\n\nThird line"
+}
+```
 
-### How It Works
+### Adding New Items
 
-1. **Edit content** in the CMS UI
-2. **Changes save** to JSON files in `src/content/`
-3. **Auto-deploy** to Cloudflare Pages
-4. **Site updates** instantly
+1. Go to the folder (e.g., `src/content/board/`)
+2. Click **"Add file"** → **"Create new file"**
+3. Name it: `new-member.json`
+4. Add JSON content
+5. Commit
+
+---
+
+## 🖼️ How to Add Images
+
+### Method 1: GitHub Upload
+
+1. Go to: https://github.com/savvops/dptf-foundation-astro/tree/main/public/images
+2. Click **"Add file"** → **"Upload files"**
+3. Drag & drop images
+4. Click **"Commit changes"**
+
+### Image Folders
+
+| Folder | Use For |
+|--------|---------|
+| `/images/` | General images |
+| `/images/members/` | Board member photos |
+| `/images/uploads/` | Misc uploads |
+| `/reports/` | PDF reports |
+
+### Using Images in Content
+
+After uploading, reference in JSON:
+
+```json
+{
+  "image": "/images/members/john-doe.jpg",
+  "logo": "/images/dptf-logo.png"
+}
+```
+
+### Image Tips
+
+- **Size:** Keep under 500KB for fast loading
+- **Format:** Use JPG for photos, PNG for logos
+- **Dimensions:** 1200px wide is plenty for web
+- **Naming:** Use lowercase, no spaces (`john-doe.jpg`)
+
+---
+
+## 👥 Giving Clients Access
+
+### Step 1: Add Client to Repository
+
+1. Go to: https://github.com/savvops/dptf-foundation-astro/settings/access
+2. Click **"Add people"**
+3. Enter client's GitHub username or email
+4. Select role: **"Write"** (can edit, not delete repo)
+5. Click **"Add"**
+
+### Step 2: Client Accepts Invitation
+
+Client receives email → Clicks **"View invitation"** → **"Accept"**
+
+### Step 3: Client Edits Content
+
+1. Client goes to: **https://drtsavnandefoundation.com/edit**
+2. Clicks any folder
+3. Edits files directly (logged in with their GitHub)
+4. Changes auto-deploy
+
+### Permission Levels
+
+| Role | Can Do |
+|------|--------|
+| **Read** | View only |
+| **Write** | ✓ Edit content, upload images |
+| **Admin** | ✓ Everything + manage access |
+
+---
 
 ## 🚀 Deployment
 
-### To Cloudflare Pages
+### How It Works
 
-1. Push code to GitHub
-2. Connect repo to Cloudflare Pages
-3. Build command: `npm run build`
-4. Build output: `dist`
-5. Done! Auto-deploys on every push
+```
+Edit on GitHub → Commit → Cloudflare Auto-Deploys → Live in 1-2 min
+```
 
-### Environment Variables
+### Check Deployment Status
 
-None required! Keystatic uses local storage (no API keys needed).
+1. Go to: https://dash.cloudflare.com → Pages
+2. Select your project
+3. See deployment status
 
-## 💼 White-Label Business Model
+### Manual Deploy
 
-This setup is perfect for selling websites to clients:
+If needed, go to Cloudflare Dashboard → Pages → Click **"Create deployment"**
+
+---
+
+## 💼 Business Model (For Selling to Clients)
 
 ### Your Costs: $0/month
-- Cloudflare Pages: Free
-- Keystatic CMS: Free
-- Domain: ~$12/year
 
-### Charge Clients
-- Setup: $500-1,500
-- Monthly: $50-100
-- **Profit margin: 100%**
+| Item | Cost |
+|------|------|
+| GitHub | Free (public repos) |
+| Cloudflare Pages | Free |
+| Domain | ~$12/year |
 
-See `KEYSTATIC_CMS_GUIDE.md` for complete business guide.
+### What to Charge Clients
 
-## 📄 Pages
+| Service | Price Range |
+|---------|-------------|
+| **Website Setup** | $500 - $1,500 |
+| **Monthly Hosting** | $50 - $100/month |
+| **Content Updates** | $25 - $50/hour |
+| **Custom Features** | Custom quote |
 
-1. **Home** (`/`) - Hero, intro, objectives, impact stats
-2. **About** (`/about`) - Foundation story, Dr. Patience's legacy
-3. **Our Work** (`/our-work`) - Programs and projects
-4. **Get Involved** (`/get-involved`) - Donation information
-5. **Contact** (`/contact`) - Contact form and information
-6. **FAQ** (`/faq`) - Frequently asked questions
-7. **Transparency** (`/transparency`) - Reports and accountability
+### Client Handover Process
 
-## 🤝 Contributing
+1. **Clone repo** for new client
+2. **Customize** (colors, logo, content)
+3. **Deploy** to their domain
+4. **Add them** as collaborator on GitHub
+5. **Send edit link:** `theirdomain.com/edit`
+6. **Optional:** Record 5-min tutorial video
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+### Profit Example
 
-## 📚 Documentation
+- 10 clients × $75/month = **$750/month profit**
+- 20 clients × $75/month = **$1,500/month profit**
 
-- [Keystatic Docs](https://keystatic.com/docs)
-- [Astro Docs](https://docs.astro.build)
-- [Business Guide](./KEYSTATIC_CMS_GUIDE.md)
+---
+
+## 🐛 Troubleshooting
+
+### "404 - File not found"
+
+- Check the file path exists
+- Use `/tree/main/` links for folders
+- Use `/blob/main/` links for files
+
+### "Changes not showing on site"
+
+1. Check GitHub commits (verify change was saved)
+2. Check Cloudflare Pages deployments
+3. Wait 1-2 minutes
+4. Hard refresh: **Ctrl+Shift+R**
+
+### "Cannot edit file"
+
+- Must be logged into GitHub
+- Must have "Write" permission on repo
+- Check invitation was accepted
+
+### Images not loading
+
+- Verify image uploaded to correct folder
+- Check path in JSON matches exactly
+- Case-sensitive: `image.jpg` ≠ `Image.jpg`
+
+---
+
+## 📚 Quick Reference
+
+### Important URLs
+
+| URL | Purpose |
+|-----|---------|
+| `yourdomain.com` | Live website |
+| `yourdomain.com/edit` | Content editor dashboard |
+| `github.com/savvops/dptf-foundation-astro` | Source code |
+| `github.com/savvops/dptf-foundation-astro/tree/main/src/content` | All content files |
+
+### JSON Validation
+
+Use https://jsonlint.com to check your JSON is valid before saving.
+
+### Image Optimization
+
+Use https://squoosh.app to compress images before uploading.
+
+---
+
+## 🆘 Need Help?
+
+### For Technical Issues
+
+- Check browser console (F12) for errors
+- Verify GitHub token has `repo` scope
+- Confirm file paths are correct
+
+### For Client Support
+
+Give clients this simple guide:
+
+```
+HOW TO EDIT YOUR WEBSITE
+
+1. Go to: yourdomain.com/edit
+2. Click the section you want to change
+3. Click the pencil icon
+4. Make your changes
+5. Click "Commit changes"
+6. Your site updates in 2 minutes!
+
+For images: Upload to /images/ folder on GitHub
+```
+
+---
+
+## 🎯 Tech Stack
+
+- **Framework:** [Astro](https://astro.build) v5+
+- **Styling:** Tailwind CSS v3+
+- **Hosting:** Cloudflare Pages
+- **CMS:** GitHub (JSON files)
+- **Images:** Static files in `/public/images/`
 
 ---
 
