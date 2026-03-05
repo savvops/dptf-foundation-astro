@@ -1,0 +1,233 @@
+---
+// Simple Content Editor - Links directly to GitHub
+const siteUrl = Astro.url.origin;
+const repoUrl = 'https://github.com/savvops/dptf-foundation-astro';
+const contentUrl = `${repoUrl}/tree/main/src/content`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Content - DPTF Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .header {
+      background: #1e293b;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-size: 1.25rem; color: #fff; }
+    .header a { color: #94a3b8; text-decoration: none; font-size: 0.875rem; }
+    .header a:hover { color: #3b82f6; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .intro {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #334155;
+    }
+    .intro h2 { color: #fff; margin-bottom: 0.5rem; }
+    .intro p { color: #94a3b8; line-height: 1.6; }
+    .intro a { color: #3b82f6; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 1.5rem;
+      border: 1px solid #334155;
+    }
+    .card h3 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #334155;
+    }
+    .card ul {
+      list-style: none;
+    }
+    .card li {
+      margin-bottom: 0.5rem;
+    }
+    .card a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card a:hover { color: #3b82f6; }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+    .btn:hover { background: #2563eb; }
+    .images-section {
+      margin-top: 2rem;
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 1.5rem;
+      border: 1px solid #334155;
+    }
+    .images-section h2 { color: #fff; margin-bottom: 1rem; }
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .image-link {
+      background: #0f172a;
+      padding: 1rem;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .image-link a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📝 Edit Content</h1>
+    <a href="{siteUrl}">← Back to Website</a>
+  </div>
+  
+  <div class="container">
+    <div class="intro">
+      <h2>Quick Edit via GitHub</h2>
+      <p>
+        Click any file below to edit it directly on GitHub. Changes are automatically deployed to your site in 1-2 minutes.
+        <br><br>
+        🔗 <strong>Direct link:</strong> <a href="{contentUrl}" target="_blank">github.com/savvops/dptf-foundation-astro/tree/main/src/content</a>
+      </p>
+      <a href="{contentUrl}" target="_blank" class="btn">Open All Content →</a>
+    </div>
+    
+    <div class="grid">
+      <div class="card">
+        <h3>⚙️ Site Settings</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/siteSettings/settings.json" target="_blank">✏️ Site Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/navigation/main.json" target="_blank">✏️ Navigation</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/footerSettings/settings.json" target="_blank">✏️ Footer</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/socialLinks" target="_blank">📁 Social Links</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>🏠 Homepage</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/homepage/hero.json" target="_blank">✏️ Hero Section</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/homepage/intro.json" target="_blank">✏️ Intro Section</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/homepage/cta.json" target="_blank">✏️ CTA Section</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/stats" target="_blank">📁 Stats</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>👥 About Page</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/aboutSettings/settings.json" target="_blank">✏️ About Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/boardSettings/settings.json" target="_blank">✏️ Board Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/board" target="_blank">📁 Board Members</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/timeline" target="_blank">📁 Timeline</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>📋 Our Work</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/ourWorkSettings/settings.json" target="_blank">✏️ Page Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/programs" target="_blank">📁 Programs</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/impactAreas" target="_blank">📁 Impact Areas</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/medicalOutreaches" target="_blank">📁 Medical Outreaches</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>❓ FAQ</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/faqSettings/settings.json" target="_blank">✏️ FAQ Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/faqCategories" target="_blank">📁 Categories</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/faqItems" target="_blank">📁 FAQ Items</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>🤝 Get Involved</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/getInvolvedSettings/settings.json" target="_blank">✏️ Page Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/donationAmounts" target="_blank">📁 Donation Amounts</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/bankDetails/details.json" target="_blank">✏️ Bank Details</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>📊 Transparency</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/transparencySettings/settings.json" target="_blank">✏️ Page Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/financialReports" target="_blank">📁 Financial Reports</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/activityReports" target="_blank">📁 Activity Reports</a></li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <h3>📞 Contact</h3>
+        <ul>
+          <li><a href="{repoUrl}/edit/main/src/content/contactSettings/settings.json" target="_blank">✏️ Page Settings</a></li>
+          <li><a href="{repoUrl}/edit/main/src/content/contactInfo" target="_blank">📁 Contact Info</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="images-section">
+      <h2>🖼️ Manage Images</h2>
+      <p style="color: #94a3b8; margin-bottom: 1rem;">Upload or manage images on GitHub. Supported folders:</p>
+      <div class="images-grid">
+        <div class="image-link">
+          <a href="{repoUrl}/upload/main/public/images" target="_blank">📤 Upload to /images</a>
+        </div>
+        <div class="image-link">
+          <a href="{repoUrl}/upload/main/public/images/members" target="_blank">📤 Upload to /members</a>
+        </div>
+        <div class="image-link">
+          <a href="{repoUrl}/tree/main/public/images" target="_blank">📁 Browse All Images</a>
+        </div>
+        <div class="image-link">
+          <a href="{repoUrl}/tree/main/public/reports" target="_blank">📁 PDF Reports</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+---
