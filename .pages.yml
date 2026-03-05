@@ -20,13 +20,13 @@ content:
         type: string
       - name: siteDescription
         label: Site Description
-        type: text
+        type: string
       - name: defaultTitle
         label: Default Page Title
         type: string
       - name: defaultDescription
         label: Default Meta Description
-        type: text
+        type: string
       - name: logo
         label: Logo Path
         type: string
@@ -65,7 +65,7 @@ content:
     fields:
       - name: description
         label: Footer Description
-        type: text
+        type: string
       - name: copyrightText
         label: Copyright Text
         type: string
@@ -141,7 +141,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: buttonText
         label: Button Text
         type: string
@@ -195,7 +195,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -219,7 +219,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -238,25 +238,25 @@ content:
         type: string
       - name: pageDescription
         label: Page Description
-        type: text
+        type: string
       - name: headerTitle
         label: Header Title
         type: string
       - name: headerDescription
         label: Header Description
-        type: text
+        type: string
       - name: drPatienceName
         label: Dr. Patience Name
         type: string
       - name: drPatienceBio
         label: Dr. Patience Bio
-        type: text
+        type: string
       - name: whoWeAreTitle
         label: Who We Are Title
         type: string
       - name: whoWeAreDescription
         label: Who We Are Description
-        type: text
+        type: string
       - name: guidingBeliefQuote
         label: Guiding Belief Quote
         type: string
@@ -277,7 +277,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: image
         label: Image Path
         type: string
@@ -304,13 +304,13 @@ content:
         type: string
       - name: trusteesDescription
         label: Trustees Description
-        type: text
+        type: string
       - name: advisersTitle
         label: Advisers Title
         type: string
       - name: advisersDescription
         label: Advisers Description
-        type: text
+        type: string
 
   - name: drPatienceVirtues
     label: Dr. Patience Virtues
@@ -325,7 +325,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -349,7 +349,7 @@ content:
         type: string
       - name: event
         label: Event Description
-        type: text
+        type: string
       - name: category
         label: Category
         type: string
@@ -374,7 +374,7 @@ content:
         type: string
       - name: heroDescription
         label: Hero Description
-        type: text
+        type: string
 
   - name: programs
     label: Programs
@@ -392,7 +392,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -416,7 +416,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: stats
         label: Stats Display
         type: string
@@ -449,7 +449,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -470,7 +470,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: date
         label: Date
         type: string
@@ -512,7 +512,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: when
         label: When
         type: string
@@ -537,7 +537,7 @@ content:
         type: string
       - name: headerDescription
         label: Header Description
-        type: text
+        type: string
 
   - name: faqCategories
     label: FAQ Categories
@@ -570,10 +570,10 @@ content:
         type: string
       - name: question
         label: Question
-        type: text
+        type: string
       - name: answer
         label: Answer
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -640,7 +640,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: popular
         label: Popular
         type: boolean
@@ -683,7 +683,7 @@ content:
         type: string
       - name: heroDescription
         label: Hero Description
-        type: text
+        type: string
 
   - name: transparencyStats
     label: Transparency Stats
@@ -722,7 +722,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: file
         label: File Path
         type: string
@@ -752,7 +752,7 @@ content:
         type: string
       - name: description
         label: Description
-        type: text
+        type: string
       - name: file
         label: File Path
         type: string
@@ -804,7 +804,7 @@ content:
         type: string
       - name: headerDescription
         label: Header Description
-        type: text
+        type: string
       - name: formTitle
         label: Form Title
         type: string
@@ -825,7 +825,7 @@ content:
         type: string
       - name: value
         label: Value
-        type: text
+        type: string
       - name: order
         label: Order
         type: number
@@ -880,3 +880,4 @@ content:
       - name: enabled
         label: Enabled
         type: boolean
+
