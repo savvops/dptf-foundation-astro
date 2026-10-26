@@ -76,7 +76,6 @@ const allImages = import.meta.glob('/public/gallery/**/*.{jpg,jpeg,png,webp}', {
 
 // Process images into categories
 const categoryImages = {};
-let totalImages = 0;
 
 galleryCategories.forEach(cat => {
   const images = Object.keys(allImages)
@@ -90,8 +89,10 @@ galleryCategories.forEach(cat => {
     });
   
   categoryImages[cat.id] = images;
-  totalImages += images.length;
 });
+
+const visibleCategories = galleryCategories.filter(cat => (categoryImages[cat.id] || []).length > 0);
+const totalImages = visibleCategories.reduce((sum, cat) => sum + (categoryImages[cat.id] || []).length, 0);
 
 const videoContent = [
   { title: "Foundation Launch", date: "September 2020", file: "VIDEO-2020-08-22-10-17-23.mp4" },
@@ -139,7 +140,7 @@ galleryCategories.forEach(cat => {
           Moments from our journey of service
         </p>
         <p class="text-lg opacity-80">
-          <span class="font-bold">{totalImages}</span> photos across <span class="font-bold">{galleryCategories.length}</span> categories
+          <span class="font-bold">{totalImages}</span> photos across <span class="font-bold">{visibleCategories.length}</span> categories
         </p>
       </div>
     </section>
