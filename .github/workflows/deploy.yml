@@ -6,12 +6,27 @@ on:
   pull_request:
     branches: [main]
 
+# contents: read is required for checkout.
+# deployments: write lets wrangler-action record a GitHub Deployment.
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # actions/checkout leaves a detached HEAD, and Wrangler would then
+      # publish to a branch literally named HEAD (a preview, including on main).
+      # Name the current commit after the real branch: main is production,
+      # a pull request head is a Pages preview.
+      - name: Name the deployment branch
+        run: git checkout -B "$PAGES_BRANCH"
+        env:
+          PAGES_BRANCH: ${{ github.head_ref || github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,10 +41,11 @@ jobs:
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: dptf-foundation
-          directory: dist
+          # Uses the Wrangler already installed by @astrojs/cloudflare (4.50.0).
+          # Uploads dist/_worker.js plus static files to the existing Pages project.
+          command: pages deploy dist --project-name=dptf-foundation
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

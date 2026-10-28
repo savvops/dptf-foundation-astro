@@ -6,7 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://dptf-foundation.pages.dev',
+  site: 'https://drtsavnandefoundation.com',
   output: 'server',
   adapter: cloudflare(),
   server: {
